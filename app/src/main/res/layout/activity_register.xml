@@ -4,23 +4,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:background="#F5F7FA">
+    android:background="@color/backgroundColor">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:gravity="center_horizontal"
         android:padding="24dp">
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/ic_register_symbol"
+            app:tint="@color/colorPrimary" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:layout_marginBottom="4dp"
             android:text="Create Account"
             android:textSize="26sp"
             android:textStyle="bold"
-            android:textColor="#1A237E" />
+            android:textColor="@color/colorPrimary" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -28,19 +36,20 @@
             android:layout_marginBottom="24dp"
             android:text="Join the campus sharing network"
             android:textSize="14sp"
-            android:textColor="#757575" />
+            android:textColor="@color/text_secondary" />
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardCornerRadius="16dp"
-            app:cardElevation="4dp">
+            app:cardElevation="8dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="24dp">
+                android:padding="24dp"
+                android:background="@color/surfaceColor">
 
                 <!-- Full Name -->
                 <com.google.android.material.textfield.TextInputLayout
@@ -48,7 +57,9 @@
                     android:layout_height="wrap_content"
                     android:hint="Full Name"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_marginBottom="16dp">
+                    android:layout_marginBottom="12dp"
+                    app:boxStrokeColor="@color/colorPrimary"
+                    app:hintTextColor="@color/colorPrimary">
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_name"
                         android:layout_width="match_parent"
@@ -61,9 +72,11 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="College ID (e.g. CS2021001)"
+                    android:hint="College ID"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_marginBottom="16dp">
+                    android:layout_marginBottom="12dp"
+                    app:boxStrokeColor="@color/colorPrimary"
+                    app:hintTextColor="@color/colorPrimary">
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_college_id"
                         android:layout_width="match_parent"
@@ -78,7 +91,9 @@
                     android:layout_height="wrap_content"
                     android:hint="College Email"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_marginBottom="16dp">
+                    android:layout_marginBottom="12dp"
+                    app:boxStrokeColor="@color/colorPrimary"
+                    app:hintTextColor="@color/colorPrimary">
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_email"
                         android:layout_width="match_parent"
@@ -93,7 +108,9 @@
                     android:layout_height="wrap_content"
                     android:hint="Phone Number"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_marginBottom="16dp">
+                    android:layout_marginBottom="12dp"
+                    app:boxStrokeColor="@color/colorPrimary"
+                    app:hintTextColor="@color/colorPrimary">
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_phone"
                         android:layout_width="match_parent"
@@ -108,31 +125,31 @@
                     android:layout_height="wrap_content"
                     android:text="Department"
                     android:textSize="12sp"
-                    android:textColor="#757575"
-                    android:layout_marginBottom="4dp" />
+                    android:textColor="@color/colorPrimary"
+                    android:layout_marginBottom="4dp"/>
 
                 <Spinner
                     android:id="@+id/spinner_department"
                     android:layout_width="match_parent"
-                    android:layout_height="52dp"
-                    android:background="@drawable/spinner_background"
-                    android:layout_marginBottom="16dp" />
+                    android:layout_height="56dp"
+                    android:layout_marginBottom="12dp"
+                    android:background="@drawable/spinner_background" />
 
                 <!-- Year Spinner -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Year of Study"
+                    android:text="Year"
                     android:textSize="12sp"
-                    android:textColor="#757575"
-                    android:layout_marginBottom="4dp" />
+                    android:textColor="@color/colorPrimary"
+                    android:layout_marginBottom="4dp"/>
 
                 <Spinner
                     android:id="@+id/spinner_year"
                     android:layout_width="match_parent"
-                    android:layout_height="52dp"
-                    android:background="@drawable/spinner_background"
-                    android:layout_marginBottom="16dp" />
+                    android:layout_height="56dp"
+                    android:layout_marginBottom="24dp"
+                    android:background="@drawable/spinner_background" />
 
                 <!-- Password -->
                 <com.google.android.material.textfield.TextInputLayout
@@ -141,7 +158,9 @@
                     android:hint="Password"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     app:endIconMode="password_toggle"
-                    android:layout_marginBottom="16dp">
+                    android:layout_marginBottom="12dp"
+                    app:boxStrokeColor="@color/colorPrimary"
+                    app:hintTextColor="@color/colorPrimary">
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_password"
                         android:layout_width="match_parent"
@@ -157,7 +176,9 @@
                     android:hint="Confirm Password"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     app:endIconMode="password_toggle"
-                    android:layout_marginBottom="24dp">
+                    android:layout_marginBottom="24dp"
+                    app:boxStrokeColor="@color/colorPrimary"
+                    app:hintTextColor="@color/colorPrimary">
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_confirm_password"
                         android:layout_width="match_parent"
@@ -173,8 +194,8 @@
                     android:layout_height="56dp"
                     android:text="Create Account"
                     android:textSize="16sp"
-                    android:textColor="#FFFFFF"
-                    android:backgroundTint="#1A237E"
+                    android:textColor="@color/white"
+                    android:backgroundTint="@color/colorPrimary"
                     android:layout_marginBottom="16dp" />
 
                 <ProgressBar
@@ -194,14 +215,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Already have an account? "
-                        android:textColor="#757575"
+                        android:textColor="@color/text_secondary"
                         android:textSize="14sp" />
                     <TextView
                         android:id="@+id/tv_login"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Sign In"
-                        android:textColor="#1A237E"
+                        android:textColor="@color/colorPrimary"
                         android:textStyle="bold"
                         android:textSize="14sp" />
                 </LinearLayout>

@@ -34,6 +34,9 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        initViews();
+        setClickListeners();
+
         authRepository = new AuthRepository();
 
         // If already logged in, skip straight to MainActivity
@@ -62,9 +65,6 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
         }
-
-        initViews();
-        setClickListeners();
     }
 
     private void initViews() {
@@ -141,7 +141,9 @@ public class LoginActivity extends AppCompatActivity {
     // ─── UI Helpers ───────────────────────────────────────────────────────────
 
     private void showLoading(boolean show) {
-        progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
+        if (progressBar != null) {
+            progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
+        }
         if (btnLogin != null) btnLogin.setEnabled(!show);
     }
 

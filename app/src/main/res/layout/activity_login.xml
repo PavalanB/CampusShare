@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:background="#F5F7FA">
+    android:background="@color/backgroundColor">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,38 +13,43 @@
         android:gravity="center_horizontal"
         android:padding="32dp">
 
-        <!-- App logo / title area -->
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="32dp"
+            android:src="@drawable/ic_login_symbol"
+            app:tint="@color/colorPrimary" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="48dp"
+            android:layout_marginTop="16dp"
             android:text="CampusShare"
             android:textSize="32sp"
             android:textStyle="bold"
-            android:textColor="#1A237E" />
+            android:textColor="@color/colorPrimary" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:layout_marginBottom="40dp"
+            android:layout_marginBottom="32dp"
             android:text="Borrow · Share · Build Trust"
             android:textSize="14sp"
-            android:textColor="#757575" />
+            android:textColor="@color/text_secondary" />
 
-        <!-- Card container -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardCornerRadius="16dp"
-            app:cardElevation="4dp"
-            xmlns:app="http://schemas.android.com/apk/res-auto">
+            app:cardElevation="8dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="24dp">
+                android:padding="24dp"
+                android:background="@color/surfaceColor">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -51,16 +57,17 @@
                     android:text="Sign In"
                     android:textSize="22sp"
                     android:textStyle="bold"
-                    android:textColor="#212121"
+                    android:textColor="@color/black"
                     android:layout_marginBottom="20dp" />
 
-                <!-- Email -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="College Email"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_marginBottom="16dp">
+                    android:layout_marginBottom="16dp"
+                    app:boxStrokeColor="@color/colorPrimary"
+                    app:hintTextColor="@color/colorPrimary">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_email"
@@ -70,14 +77,15 @@
                         android:imeOptions="actionNext" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Password -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Password"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     app:endIconMode="password_toggle"
-                    android:layout_marginBottom="8dp">
+                    android:layout_marginBottom="8dp"
+                    app:boxStrokeColor="@color/colorPrimary"
+                    app:hintTextColor="@color/colorPrimary">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_password"
@@ -87,29 +95,26 @@
                         android:imeOptions="actionDone" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Forgot Password -->
                 <TextView
                     android:id="@+id/tv_forgot_password"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
                     android:text="Forgot Password?"
-                    android:textColor="#1A237E"
+                    android:textColor="@color/colorPrimary"
                     android:textSize="13sp"
                     android:layout_marginBottom="24dp" />
 
-                <!-- Login Button -->
                 <Button
                     android:id="@+id/btn_login"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
                     android:text="Sign In"
                     android:textSize="16sp"
-                    android:textColor="#FFFFFF"
-                    android:backgroundTint="#1A237E"
+                    android:textColor="@color/white"
+                    android:backgroundTint="@color/colorPrimary"
                     android:layout_marginBottom="16dp" />
 
-                <!-- Progress bar -->
                 <ProgressBar
                     android:id="@+id/progress_bar"
                     android:layout_width="wrap_content"
@@ -118,7 +123,6 @@
                     android:visibility="gone"
                     android:layout_marginBottom="8dp" />
 
-                <!-- Register link -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -129,7 +133,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Don't have an account? "
-                        android:textColor="#757575"
+                        android:textColor="@color/text_secondary"
                         android:textSize="14sp" />
 
                     <TextView
@@ -137,7 +141,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Register"
-                        android:textColor="#1A237E"
+                        android:textColor="@color/colorPrimary"
                         android:textStyle="bold"
                         android:textSize="14sp" />
                 </LinearLayout>
