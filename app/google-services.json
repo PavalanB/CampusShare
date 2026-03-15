@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "943580098339",
+    "project_id": "toolshare-ec4cc",
+    "storage_bucket": "toolshare-ec4cc.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:943580098339:android:4f3ef9d3d47ef83d64a696",
+        "android_client_info": {
+          "package_name": "com.campusshare"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "943580098339-25meomgkvn0ct43j41t1lkpq93cu367h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRq9f-r5c-Q5o4umENplOEP7vH2jAcV6g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "943580098339-25meomgkvn0ct43j41t1lkpq93cu367h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

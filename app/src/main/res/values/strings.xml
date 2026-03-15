@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CampusShare</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="submit">Submit</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="full_name">Full Name</string>
+    <string name="college_id">College ID</string>
+    <string name="department">Department</string>
+    <string name="year">Year</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="add_resource">Add Resource</string>
+    <string name="edit_resource">Edit Resource</string>
+    <string name="resource_name">Resource Name</string>
+    <string name="description">Description</string>
+    <string name="category">Category</string>
+    <string name="availability">Availability</string>
+    <string name="my_listings">My Listings</string>
+    <string name="browse">Browse</string>
+    <string name="profile">Profile</string>
+    <string name="request_to_borrow">Request to Borrow</string>
+    <string name="logout">Logout</string>
+</resources>

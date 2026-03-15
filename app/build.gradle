@@ -1,0 +1,58 @@
+// app/build.gradle
+// CampusShare - Authentication Module
+// Make sure your project-level build.gradle has the Google Services classpath
+
+plugins {
+    id 'com.android.application'
+    id 'com.google.gms.google-services'  // Firebase plugin
+}
+
+android {
+    namespace 'com.campusshare'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.campusshare"
+        minSdk 24
+        targetSdk 34
+        versionCode 1
+        versionName "1.0"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.11.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.cardview:cardview:1.0.0'
+
+    // Firebase BOM — manages all Firebase versions consistently
+    implementation platform('com.google.firebase:firebase-bom:32.7.0')
+
+    // Firebase Authentication
+    implementation 'com.google.firebase:firebase-auth'
+
+    // Cloud Firestore
+    implementation 'com.google.firebase:firebase-firestore'
+
+    // Firebase Storage (for resource photos — Phase 2)
+    implementation 'com.google.firebase:firebase-storage'
+
+    // Firebase Cloud Messaging (for notifications — Phase 6)
+    implementation 'com.google.firebase:firebase-messaging'
+
+    // Glide for loading profile images (Phase 2+)
+    implementation 'com.github.bumptech.glide:glide:4.16.0'
+}

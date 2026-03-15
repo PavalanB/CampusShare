@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <!-- Required for camera hardware declaration -->
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+
+    <!-- Permissions for storage access (Photos) -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <!-- Recommended for Android 14+ partial access -->
+    <uses-permission android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="CampusShare"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.MaterialComponents.Light.NoActionBar">
+
+        <!-- Phase 1 - Auth -->
+        <activity
+            android:name=".activities.LoginActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activities.RegisterActivity"       android:exported="false" />
+        <activity android:name=".activities.ForgotPasswordActivity" android:exported="false" />
+
+        <!-- Phase 1+2 - Main + Resources -->
+        <activity android:name=".activities.MainActivity"           android:exported="false" />
+        <activity android:name=".activities.AddResourceActivity"    android:exported="false" />
+        <activity android:name=".activities.ResourceDetailActivity" android:exported="false" />
+        <activity android:name=".activities.ProfileActivity"        android:exported="false" />
+
+    </application>
+
+</manifest>
