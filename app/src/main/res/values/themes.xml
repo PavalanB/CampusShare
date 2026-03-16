@@ -1,9 +1,15 @@
+<<<<<<< HEAD
 <resources xmlns:tools="http://schemas.android.com/tools">
+=======
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
     <!-- Base application theme. -->
     <style name="Theme.CampusShare" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryVariant">@color/colorPrimaryDark</item>
+<<<<<<< HEAD
         <item name="colorOnPrimary">@color/surfaceColor</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/colorAccent</item>
@@ -25,5 +31,14 @@
         <item name="cornerRadius">8dp</item>
         <item name="android:insetTop">0dp</item>
         <item name="android:insetBottom">0dp</item>
+=======
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/colorAccent</item>
+        <item name="colorSecondaryVariant">@color/colorAccent</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
     </style>
 </resources>

@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+<<<<<<< HEAD
     android:background="@color/backgroundColor">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -45,6 +46,22 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
+=======
+    android:background="#F5F7FA">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="#1A237E"
+            android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <ScrollView
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -52,6 +69,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+<<<<<<< HEAD
             android:orientation="vertical"
             android:padding="16dp">
 
@@ -61,6 +79,25 @@
                 app:cardCornerRadius="16dp"
                 app:cardElevation="2dp"
                 app:strokeWidth="0dp">
+=======
+            android:orientation="vertical">
+
+            <!-- Full-width photo -->
+            <ImageView
+                android:id="@+id/iv_detail_photo"
+                android:layout_width="match_parent"
+                android:layout_height="260dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_resource_placeholder" />
+
+            <!-- Details card -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="3dp">
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -68,11 +105,20 @@
                     android:orientation="vertical"
                     android:padding="20dp">
 
+<<<<<<< HEAD
+=======
+                    <!-- Name + Availability -->
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
+<<<<<<< HEAD
                         android:gravity="center_vertical">
+=======
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="12dp">
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
 
                         <TextView
                             android:id="@+id/tv_detail_name"
@@ -80,27 +126,47 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Resource Name"
+<<<<<<< HEAD
                             android:textSize="24sp"
                             android:textStyle="bold"
                             android:textColor="@color/textPrimary" />
+=======
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:textColor="#212121" />
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
 
                         <TextView
                             android:id="@+id/tv_detail_availability"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+<<<<<<< HEAD
                             android:paddingHorizontal="12dp"
                             android:paddingVertical="6dp"
                             android:text="Available"
                             android:textSize="12sp"
                             android:textStyle="bold"
+=======
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
+                            android:text="Available"
+                            android:textSize="12sp"
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
                             android:textColor="#FFFFFF"
                             android:background="@drawable/badge_available" />
                     </LinearLayout>
 
+<<<<<<< HEAD
+=======
+                    <!-- Category chip -->
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chip_detail_category"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+<<<<<<< HEAD
                         android:layout_marginTop="8dp"
                         android:text="Category"
                         app:chipBackgroundColor="#E8EAF6"
@@ -164,22 +230,59 @@
                                 android:textColor="@color/textSecondary" />
                         </LinearLayout>
                     </LinearLayout>
+=======
+                        android:text="Category"
+                        app:chipBackgroundColor="#E8EAF6"
+                        android:layout_marginBottom="16dp" />
+
+                    <!-- Divider -->
+                    <View android:layout_width="match_parent" android:layout_height="1dp"
+                        android:background="#EEEEEE" android:layout_marginBottom="16dp" />
+
+                    <!-- Owner info -->
+                    <TextView
+                        android:id="@+id/tv_detail_owner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Owner: Name"
+                        android:textSize="15sp"
+                        android:textColor="#424242"
+                        android:layout_marginBottom="6dp" />
+
+                    <TextView
+                        android:id="@+id/tv_detail_department"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Department"
+                        android:textSize="14sp"
+                        android:textColor="#757575"
+                        android:layout_marginBottom="6dp" />
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
 
                     <TextView
                         android:id="@+id/tv_detail_condition"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Condition: Good"
+<<<<<<< HEAD
                         android:textSize="15sp"
                         android:textColor="@color/textPrimary"
                         android:layout_marginBottom="20dp" />
 
+=======
+                        android:textSize="14sp"
+                        android:textColor="#757575"
+                        android:layout_marginBottom="16dp" />
+
+                    <!-- Description -->
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Description"
                         android:textSize="14sp"
                         android:textStyle="bold"
+<<<<<<< HEAD
                         android:textColor="@color/colorPrimary"
                         android:textAllCaps="true"
                         android:layout_marginBottom="8dp" />
@@ -195,11 +298,29 @@
                         android:layout_marginBottom="24dp" />
 
                     <com.google.android.material.button.MaterialButton
+=======
+                        android:textColor="#424242"
+                        android:layout_marginBottom="6dp" />
+
+                    <TextView
+                        android:id="@+id/tv_detail_description"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textSize="14sp"
+                        android:textColor="#616161"
+                        android:lineSpacingMultiplier="1.4"
+                        android:layout_marginBottom="24dp" />
+
+                    <!-- Borrow button -->
+                    <Button
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
                         android:id="@+id/btn_borrow"
                         android:layout_width="match_parent"
                         android:layout_height="56dp"
                         android:text="Request to Borrow"
                         android:textSize="16sp"
+<<<<<<< HEAD
                         android:textAllCaps="false"
                         app:cornerRadius="12dp"
                         android:backgroundTint="@color/colorPrimary" />
@@ -211,4 +332,15 @@
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
+=======
+                        android:textColor="#FFFFFF"
+                        android:backgroundTint="#1A237E" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <View android:layout_width="match_parent" android:layout_height="16dp" />
+        </LinearLayout>
+    </ScrollView>
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

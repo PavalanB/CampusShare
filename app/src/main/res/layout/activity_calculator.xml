@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:gravity="center_horizontal">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Credit Estimator"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="24dp"
+        android:textColor="@color/black"/>
+
+    <EditText
+        android:id="@+id/et_original_price"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Original Price (₹)"
+        android:inputType="numberDecimal"
+        android:layout_marginBottom="12dp"/>
+
+    <EditText
+        android:id="@+id/et_age_months"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Age (in months)"
+        android:inputType="number"
+        android:layout_marginBottom="12dp"/>
+
+    <Button
+        android:id="@+id/btn_calculate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Calculate Credits"
+        android:layout_marginTop="16dp"/>
+
+    <TextView
+        android:id="@+id/tv_result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Credits: 0"
+        android:textSize="20sp"
+        android:textColor="@color/purple_700"/>
+
+</LinearLayout>

@@ -34,6 +34,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+<<<<<<< HEAD
         authRepository = new AuthRepository();
 
         // If already logged in, skip straight to MainActivity
@@ -44,6 +45,39 @@ public class LoginActivity extends AppCompatActivity {
 
         initViews();
         setClickListeners();
+=======
+        initViews();
+        setClickListeners();
+
+        authRepository = new AuthRepository();
+
+        // If already logged in, skip straight to MainActivity
+        FirebaseUser fbUser = authRepository.getCurrentUser();
+        if (fbUser != null) {
+            // Check if we have the user profile in SessionManager
+            if (SessionManager.getUser(this) != null) {
+                goToMain();
+                return;
+            } else {
+                // Firebase is logged in but SessionManager is empty (e.g. data cleared)
+                // Re-fetch profile to restore session
+                showLoading(true);
+                authRepository.fetchUserProfile(fbUser.getUid(), new AuthRepository.UserProfileCallback() {
+                    @Override
+                    public void onSuccess(User user) {
+                        SessionManager.saveUser(LoginActivity.this, user);
+                        goToMain();
+                    }
+                    @Override
+                    public void onFailure(String errorMessage) {
+                        authRepository.logout();
+                        showLoading(false);
+                    }
+                });
+                return;
+            }
+        }
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
     }
 
     private void initViews() {
@@ -120,8 +154,15 @@ public class LoginActivity extends AppCompatActivity {
     // ─── UI Helpers ───────────────────────────────────────────────────────────
 
     private void showLoading(boolean show) {
+<<<<<<< HEAD
         progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
         btnLogin.setEnabled(!show);
+=======
+        if (progressBar != null) {
+            progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
+        }
+        if (btnLogin != null) btnLogin.setEnabled(!show);
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
     }
 
     private void goToMain() {

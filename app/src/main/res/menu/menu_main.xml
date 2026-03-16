@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<<<<<<< HEAD
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
@@ -6,4 +7,11 @@
         android:title="Logout"
         android:orderInCategory="100"
         app:showAsAction="never" />
+=======
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_logout"
+        android:title="Logout"
+        android:orderInCategory="100" />
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
 </menu>

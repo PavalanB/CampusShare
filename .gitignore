@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Logs
 logs
 *.log
@@ -67,3 +68,22 @@ node_modules/
 
 # dataconnect generated files
 .dataconnect
+=======
+gitignore
+*.iml
+.gradle
+/local.properties
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
+.DS_Store
+/build
+/app/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3

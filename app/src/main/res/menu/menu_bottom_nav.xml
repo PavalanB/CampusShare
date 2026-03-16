@@ -2,6 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/nav_browse"
+<<<<<<< HEAD
         android:icon="@android:drawable/ic_menu_sort_by_size"
         android:title="Browse" />
     <item
@@ -16,6 +17,14 @@
         android:id="@+id/nav_inbox"
         android:icon="@android:drawable/ic_dialog_email"
         android:title="Inbox" />
+=======
+        android:icon="@android:drawable/ic_menu_search"
+        android:title="Browse" />
+    <item
+        android:id="@+id/nav_my_listings"
+        android:icon="@android:drawable/ic_menu_add"
+        android:title="My Listings" />
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
     <item
         android:id="@+id/nav_profile"
         android:icon="@android:drawable/ic_menu_myplaces"
