@@ -1,0 +1,134 @@
+package com.campusshare.activities;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.campusshare.R;
+import com.campusshare.models.User;
+import com.campusshare.repositories.AuthRepository;
+import com.campusshare.utils.SessionManager;
+import com.google.firebase.auth.FirebaseUser;
+
+public class LoginActivity extends AppCompatActivity {
+
+    // UI elements
+    private EditText etEmail, etPassword;
+    private Button btnLogin;
+    private TextView tvRegister, tvForgotPassword;
+    private ProgressBar progressBar;
+
+    // Repository handles all Firebase calls
+    private AuthRepository authRepository;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
+
+        authRepository = new AuthRepository();
+
+        // If already logged in, skip straight to MainActivity
+        if (authRepository.getCurrentUser() != null) {
+            goToMain();
+            return;
+        }
+
+        initViews();
+        setClickListeners();
+    }
+
+    private void initViews() {
+        etEmail = findViewById(R.id.et_email);
+        etPassword = findViewById(R.id.et_password);
+        btnLogin = findViewById(R.id.btn_login);
+        tvRegister = findViewById(R.id.tv_register);
+        tvForgotPassword = findViewById(R.id.tv_forgot_password);
+        progressBar = findViewById(R.id.progress_bar);
+    }
+
+    private void setClickListeners() {
+
+        btnLogin.setOnClickListener(v -> {
+            String email = etEmail.getText().toString().trim();
+            String password = etPassword.getText().toString().trim();
+
+            if (!validateInputs(email, password)) return;
+
+            showLoading(true);
+
+            authRepository.login(email, password, new AuthRepository.UserProfileCallback() {
+                @Override
+                public void onSuccess(User user) {
+                    showLoading(false);
+                    // Save user session locally
+                    SessionManager.saveUser(LoginActivity.this, user);
+                    goToMain();
+                }
+
+                @Override
+                public void onFailure(String errorMessage) {
+                    showLoading(false);
+                    Toast.makeText(LoginActivity.this, errorMessage, Toast.LENGTH_LONG).show();
+                }
+            });
+        });
+
+        tvRegister.setOnClickListener(v ->
+            startActivity(new Intent(this, RegisterActivity.class))
+        );
+
+        tvForgotPassword.setOnClickListener(v ->
+            startActivity(new Intent(this, ForgotPasswordActivity.class))
+        );
+    }
+
+    // ─── Validation ───────────────────────────────────────────────────────────
+
+    private boolean validateInputs(String email, String password) {
+        if (TextUtils.isEmpty(email)) {
+            etEmail.setError("Email is required");
+            etEmail.requestFocus();
+            return false;
+        }
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            etEmail.setError("Enter a valid email");
+            etEmail.requestFocus();
+            return false;
+        }
+        if (TextUtils.isEmpty(password)) {
+            etPassword.setError("Password is required");
+            etPassword.requestFocus();
+            return false;
+        }
+        if (password.length() < 6) {
+            etPassword.setError("Password must be at least 6 characters");
+            etPassword.requestFocus();
+            return false;
+        }
+        return true;
+    }
+
+    // ─── UI Helpers ───────────────────────────────────────────────────────────
+
+    private void showLoading(boolean show) {
+        progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
+        btnLogin.setEnabled(!show);
+    }
+
+    private void goToMain() {
+        Intent intent = new Intent(this, MainActivity.class);
+        // Clear back stack so pressing back doesn't return to login
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+    }
+}
