@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base application theme for Night/Dark mode. -->
+    <style name="Theme.CampusShare" parent="Theme.MaterialComponents.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/nfs_purple_glow</item>
+        <item name="colorPrimaryVariant">@color/nfs_bg_dark</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/nfs_blue_accent</item>
+        <item name="colorSecondaryVariant">@color/nfs_blue_accent</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">@color/nfs_bg_dark</item>
+
+        <!-- Customize your theme here. -->
+        <item name="android:windowBackground">@color/nfs_bg</item>
+    </style>
+</resources>

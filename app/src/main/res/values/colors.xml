@@ -19,4 +19,21 @@
     <color name="success_green">#4CAF50</color>
     <color name="error_red">#F44336</color>
     <color name="text_secondary">#757575</color>
+
+    <!-- Custom Colors -->
+    <color name="pink_design">#FF69B4</color>
+    <color name="sky_blue">#87CEEB</color>
+
+    <!-- Dynamic Theme Colors - DEFAULT (DAY) -->
+    <color name="nfs_bg">#FFFFFF</color>
+    <color name="nfs_card_bg">#F2F2F2</color> <!-- Light grey for cards -->
+    <color name="nfs_text_primary">#050112</color>
+    <color name="nfs_text_secondary">#80050112</color>
+    <color name="nfs_divider">#20000000</color>
+
+    <!-- Constant Neon Accents -->
+    <color name="nfs_bg_dark">#050112</color>
+    <color name="nfs_bg_dark_fixed">#050112</color>
+    <color name="nfs_purple_glow">#9D00FF</color>
+    <color name="nfs_blue_accent">#00D4FF</color>
 </resources>

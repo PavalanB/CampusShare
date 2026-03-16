@@ -3,7 +3,10 @@ package com.campusshare.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -11,15 +14,18 @@ import androidx.appcompat.widget.Toolbar;
 import com.campusshare.R;
 import com.campusshare.models.User;
 import com.campusshare.repositories.AuthRepository;
-import com.campusshare.repositories.ResourceRepository;
 import com.campusshare.utils.SessionManager;
 
 public class ProfileActivity extends AppCompatActivity {
+
+    private AuthRepository authRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
+        authRepository = new AuthRepository();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -31,6 +37,11 @@ public class ProfileActivity extends AppCompatActivity {
         User user = SessionManager.getUser(this);
         if (user == null) { finish(); return; }
 
+        initViews(user);
+        setClickListeners();
+    }
+
+    private void initViews(User user) {
         // Initials avatar
         TextView tvInitials = findViewById(R.id.tv_initials);
         String[] parts = user.getName().split(" ");
@@ -48,6 +59,42 @@ public class ProfileActivity extends AppCompatActivity {
         ((TextView) findViewById(R.id.tv_avg_rating)).setText(
             user.getAvgRating() == 0 ? "No ratings yet" : user.getAvgRating() + " / 5.0"
         );
+    }
+
+    private void setClickListeners() {
+        // Tools/Quick Actions
+        View rlMyListings = findViewById(R.id.rl_my_listings);
+        if (rlMyListings != null) {
+            rlMyListings.setOnClickListener(v -> {
+                // Since My Listings is a state in MainActivity, we return there and tell it to switch
+                Intent intent = new Intent(this, MainActivity.class);
+                intent.putExtra("navigate_to", "my_listings");
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                finish();
+            });
+        }
+
+        View rlBorrowHistory = findViewById(R.id.rl_borrow_history);
+        if (rlBorrowHistory != null) {
+            rlBorrowHistory.setOnClickListener(v -> {
+                Toast.makeText(this, "Borrowing History coming in Phase 3!", Toast.LENGTH_SHORT).show();
+            });
+        }
+
+        Button btnLogout = findViewById(R.id.btn_logout);
+        if (btnLogout != null) {
+            btnLogout.setOnClickListener(v -> performLogout());
+        }
+    }
+
+    private void performLogout() {
+        authRepository.logout();
+        SessionManager.clearSession(this);
+        Intent i = new Intent(this, LoginActivity.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(i);
+        finish();
     }
 
     @Override

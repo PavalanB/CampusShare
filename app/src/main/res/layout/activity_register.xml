@@ -4,70 +4,131 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:background="@color/backgroundColor">
+    android:background="@drawable/login_background">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <!-- Background Accent -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="220dp"
-            android:background="@color/colorPrimary" />
+        <!-- DECORATIVE ELEMENTS -->
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="-15dp"
+            android:layout_marginTop="10dp"
+            android:alpha="0.3"
+            android:rotation="-20"
+            android:src="@android:drawable/ic_menu_agenda"
+            app:tint="@color/nfs_purple_glow" />
+
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="-10dp"
+            android:layout_marginTop="80dp"
+            android:alpha="0.3"
+            android:rotation="15"
+            android:src="@android:drawable/ic_menu_slideshow"
+            app:tint="@color/nfs_blue_accent" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center_horizontal"
-            android:padding="24dp">
+            android:padding="20dp">
 
+            <!-- Profile Picture / Logo at Top -->
             <androidx.cardview.widget.CardView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_marginTop="32dp"
-                app:cardCornerRadius="40dp"
-                app:cardElevation="8dp">
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_marginTop="15dp"
+                app:cardCornerRadius="35dp"
+                app:cardElevation="10dp"
+                app:cardBackgroundColor="@color/nfs_bg_dark_fixed">
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:padding="16dp"
-                    android:src="@drawable/ic_register_symbol"
-                    app:tint="@color/colorPrimary" />
+                    android:padding="14dp"
+                    android:src="@drawable/ic_login_symbol"
+                    android:scaleType="centerInside"
+                    app:tint="@color/white" />
             </androidx.cardview.widget.CardView>
 
-            <TextView
+            <!-- App Name Header -->
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Join CampusShare"
-                android:textSize="26sp"
-                android:textStyle="bold"
-                android:textColor="@color/white" />
+                android:layout_marginTop="5dp"
+                android:clipChildren="false"
+                android:clipToPadding="false">
+                <TextView
+                    android:id="@+id/tv_app_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="CAMPUS"
+                    android:textSize="32sp"
+                    android:fontFamily="sans-serif-black"
+                    android:textStyle="bold|italic"
+                    android:textColor="@color/nfs_text_primary"
+                    android:letterSpacing="-0.05"
+                    android:paddingEnd="6dp"
+                    android:shadowColor="@color/nfs_blue_accent"
+                    android:shadowDx="4"
+                    android:shadowDy="4"
+                    android:shadowRadius="10" />
+                <TextView
+                    android:id="@+id/tv_app_name_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_app_name"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="-20dp"
+                    android:rotation="-5"
+                    android:text="Share"
+                    android:textSize="40sp"
+                    android:fontFamily="cursive"
+                    android:textStyle="bold|italic"
+                    android:textColor="@color/nfs_text_primary"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:paddingBottom="5dp"
+                    android:shadowColor="@color/nfs_purple_glow"
+                    android:shadowDx="4"
+                    android:shadowDy="4"
+                    android:shadowRadius="15" />
+            </RelativeLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Connect with your campus community"
-                android:textSize="14sp"
-                android:textColor="#E0E0E0"
-                android:layout_marginBottom="32dp" />
-
+            <!-- Register Card -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="12dp">
+                app:cardCornerRadius="28dp"
+                app:cardElevation="15dp"
+                app:cardBackgroundColor="@color/nfs_card_bg"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="20dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="24dp"
-                    android:background="@color/surfaceColor">
+                    android:padding="24dp">
 
-                    <!-- Full Name -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Join Community"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/nfs_text_primary"
+                        android:layout_marginBottom="16dp" />
+
+                    <!-- Name -->
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -75,12 +136,19 @@
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_marginBottom="12dp"
                         app:startIconDrawable="@android:drawable/ic_menu_edit"
-                        app:boxStrokeColor="@color/colorPrimary"
-                        app:hintTextColor="@color/colorPrimary">
+                        app:startIconTint="@color/nfs_blue_accent"
+                        app:boxStrokeColor="@color/nfs_blue_accent"
+                        app:hintTextColor="@color/nfs_blue_accent"
+                        android:textColorHint="@color/nfs_text_secondary"
+                        app:boxCornerRadiusTopStart="12dp"
+                        app:boxCornerRadiusTopEnd="12dp"
+                        app:boxCornerRadiusBottomStart="12dp"
+                        app:boxCornerRadiusBottomEnd="12dp">
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:textColor="@color/nfs_text_primary"
                             android:inputType="textPersonName" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -92,13 +160,20 @@
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_marginBottom="12dp"
                         app:startIconDrawable="@android:drawable/ic_menu_info_details"
-                        app:boxStrokeColor="@color/colorPrimary"
-                        app:hintTextColor="@color/colorPrimary">
+                        app:startIconTint="@color/nfs_purple_glow"
+                        app:boxStrokeColor="@color/nfs_purple_glow"
+                        app:hintTextColor="@color/nfs_purple_glow"
+                        android:textColorHint="@color/nfs_text_secondary"
+                        app:boxCornerRadiusTopStart="12dp"
+                        app:boxCornerRadiusTopEnd="12dp"
+                        app:boxCornerRadiusBottomStart="12dp"
+                        app:boxCornerRadiusBottomEnd="12dp">
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_college_id"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="textCapCharacters" />
+                            android:textColor="@color/nfs_text_primary"
+                            android:inputType="text" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <!-- Email -->
@@ -109,12 +184,19 @@
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_marginBottom="12dp"
                         app:startIconDrawable="@android:drawable/ic_dialog_email"
-                        app:boxStrokeColor="@color/colorPrimary"
-                        app:hintTextColor="@color/colorPrimary">
+                        app:startIconTint="@color/nfs_blue_accent"
+                        app:boxStrokeColor="@color/nfs_blue_accent"
+                        app:hintTextColor="@color/nfs_blue_accent"
+                        android:textColorHint="@color/nfs_text_secondary"
+                        app:boxCornerRadiusTopStart="12dp"
+                        app:boxCornerRadiusTopEnd="12dp"
+                        app:boxCornerRadiusBottomStart="12dp"
+                        app:boxCornerRadiusBottomEnd="12dp">
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_email"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:textColor="@color/nfs_text_primary"
                             android:inputType="textEmailAddress" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -126,63 +208,42 @@
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_marginBottom="12dp"
                         app:startIconDrawable="@android:drawable/ic_menu_call"
-                        app:boxStrokeColor="@color/colorPrimary"
-                        app:hintTextColor="@color/colorPrimary">
+                        app:startIconTint="@color/nfs_purple_glow"
+                        app:boxStrokeColor="@color/nfs_purple_glow"
+                        app:hintTextColor="@color/nfs_purple_glow"
+                        android:textColorHint="@color/nfs_text_secondary"
+                        app:boxCornerRadiusTopStart="12dp"
+                        app:boxCornerRadiusTopEnd="12dp"
+                        app:boxCornerRadiusBottomStart="12dp"
+                        app:boxCornerRadiusBottomEnd="12dp">
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_phone"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:textColor="@color/nfs_text_primary"
                             android:inputType="phone" />
                     </com.google.android.material.textfield.TextInputLayout>
 
+                    <!-- Department & Year -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:baselineAligned="false"
                         android:layout_marginBottom="12dp">
-
-                        <!-- Department Spinner -->
-                        <LinearLayout
+                        <Spinner
+                            android:id="@+id/spinner_department"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="50dp"
                             android:layout_weight="1"
-                            android:orientation="vertical"
-                            android:layout_marginEnd="4dp">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Department"
-                                android:textSize="12sp"
-                                android:textColor="@color/colorPrimary"
-                                android:layout_marginBottom="4dp"/>
-                            <Spinner
-                                android:id="@+id/spinner_department"
-                                android:layout_width="match_parent"
-                                android:layout_height="48dp"
-                                android:background="@drawable/spinner_background" />
-                        </LinearLayout>
-
-                        <!-- Year Spinner -->
-                        <LinearLayout
+                            android:background="@android:drawable/btn_dropdown"
+                            android:spinnerMode="dropdown" />
+                        <Spinner
+                            android:id="@+id/spinner_year"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="50dp"
                             android:layout_weight="1"
-                            android:orientation="vertical"
-                            android:layout_marginStart="4dp">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Year"
-                                android:textSize="12sp"
-                                android:textColor="@color/colorPrimary"
-                                android:layout_marginBottom="4dp"/>
-                            <Spinner
-                                android:id="@+id/spinner_year"
-                                android:layout_width="match_parent"
-                                android:layout_height="48dp"
-                                android:background="@drawable/spinner_background" />
-                        </LinearLayout>
+                            android:background="@android:drawable/btn_dropdown"
+                            android:spinnerMode="dropdown" />
                     </LinearLayout>
 
                     <!-- Password -->
@@ -192,14 +253,22 @@
                         android:hint="Password"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         app:endIconMode="password_toggle"
+                        app:endIconTint="@color/nfs_text_secondary"
                         android:layout_marginBottom="12dp"
                         app:startIconDrawable="@android:drawable/ic_lock_idle_lock"
-                        app:boxStrokeColor="@color/colorPrimary"
-                        app:hintTextColor="@color/colorPrimary">
+                        app:startIconTint="@color/nfs_blue_accent"
+                        app:boxStrokeColor="@color/nfs_blue_accent"
+                        app:hintTextColor="@color/nfs_blue_accent"
+                        android:textColorHint="@color/nfs_text_secondary"
+                        app:boxCornerRadiusTopStart="12dp"
+                        app:boxCornerRadiusTopEnd="12dp"
+                        app:boxCornerRadiusBottomStart="12dp"
+                        app:boxCornerRadiusBottomEnd="12dp">
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_password"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:textColor="@color/nfs_text_primary"
                             android:inputType="textPassword" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -210,14 +279,22 @@
                         android:hint="Confirm Password"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         app:endIconMode="password_toggle"
+                        app:endIconTint="@color/nfs_text_secondary"
                         android:layout_marginBottom="24dp"
                         app:startIconDrawable="@android:drawable/ic_lock_idle_lock"
-                        app:boxStrokeColor="@color/colorPrimary"
-                        app:hintTextColor="@color/colorPrimary">
+                        app:startIconTint="@color/nfs_purple_glow"
+                        app:boxStrokeColor="@color/nfs_purple_glow"
+                        app:hintTextColor="@color/nfs_purple_glow"
+                        android:textColorHint="@color/nfs_text_secondary"
+                        app:boxCornerRadiusTopStart="12dp"
+                        app:boxCornerRadiusTopEnd="12dp"
+                        app:boxCornerRadiusBottomStart="12dp"
+                        app:boxCornerRadiusBottomEnd="12dp">
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_confirm_password"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:textColor="@color/nfs_text_primary"
                             android:inputType="textPassword" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -230,16 +307,19 @@
                         android:textStyle="bold"
                         android:textSize="16sp"
                         android:textColor="@color/white"
-                        android:backgroundTint="@color/colorPrimary"
-                        app:cornerRadius="28dp" />
+                        android:backgroundTint="@color/nfs_purple_glow"
+                        app:cornerRadius="15dp"
+                        android:elevation="10dp" />
 
+                    <!-- Progress Bar -->
                     <ProgressBar
                         android:id="@+id/progress_bar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:layout_marginTop="16dp"
                         android:visibility="gone"
-                        android:layout_marginTop="16dp" />
+                        android:indeterminateTint="@color/nfs_purple_glow" />
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -248,21 +328,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:layout_marginTop="24dp"
                 android:layout_marginBottom="32dp"
                 android:orientation="horizontal">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Already have an account? "
-                    android:textColor="@color/text_secondary"
+                    android:textColor="@color/nfs_text_secondary"
                     android:textSize="15sp" />
                 <TextView
                     android:id="@+id/tv_login"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Sign In"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="@color/nfs_blue_accent"
                     android:textStyle="bold"
                     android:textSize="15sp" />
             </LinearLayout>

@@ -3,16 +3,12 @@ package com.campusshare.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import androidx.appcompat.app.AppCompatDelegate;
+
 import com.campusshare.models.User;
 
 /**
- * SessionManager stores the logged-in user's basic info in SharedPreferences
- * so the app doesn't need to fetch Firestore on every screen load.
- *
- * Usage:
- *   SessionManager.saveUser(context, user);      // after login/register
- *   User user = SessionManager.getUser(context); // anywhere in the app
- *   SessionManager.clearSession(context);        // on logout
+ * SessionManager stores the logged-in user's basic info and theme preferences.
  */
 public class SessionManager {
 
@@ -26,6 +22,7 @@ public class SessionManager {
     private static final String KEY_COLLEGE_ID = "collegeID";
     private static final String KEY_CREDIT_SCORE = "creditScore";
     private static final String KEY_AVG_RATING = "avgRating";
+    private static final String KEY_THEME_MODE = "themeMode";
 
     public static void saveUser(Context context, User user) {
         SharedPreferences.Editor editor = context
@@ -76,5 +73,20 @@ public class SessionManager {
     public static void clearSession(Context context) {
         context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
             .edit().clear().apply();
+    }
+
+    public static void setThemeMode(Context context, int mode) {
+        context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+            .edit().putInt(KEY_THEME_MODE, mode).apply();
+        AppCompatDelegate.setDefaultNightMode(mode);
+    }
+
+    public static int getThemeMode(Context context) {
+        return context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+            .getInt(KEY_THEME_MODE, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+    }
+
+    public static void applyTheme(Context context) {
+        AppCompatDelegate.setDefaultNightMode(getThemeMode(context));
     }
 }

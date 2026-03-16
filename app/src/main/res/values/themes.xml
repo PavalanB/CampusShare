@@ -13,4 +13,10 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
     </style>
+
+    <style name="SearchViewTheme" parent="Widget.AppCompat.SearchView">
+        <item name="android:textColorPrimary">@color/nfs_text_primary</item>
+        <item name="android:textColorHint">@color/nfs_text_secondary</item>
+        <item name="android:editTextColor">@color/nfs_text_primary</item>
+    </style>
 </resources>

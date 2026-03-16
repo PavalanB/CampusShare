@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dynamic Theme Colors - NIGHT -->
+    <color name="nfs_bg">#050112</color>
+    <color name="nfs_card_bg">#CC1A1A1A</color>
+    <color name="nfs_text_primary">#FFFFFF</color>
+    <color name="nfs_text_secondary">#B0FFFFFF</color>
+    <color name="nfs_divider">#40FFFFFF</color>
+</resources>

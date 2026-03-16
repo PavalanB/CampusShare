@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Base background - Dynamic -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/nfs_bg" />
+        </shape>
+    </item>
+
+    <!-- Purple Glow Streak -->
+    <item android:top="150dp" android:bottom="150dp">
+        <shape android:shape="rectangle">
+            <gradient
+                android:startColor="#009D00FF"
+                android:centerColor="#409D00FF"
+                android:endColor="#009D00FF"
+                android:angle="0" />
+        </shape>
+    </item>
+
+    <!-- Blue light streak -->
+    <item android:top="100dp" android:bottom="400dp">
+        <shape android:shape="rectangle">
+            <gradient
+                android:startColor="#0000D4FF"
+                android:centerColor="#3000D4FF"
+                android:endColor="#0000D4FF"
+                android:angle="0" />
+        </shape>
+    </item>
+</layer-list>

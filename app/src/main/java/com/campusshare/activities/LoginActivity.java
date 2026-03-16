@@ -31,6 +31,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SessionManager.applyTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
@@ -53,6 +54,7 @@ public class LoginActivity extends AppCompatActivity {
                 authRepository.fetchUserProfile(fbUser.getUid(), new AuthRepository.UserProfileCallback() {
                     @Override
                     public void onSuccess(User user) {
+                        showLoading(false);
                         SessionManager.saveUser(LoginActivity.this, user);
                         goToMain();
                     }
@@ -71,6 +73,7 @@ public class LoginActivity extends AppCompatActivity {
         etEmail = findViewById(R.id.et_email);
         etPassword = findViewById(R.id.et_password);
         btnLogin = findViewById(R.id.btn_login);
+        
         tvRegister = findViewById(R.id.tv_register);
         tvForgotPassword = findViewById(R.id.tv_forgot_password);
         progressBar = findViewById(R.id.progress_bar);
@@ -78,38 +81,44 @@ public class LoginActivity extends AppCompatActivity {
 
     private void setClickListeners() {
 
-        btnLogin.setOnClickListener(v -> {
-            String email = etEmail.getText().toString().trim();
-            String password = etPassword.getText().toString().trim();
+        if (btnLogin != null) {
+            btnLogin.setOnClickListener(v -> {
+                String email = etEmail.getText().toString().trim();
+                String password = etPassword.getText().toString().trim();
 
-            if (!validateInputs(email, password)) return;
+                if (!validateInputs(email, password)) return;
 
-            showLoading(true);
+                showLoading(true);
 
-            authRepository.login(email, password, new AuthRepository.UserProfileCallback() {
-                @Override
-                public void onSuccess(User user) {
-                    showLoading(false);
-                    // Save user session locally
-                    SessionManager.saveUser(LoginActivity.this, user);
-                    goToMain();
-                }
+                authRepository.login(email, password, new AuthRepository.UserProfileCallback() {
+                    @Override
+                    public void onSuccess(User user) {
+                        showLoading(false);
+                        // Save user session locally
+                        SessionManager.saveUser(LoginActivity.this, user);
+                        goToMain();
+                    }
 
-                @Override
-                public void onFailure(String errorMessage) {
-                    showLoading(false);
-                    Toast.makeText(LoginActivity.this, errorMessage, Toast.LENGTH_LONG).show();
-                }
+                    @Override
+                    public void onFailure(String errorMessage) {
+                        showLoading(false);
+                        Toast.makeText(LoginActivity.this, errorMessage, Toast.LENGTH_LONG).show();
+                    }
+                });
             });
-        });
+        }
 
-        tvRegister.setOnClickListener(v ->
-            startActivity(new Intent(this, RegisterActivity.class))
-        );
+        if (tvRegister != null) {
+            tvRegister.setOnClickListener(v ->
+                startActivity(new Intent(this, RegisterActivity.class))
+            );
+        }
 
-        tvForgotPassword.setOnClickListener(v ->
-            startActivity(new Intent(this, ForgotPasswordActivity.class))
-        );
+        if (tvForgotPassword != null) {
+            tvForgotPassword.setOnClickListener(v ->
+                startActivity(new Intent(this, ForgotPasswordActivity.class))
+            );
+        }
     }
 
     // ─── Validation ───────────────────────────────────────────────────────────
