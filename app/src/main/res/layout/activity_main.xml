@@ -4,68 +4,101 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F7FA">
+    android:background="@color/backgroundColor">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <androidx.appcompat.widget.Toolbar
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        app:elevation="0dp">
+
+        <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="#1A237E"
-            android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
-            app:titleTextColor="#FFFFFF" />
+            android:background="@color/colorPrimary"
+            app:titleTextColor="@color/white"
+            app:titleCentered="true"
+            android:elevation="4dp" />
     </com.google.android.material.appbar.AppBarLayout>
 
-    <FrameLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="12dp"
-            android:clipToPadding="false"
-            android:paddingBottom="72dp" />
-
-        <ProgressBar
-            android:id="@+id/progress_bar"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="gone" />
+            android:orientation="vertical"
+            android:padding="16dp">
 
-        <TextView
-            android:id="@+id/tv_empty"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:textSize="16sp"
-            android:textColor="#9E9E9E"
-            android:visibility="gone" />
-    </FrameLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Explore Resources"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimary"
+                android:layout_marginBottom="16dp" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:clipToPadding="false" />
+
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                android:layout_marginTop="32dp" />
+
+            <TextView
+                android:id="@+id/tv_empty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="64dp"
+                android:text="No listings found"
+                android:textSize="16sp"
+                android:textColor="@color/text_secondary"
+                android:visibility="gone" />
+
+            <!-- Space for Bottom Nav -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="80dp" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/fab_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="80dp"
-        android:contentDescription="Add Resource"
-        app:srcCompat="@android:drawable/ic_input_add"
-        app:backgroundTint="#1A237E" />
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="80dp"
+        android:text="Share Resource"
+        android:textColor="@color/white"
+        app:icon="@android:drawable/ic_input_add"
+        app:iconTint="@color/white"
+        app:backgroundTint="@color/accent_orange" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_nav"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="72dp"
         android:layout_gravity="bottom"
-        android:background="#FFFFFF"
+        android:background="@color/surfaceColor"
+        app:elevation="16dp"
         app:menu="@menu/menu_bottom_nav"
+        app:itemIconTint="@color/colorPrimary"
+        app:itemTextColor="@color/colorPrimary"
         app:labelVisibilityMode="labeled" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -23,7 +23,7 @@ import com.campusshare.repositories.AuthRepository;
 import com.campusshare.repositories.ResourceRepository;
 import com.campusshare.utils.SessionManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
     private TextView tvEmpty;
-    private FloatingActionButton fabAdd;
+    private ExtendedFloatingActionButton fabAdd;
     private BottomNavigationView bottomNav;
     private Toolbar toolbar;
 
@@ -132,7 +132,6 @@ public class MainActivity extends AppCompatActivity {
                 if (getSupportActionBar() != null) getSupportActionBar().setTitle("Browse Resources");
                 setupRecyclerView(false);
                 fabAdd.hide();
-                loadBrowseFeed();
                 return true;
             } else if (id == R.id.nav_my_listings) {
                 isMyListingsMode = true;
