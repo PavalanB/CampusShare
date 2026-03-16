@@ -57,7 +57,8 @@
         android:layout_margin="80dp"
         android:contentDescription="Add Resource"
         app:srcCompat="@android:drawable/ic_input_add"
-        app:backgroundTint="#1A237E" />
+        app:backgroundTint="@color/accent_orange"
+        app:tint="@color/white" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_nav"

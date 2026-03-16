@@ -13,12 +13,13 @@
     <uses-permission android:name="android.permission.SEND_SMS" />
 
     <!-- Requirement 8: SD card writing and Notification Manager -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
-    <!-- Required for camera hardware declaration -->
+    <!-- Hardware declarations -->
     <uses-feature android:name="android.hardware.camera" android:required="false" />
+    <uses-feature android:name="android.hardware.telephony" android:required="false" />
 
     <application
         android:allowBackup="true"
@@ -26,6 +27,7 @@
         android:label="CampusShare"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:requestLegacyExternalStorage="true"
         android:theme="@style/Theme.MaterialComponents.Light.NoActionBar">
 
         <!-- Requirement 5: Splash Screen with Animation (New Launcher) -->
@@ -46,6 +48,12 @@
         <activity android:name=".activities.AddResourceActivity"    android:exported="false" />
         <activity android:name=".activities.ResourceDetailActivity" android:exported="false" />
         <activity android:name=".activities.ProfileActivity"        android:exported="false" />
+
+        <!-- Map Activity using OpenStreetMap -->
+        <activity android:name=".activities.MapActivity"            android:exported="false" />
+
+        <!-- Full Screen Location Picker -->
+        <activity android:name=".activities.LocationPickerActivity" android:exported="false" />
 
         <!-- Requirement 4: Native Calculator -->
         <activity android:name=".activities.CalculatorActivity"     android:exported="false" />
