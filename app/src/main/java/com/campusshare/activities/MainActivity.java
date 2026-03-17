@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
 
     private ResourceAdapter adapter;
-    private List<Resource> resourceList = new ArrayList<>();
+    private final List<Resource> resourceList = new ArrayList<>();
     private ResourceRepository resourceRepository;
     private AuthRepository authRepository;
     private User currentUser;
@@ -216,13 +216,20 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_logout) {
+        int id = item.getItemId();
+        if (id == R.id.action_logout) {
             authRepository.logout();
             SessionManager.clearSession(this);
             Intent i = new Intent(this, LoginActivity.class);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(i);
             finish();
+            return true;
+        } else if (id == R.id.action_map) {
+            startActivity(new Intent(this, MapActivity.class));
+            return true;
+        } else if (id == R.id.action_game) {
+            startActivity(new Intent(this, GameActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);

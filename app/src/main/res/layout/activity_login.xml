@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:background="@color/backgroundColor">
+    android:background="@color/backgroundColor"
+    tools:context=".activities.LoginActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,12 +21,18 @@
             android:layout_marginTop="48dp"
             android:src="@drawable/ic_resource_placeholder"
             app:tint="@color/colorPrimary" />
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="32dp"
+            android:src="@drawable/ic_login_symbol"
+            app:tint="@color/colorPrimary"
+            android:contentDescription="@string/app_name" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="CampusShare"
+            android:text="@string/app_name"
             android:textSize="32sp"
             android:textStyle="bold"
             android:textColor="@color/colorPrimary" />
@@ -35,6 +43,8 @@
             android:layout_marginTop="4dp"
             android:layout_marginBottom="40dp"
             android:text="Borrow · Share · Build Trust"
+            android:layout_marginBottom="32dp"
+            android:text="@string/app_tagline"
             android:textSize="14sp"
             android:textColor="@color/textSecondary" />
 
@@ -55,6 +65,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Welcome Back"
+                    android:text="@string/sign_in"
                     android:textSize="22sp"
                     android:textStyle="bold"
                     android:textColor="@color/textPrimary"
@@ -63,7 +74,7 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="College Email"
+                    android:hint="@string/college_email"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     app:boxCornerRadiusTopStart="12dp"
                     app:boxCornerRadiusTopEnd="12dp"
@@ -83,7 +94,7 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Password"
+                    android:hint="@string/password"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     app:boxCornerRadiusTopStart="12dp"
                     app:boxCornerRadiusTopEnd="12dp"
@@ -106,7 +117,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
-                    android:text="Forgot Password?"
+                    android:text="@string/forgot_password"
                     android:textColor="@color/colorPrimary"
                     android:textSize="13sp"
                     android:textStyle="bold"
@@ -117,7 +128,7 @@
                     android:id="@+id/btn_login"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
-                    android:text="Sign In"
+                    android:text="@string/sign_in"
                     android:textSize="16sp"
                     android:textAllCaps="false"
                     app:cornerRadius="12dp"
@@ -141,7 +152,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Don't have an account? "
+                        android:text="@string/dont_have_account"
                         android:textColor="@color/textSecondary"
                         android:textSize="14sp" />
 
@@ -149,7 +160,7 @@
                         android:id="@+id/tv_register"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Register"
+                        android:text="@string/register"
                         android:textColor="@color/colorPrimary"
                         android:textStyle="bold"
                         android:textSize="14sp" />

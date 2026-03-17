@@ -16,10 +16,15 @@ public class Resource implements Serializable {
     private String condition;      // "New", "Good", "Fair", "Worn"
     private String photoUrl;       // Firebase Storage download URL
     private boolean available;
-    
-    // Note: Timestamp is not Serializable. We store it as a Date for Intent passing, 
+
+    // Note: Timestamp is not Serializable. We store it as a Date for Intent passing,
     // but Firestore handles it fine as a Timestamp in the DB.
     private Date createdAtDate;
+    private Date createdAt;        // Using java.util.Date because it is Serializable
+
+    // Location coordinates for Map integration
+    private double latitude;
+    private double longitude;
 
     // Required empty constructor for Firestore deserialization
     public Resource() {}
@@ -36,6 +41,17 @@ public class Resource implements Serializable {
         this.condition = condition;
         this.available = true;
         this.photoUrl = "";
+        this.createdAt = new Date(); // Current time
+        this.latitude = 0.0;
+        this.longitude = 0.0;
+    }
+
+    public Resource(String ownerID, String ownerName, String ownerDepartment,
+                    String resourceName, String category, String description,
+                    String condition, double latitude, double longitude) {
+        this(ownerID, ownerName, ownerDepartment, resourceName, category, description, condition);
+        this.latitude = latitude;
+        this.longitude = longitude;
         this.createdAtDate = new Date();
     }
 
@@ -50,11 +66,14 @@ public class Resource implements Serializable {
     public String getCondition()       { return condition; }
     public String getPhotoUrl()        { return photoUrl; }
     public boolean isAvailable()       { return available; }
-    
+
     // Convert between Timestamp and Date for compatibility
-    public Timestamp getCreatedAt() { 
-        return createdAtDate != null ? new Timestamp(createdAtDate) : null; 
+    public Timestamp getCreatedAt() {
+        return createdAtDate != null ? new Timestamp(createdAtDate) : null;
     }
+    public Date getCreatedAt()         { return createdAt; }
+    public double getLatitude()        { return latitude; }
+    public double getLongitude()       { return longitude; }
 
     // Setters
     public void setResourceID(String resourceID)           { this.resourceID = resourceID; }
@@ -67,8 +86,11 @@ public class Resource implements Serializable {
     public void setCondition(String condition)             { this.condition = condition; }
     public void setPhotoUrl(String photoUrl)               { this.photoUrl = photoUrl; }
     public void setAvailable(boolean available)            { this.available = available; }
-    
-    public void setCreatedAt(Timestamp createdAt) { 
-        this.createdAtDate = createdAt != null ? createdAt.toDate() : null; 
+    public void setCreatedAt(Date createdAt)               { this.createdAt = createdAt; }
+    public void setLatitude(double latitude)               { this.latitude = latitude; }
+    public void setLongitude(double longitude)             { this.longitude = longitude; }
+
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAtDate = createdAt != null ? createdAt.toDate() : null;
     }
 }
