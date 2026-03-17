@@ -5,11 +5,11 @@ import android.view.MenuItem;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import com.campusshare.R;
-import com.campusshare.utils.BlockBreakerView;
+import com.campusshare.utils.CampusDeliveryDashView;
 
 public class GameActivity extends AppCompatActivity {
 
-    private BlockBreakerView blockBreakerView;
+    private CampusDeliveryDashView gameView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,10 +20,10 @@ public class GameActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle("Block Breaker");
+            getSupportActionBar().setTitle("Campus Delivery Dash");
         }
 
-        blockBreakerView = findViewById(R.id.block_breaker_view);
+        gameView = findViewById(R.id.game_view);
     }
 
     @Override
