@@ -13,14 +13,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.campusshare.R;
 import com.campusshare.models.Resource;
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.chip.Chip;
 
 import java.util.List;
 
 /**
  * ResourceAdapter powers the RecyclerView on the home feed and My Listings screen.
- * Each card shows: photo, name, category chip, condition, owner, availability badge.
+ * Each card shows: photo, name, category badge, condition, owner, availability badge.
  */
 public class ResourceAdapter extends RecyclerView.Adapter<ResourceAdapter.ResourceViewHolder> {
 
@@ -58,12 +56,12 @@ public class ResourceAdapter extends RecyclerView.Adapter<ResourceAdapter.Resour
         holder.tvName.setText(resource.getResourceName());
         holder.tvOwner.setText(resource.getOwnerName() + " · " + resource.getOwnerDepartment());
         holder.tvCondition.setText("Condition: " + resource.getCondition());
-        holder.chipCategory.setText(resource.getCategory());
+        holder.tvCategory.setText(resource.getCategory());
 
         // Availability badge
         if (resource.isAvailable()) {
             holder.tvAvailability.setText("Available");
-            holder.tvAvailability.setBackgroundResource(R.drawable.badge_available);
+            holder.tvAvailability.setBackgroundResource(R.drawable.bg_available_badge);
         } else {
             holder.tvAvailability.setText("Unavailable");
             holder.tvAvailability.setBackgroundResource(R.drawable.badge_unavailable);
@@ -85,14 +83,8 @@ public class ResourceAdapter extends RecyclerView.Adapter<ResourceAdapter.Resour
             holder.llOwnerActions.setVisibility(View.VISIBLE);
             holder.btnEdit.setOnClickListener(v -> listener.onEditClick(resource));
             holder.btnDelete.setOnClickListener(v -> listener.onDeleteClick(resource));
-            holder.tvEdit.setVisibility(View.VISIBLE);
-            holder.tvDelete.setVisibility(View.VISIBLE);
-            holder.tvEdit.setOnClickListener(v -> listener.onEditClick(resource));
-            holder.tvDelete.setOnClickListener(v -> listener.onDeleteClick(resource));
         } else {
             holder.llOwnerActions.setVisibility(View.GONE);
-            holder.tvEdit.setVisibility(View.GONE);
-            holder.tvDelete.setVisibility(View.GONE);
         }
 
         // Card click → Resource Detail screen
@@ -114,11 +106,9 @@ public class ResourceAdapter extends RecyclerView.Adapter<ResourceAdapter.Resour
 
     static class ResourceViewHolder extends RecyclerView.ViewHolder {
         ImageView ivPhoto;
-        TextView tvName, tvOwner, tvCondition, tvAvailability;
-        MaterialButton btnEdit, btnDelete;
+        ImageView btnEdit, btnDelete;
         View llOwnerActions;
-        TextView tvName, tvOwner, tvCondition, tvAvailability, tvEdit, tvDelete;
-        Chip chipCategory;
+        TextView tvName, tvOwner, tvCondition, tvAvailability, tvCategory;
 
         ResourceViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -127,12 +117,10 @@ public class ResourceAdapter extends RecyclerView.Adapter<ResourceAdapter.Resour
             tvOwner         = itemView.findViewById(R.id.tv_owner);
             tvCondition     = itemView.findViewById(R.id.tv_condition);
             tvAvailability  = itemView.findViewById(R.id.tv_availability);
-            chipCategory    = itemView.findViewById(R.id.chip_category);
+            tvCategory      = itemView.findViewById(R.id.tv_category_badge);
             btnEdit         = itemView.findViewById(R.id.btn_edit);
             btnDelete       = itemView.findViewById(R.id.btn_delete);
             llOwnerActions  = itemView.findViewById(R.id.ll_owner_actions);
-            tvEdit          = itemView.findViewById(R.id.tv_edit);
-            tvDelete        = itemView.findViewById(R.id.tv_delete);
         }
     }
 }

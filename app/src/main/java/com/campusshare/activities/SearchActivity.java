@@ -66,7 +66,6 @@ public class SearchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search);
 
         currentUserID      = SessionManager.getUserID(this);
-        resourceRepository = new ResourceRepository();
         resourceRepository = new ResourceRepository(this);
 
         setupToolbar();

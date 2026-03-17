@@ -17,9 +17,9 @@ package com.campusshare.utils;
 public class CloudinaryConfig {
 
     // Found on your Cloudinary Dashboard → Product Environment Credentials
-    public static final String CLOUD_NAME  = "YOUR_CLOUD_NAME";   // e.g. "dxyz123abc"
-    public static final String API_KEY     = "YOUR_API_KEY";       // e.g. "123456789012345"
-    public static final String API_SECRET  = "YOUR_API_SECRET";    // e.g. "abcDEFghiJKLmnoPQR"
+    public static final String CLOUD_NAME  = "dndbhzp9q";   // e.g. "dxyz123abc"
+    public static final String API_KEY     = "266153253722785";       // e.g. "123456789012345"
+    public static final String API_SECRET  = "qFCto99arGkb3tk6WA27MfvIlvk";    // e.g. "abcDEFghiJKLmnoPQR"
 
     // Upload preset — create this in Cloudinary Dashboard:
     // Settings → Upload → Upload presets → Add upload preset

@@ -5,29 +5,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/backgroundColor"
+    android:background="@drawable/bg_main_gradient"
     tools:context=".activities.AddResourceActivity">
-    android:background="#F5F7FA">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary">
-        android:layout_height="wrap_content">
+        android:background="@android:color/transparent"
+        app:elevation="0dp">
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:titleTextColor="@color/surfaceColor"
+            app:title="Add Resource"
+            app:titleTextColor="@color/text_primary"
             app:navigationIcon="?attr/homeAsUpIndicator"
-            app:popupTheme="@style/ThemeOverlay.MaterialComponents.Light" />
-            android:background="#1A237E"
-            android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar" />
+            app:navigationIconTint="@color/text_primary" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/add_resource_scrollview"
-    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -36,19 +33,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="20dp">
 
             <!-- Photo picker -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_photo_picker"
-            <androidx.cardview.widget.CardView
+                style="@style/Widget.CampusShare.GlassCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="16dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="2dp"
-                app:strokeWidth="0dp"
-                android:layout_marginBottom="16dp">
+                android:layout_marginBottom="20dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -59,10 +52,9 @@
 
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="match_parent"
-                        android:layout_height="220dp"
-                        app:cardCornerRadius="12dp"
-                        app:strokeWidth="1dp"
-                        app:strokeColor="#EEEEEE"
+                        android:layout_height="200dp"
+                        app:cardCornerRadius="16dp"
+                        app:cardBackgroundColor="@color/glass_white_5"
                         app:cardElevation="0dp">
 
                         <ImageView
@@ -71,48 +63,29 @@
                             android:layout_height="match_parent"
                             android:scaleType="centerCrop"
                             android:src="@drawable/ic_resource_placeholder"
-                            android:background="#F8F9FA" />
-                    <ImageView
-                        android:id="@+id/iv_photo"
-                        android:layout_width="match_parent"
-                        android:layout_height="200dp"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/ic_resource_placeholder"
-                        android:background="#F5F5F5" />
-
+                            app:tint="@color/glass_white_20" />
                     </com.google.android.material.card.MaterialCardView>
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_add_photo"
                         style="@style/Widget.MaterialComponents.Button.TextButton"
-                    <TextView
-                        android:id="@+id/tv_add_photo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
-                        android:text="Change Photo"
+                        android:text="Choose Photo"
                         android:textAllCaps="false"
-                        android:textColor="@color/colorPrimary"
-                        app:icon="@android:drawable/ic_menu_camera" />
-
-                        android:layout_marginTop="10dp"
-                        android:text="Tap to add photo"
-                        android:textColor="#1A237E"
-                        android:textSize="14sp" />
+                        android:textColor="@color/primary_glow"
+                        app:icon="@android:drawable/ic_menu_camera"
+                        app:iconTint="@color/primary_glow" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
-            </androidx.cardview.widget.CardView>
 
             <!-- Form card -->
             <com.google.android.material.card.MaterialCardView
-            <androidx.cardview.widget.CardView
+                style="@style/Widget.CampusShare.GlassCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="2dp"
-                app:strokeWidth="0dp">
-                app:cardCornerRadius="12dp"
-                app:cardElevation="2dp">
+                android:layout_marginBottom="24dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -120,109 +93,71 @@
                     android:orientation="vertical"
                     android:padding="24dp">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Resource Details"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/colorPrimary"
-                        android:textAllCaps="true"
-                        android:layout_marginBottom="20dp" />
-                    android:padding="16dp">
-
-                    <!-- Resource Name -->
                     <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.CampusShare.GlassInput"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Resource Name"
-                        android:hint="Resource Name (e.g. Soldering Kit)"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        app:boxCornerRadiusTopStart="12dp"
-                        app:boxCornerRadiusTopEnd="12dp"
-                        app:boxCornerRadiusBottomStart="12dp"
-                        app:boxCornerRadiusBottomEnd="12dp"
                         android:layout_marginBottom="16dp">
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_resource_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="textCapSentences"
-                            android:imeOptions="actionNext" />
+                            android:textColor="@color/text_primary"
+                            android:inputType="textCapSentences" />
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <!-- Category Spinner -->
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Category"
-                        android:textSize="12sp"
-                        android:textColor="@color/textSecondary"
-                        android:layout_marginBottom="4dp"
-                        android:layout_marginStart="4dp"/>
-                        android:textColor="#757575"
-                        android:layout_marginBottom="4dp" />
                     <Spinner
                         android:id="@+id/spinner_category"
                         android:layout_width="match_parent"
-                        android:layout_height="52dp"
+                        android:layout_height="56dp"
+                        android:layout_marginBottom="16dp"
                         android:background="@drawable/spinner_background"
-                        android:layout_marginBottom="16dp" />
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp" />
 
-                    <!-- Condition Spinner -->
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Condition"
-                        android:textSize="12sp"
-                        android:textColor="@color/textSecondary"
-                        android:layout_marginBottom="4dp"
-                        android:layout_marginStart="4dp"/>
-                        android:textColor="#757575"
-                        android:layout_marginBottom="4dp" />
                     <Spinner
                         android:id="@+id/spinner_condition"
                         android:layout_width="match_parent"
-                        android:layout_height="52dp"
+                        android:layout_height="56dp"
+                        android:layout_marginBottom="16dp"
                         android:background="@drawable/spinner_background"
-                        android:layout_marginBottom="16dp" />
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp" />
 
-                    <!-- Description -->
                     <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.CampusShare.GlassInput"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Description"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        app:boxCornerRadiusTopStart="12dp"
-                        app:boxCornerRadiusTopEnd="12dp"
-                        app:boxCornerRadiusBottomStart="12dp"
-                        app:boxCornerRadiusBottomEnd="12dp"
-                        android:layout_marginBottom="16dp">
                         android:layout_marginBottom="24dp">
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_description"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:textColor="@color/text_primary"
                             android:inputType="textMultiLine|textCapSentences"
                             android:minLines="3"
                             android:gravity="top" />
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <!-- Location Selector -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Pin Location"
+                        android:text="Location"
                         android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:textColor="#1A237E"
-                        android:layout_marginBottom="8dp" />
+                        android:fontFamily="sans-serif-medium"
+                        android:textColor="@color/primary_glow"
+                        android:textAllCaps="true"
+                        android:layout_marginBottom="12dp" />
 
-                    <androidx.cardview.widget.CardView
+                    <com.google.android.material.card.MaterialCardView
                         android:layout_width="match_parent"
-                        android:layout_height="200dp"
-                        app:cardCornerRadius="12dp"
-                        app:cardElevation="4dp"
+                        android:layout_height="180dp"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="0dp"
+                        app:strokeColor="@color/glass_white_10"
+                        app:strokeWidth="1dp"
                         android:layout_marginBottom="8dp">
 
                         <FrameLayout
@@ -238,63 +173,40 @@
                                 android:id="@+id/map_overlay_click"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:background="#22000000" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="bottom|end"
-                                android:layout_margin="8dp"
-                                android:background="#CC000000"
-                                android:padding="8dp"
-                                android:text="Tap to change location"
-                                android:textColor="#FFFFFF"
-                                android:textSize="12sp"
-                                android:elevation="4dp" />
+                                android:background="@color/glass_white_5" />
 
                         </FrameLayout>
-                    </androidx.cardview.widget.CardView>
+                    </com.google.android.material.card.MaterialCardView>
 
                     <TextView
                         android:id="@+id/tv_location_status"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Location not set"
+                        android:text="Tap to pin location"
                         android:textAlignment="center"
-                        android:textColor="#D32F2F"
-                        android:textStyle="bold"
+                        android:textColor="@color/text_secondary"
                         android:textSize="13sp"
-                        android:layout_marginBottom="16dp" />
+                        android:layout_marginBottom="24dp" />
 
                     <com.google.android.material.button.MaterialButton
-                    <Button
                         android:id="@+id/btn_save"
+                        style="@style/Widget.CampusShare.GlowButton"
                         android:layout_width="match_parent"
-                        android:layout_height="56dp"
-                        android:text="Save Resource"
-                        android:textSize="16sp"
-                        android:textAllCaps="false"
-                        app:cornerRadius="12dp"
-                        android:backgroundTint="@color/colorPrimary"
-                        android:textColor="#FFFFFF"
-                        android:backgroundTint="#1A237E"
-                        android:layout_marginBottom="8dp" />
+                        android:layout_height="wrap_content"
+                        android:text="Save Resource" />
 
                     <ProgressBar
                         android:id="@+id/progress_bar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:visibility="gone" />
+                        android:visibility="gone"
+                        android:indeterminateTint="@color/primary_glow"
+                        android:layout_marginTop="16dp" />
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
-            </androidx.cardview.widget.CardView>
-
-            <View android:layout_width="match_parent" android:layout_height="32dp" />
-            <View android:layout_width="match_parent" android:layout_height="24dp" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-    </ScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

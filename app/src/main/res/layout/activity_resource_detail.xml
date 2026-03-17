@@ -4,56 +4,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/backgroundColor">
-    android:background="#F5F7FA">
+    android:background="@drawable/bg_main_gradient">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar">
-
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/toolbar_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:contentScrim="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:toolbarId="@+id/toolbar">
-
-            <ImageView
-                android:id="@+id/iv_detail_photo"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@drawable/ic_resource_placeholder"
-                app:layout_collapseMode="parallax" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_gravity="bottom"
-                android:background="@drawable/gradient_bottom_shadow" />
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="pin"
-                app:popupTheme="@style/ThemeOverlay.MaterialComponents.Light" />
-
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        app:elevation="0dp">
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="#1A237E"
-            android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar" />
+            app:title="Resource Details"
+            app:titleTextColor="@color/text_primary"
+            app:navigationIcon="?attr/homeAsUpIndicator"
+            app:navigationIconTint="@color/text_primary" />
     </com.google.android.material.appbar.AppBarLayout>
 
-    <ScrollView
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -62,163 +29,86 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="20dp">
 
-            <!-- Full-width photo -->
-            <ImageView
-                android:id="@+id/iv_detail_photo"
-                android:layout_width="match_parent"
-                android:layout_height="260dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/ic_resource_placeholder" />
-
-            <!-- Details card -->
-            <androidx.cardview.widget.CardView
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
+                android:layout_height="300dp"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="0dp"
+                app:strokeColor="@color/glass_white_10"
+                app:strokeWidth="1dp"
+                android:layout_marginBottom="24dp">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/iv_detail_photo"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_resource_placeholder" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/gradient_bottom_shadow" />
+
+                    <TextView
+                        android:id="@+id/tv_detail_availability"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top|end"
+                        android:layout_margin="16dp"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="6dp"
+                        android:text="Available"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white"
+                        android:background="@drawable/badge_available" />
+                </FrameLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                style="@style/Widget.CampusShare.GlassCard"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="2dp"
-                app:strokeWidth="0dp">
-                android:layout_margin="16dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="3dp">
+                android:layout_marginBottom="24dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="20dp">
+                    android:padding="24dp">
 
-                    <!-- Name + Availability -->
-                    <LinearLayout
+                    <TextView
+                        android:id="@+id/tv_detail_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical">
-                        android:gravity="center_vertical"
-                        android:layout_marginBottom="12dp">
+                        android:text="Resource Name"
+                        android:textSize="24sp"
+                        android:fontFamily="sans-serif-black"
+                        android:textColor="@color/text_primary"
+                        android:layout_marginBottom="8dp" />
 
-                        <TextView
-                            android:id="@+id/tv_detail_name"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Resource Name"
-                            android:textSize="20sp"
-                            android:textSize="24sp"
-                            android:textStyle="bold"
-                            android:textColor="#212121" />
-                            android:textColor="@color/textPrimary" />
-
-                        <TextView
-                            android:id="@+id/tv_detail_availability"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingHorizontal="12dp"
-                            android:paddingVertical="6dp"
-                            android:paddingStart="12dp"
-                            android:paddingEnd="12dp"
-                            android:paddingTop="5dp"
-                            android:paddingBottom="5dp"
-                            android:text="Available"
-                            android:textSize="12sp"
-                            android:textStyle="bold"
-                            android:textColor="#FFFFFF"
-                            android:background="@drawable/badge_available" />
-                    </LinearLayout>
-
-                    <!-- Category chip -->
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chip_detail_category"
+                        style="@style/Widget.MaterialComponents.Chip.Action"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
                         android:text="Category"
-                        app:chipBackgroundColor="#E8EAF6"
-                        app:chipStrokeWidth="0dp" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginVertical="20dp"
-                        android:background="#EEEEEE" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Owner Information"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/colorPrimary"
-                        android:textAllCaps="true"
-                        android:layout_marginBottom="12dp" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:layout_marginBottom="16dp">
-                        android:layout_marginBottom="16dp" />
-
-                    <!-- Divider -->
-                    <View android:layout_width="match_parent" android:layout_height="1dp"
-                        android:background="#EEEEEE" android:layout_marginBottom="16dp" />
-                        <TextView
-                            android:id="@+id/tv_initials_detail"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:background="@drawable/circle_avatar"
-                            android:gravity="center"
-                            android:text="O"
-                            android:textColor="#FFFFFF"
-                            android:textStyle="bold" />
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:layout_marginStart="12dp"
-                            android:orientation="vertical">
-
-                    <!-- Owner info -->
-                    <TextView
-                        android:id="@+id/tv_detail_owner"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Owner: Name"
-                        android:textSize="15sp"
-                        android:textColor="#424242"
-                        android:layout_marginBottom="6dp" />
-                            <TextView
-                                android:id="@+id/tv_detail_owner"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Owner Name"
-                                android:textSize="16sp"
-                                android:textStyle="bold"
-                                android:textColor="@color/textPrimary" />
-
-                    <TextView
-                        android:id="@+id/tv_detail_department"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Department"
-                        android:textSize="14sp"
-                        android:textColor="#757575"
-                        android:layout_marginBottom="6dp" />
-                            <TextView
-                                android:id="@+id/tv_detail_department"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Department"
-                                android:textSize="14sp"
-                                android:textColor="@color/textSecondary" />
-                        </LinearLayout>
-                    </LinearLayout>
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        app:chipBackgroundColor="@color/glass_white_10"
+                        app:chipStrokeColor="@color/primary_glow"
+                        app:chipStrokeWidth="1dp"
+                        app:chipMinHeight="32dp"
+                        android:layout_marginBottom="8dp" />
 
                     <TextView
                         android:id="@+id/tv_detail_condition"
@@ -226,61 +116,107 @@
                         android:layout_height="wrap_content"
                         android:text="Condition: Good"
                         android:textSize="14sp"
-                        android:textColor="#757575"
-                        android:layout_marginBottom="16dp" />
-                        android:textSize="15sp"
-                        android:textColor="@color/textPrimary"
-                        android:layout_marginBottom="20dp" />
+                        android:textColor="@color/primary_glow"
+                        android:layout_marginBottom="24dp" />
 
-                    <!-- Description -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Description"
                         android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/colorPrimary"
+                        android:fontFamily="sans-serif-medium"
+                        android:textColor="@color/primary_glow"
                         android:textAllCaps="true"
-                        android:layout_marginBottom="8dp" />
-                        android:textColor="#424242"
-                        android:layout_marginBottom="6dp" />
+                        android:layout_marginBottom="12dp" />
 
                     <TextView
                         android:id="@+id/tv_detail_description"
-                        android:layout_width="wrap_content"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text=""
-                        android:textSize="14sp"
-                        android:textColor="#616161"
                         android:text="No description provided."
-                        android:textSize="15sp"
-                        android:textColor="@color/textSecondary"
-                        android:lineSpacingMultiplier="1.4"
+                        android:textSize="16sp"
+                        android:textColor="@color/text_secondary"
+                        android:lineSpacingMultiplier="1.2"
                         android:layout_marginBottom="24dp" />
 
-                    <!-- Borrow button -->
-                    <Button
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/glass_white_10"
+                        android:layout_marginBottom="24dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Owner"
+                        android:textSize="14sp"
+                        android:fontFamily="sans-serif-medium"
+                        android:textColor="@color/primary_glow"
+                        android:textAllCaps="true"
+                        android:layout_marginBottom="16dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="32dp">
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            app:cardCornerRadius="24dp"
+                            app:cardBackgroundColor="@color/glass_white_10"
+                            app:cardElevation="0dp"
+                            app:strokeColor="@color/primary_glow"
+                            app:strokeWidth="1dp">
+                            <TextView
+                                android:id="@+id/tv_initials_detail"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:text="O"
+                                android:textColor="@color/primary_glow"
+                                android:textStyle="bold" />
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="16dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tv_detail_owner"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Owner Name"
+                                android:textSize="16sp"
+                                android:fontFamily="sans-serif-medium"
+                                android:textColor="@color/text_primary" />
+
+                            <TextView
+                                android:id="@+id/tv_detail_department"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Department"
+                                android:textSize="14sp"
+                                android:textColor="@color/text_secondary" />
+                        </LinearLayout>
+                    </LinearLayout>
+
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_borrow"
+                        style="@style/Widget.CampusShare.GlowButton"
                         android:layout_width="match_parent"
-                        android:layout_height="56dp"
-                        android:text="Request to Borrow"
-                        android:textSize="16sp"
-                        android:textAllCaps="false"
-                        app:cornerRadius="12dp"
-                        android:backgroundTint="@color/colorPrimary" />
-                        android:textColor="#FFFFFF"
-                        android:backgroundTint="#1A237E" />
+                        android:layout_height="wrap_content"
+                        android:text="Request to Borrow" />
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
-            </androidx.cardview.widget.CardView>
 
-            <View android:layout_width="match_parent" android:layout_height="80dp" />
-            <View android:layout_width="match_parent" android:layout_height="16dp" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
-    </ScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

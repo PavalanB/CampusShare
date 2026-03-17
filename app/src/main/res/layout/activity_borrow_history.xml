@@ -4,16 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/nfs_bg">
-
-    <View
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:layout_gravity="top|end"
-        android:layout_marginTop="-150dp"
-        android:layout_marginEnd="-150dp"
-        android:background="@drawable/nfs_center_glow"
-        android:alpha="0.1" />
+    android:background="@drawable/bg_main_gradient">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -25,31 +16,10 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/nfs_bg"
-            app:navigationIconTint="@color/nfs_text_primary"
-            app:titleTextColor="@color/nfs_text_primary"
-            app:titleCentered="true">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:text="HISTORY"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/nfs_blue_accent"
-                    android:letterSpacing="0.2" />
-            </RelativeLayout>
-        </com.google.android.material.appbar.MaterialToolbar>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/nfs_blue_accent"
-            android:alpha="0.3" />
+            app:navigationIcon="?attr/homeAsUpIndicator"
+            app:navigationIconTint="@color/text_primary"
+            app:title="Borrow History"
+            app:titleTextColor="@color/text_primary" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -66,17 +36,16 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:visibility="gone"
-        android:indeterminateTint="@color/nfs_purple_glow" />
+        android:indeterminateTint="@color/primary_glow" />
 
     <TextView
         android:id="@+id/tv_empty_history"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="NO BORROWING HISTORY"
-        android:textSize="12sp"
-        android:textColor="@color/nfs_text_secondary"
-        android:letterSpacing="0.1"
+        android:text="No borrowing history"
+        android:textSize="14sp"
+        android:textColor="@color/text_secondary"
         android:visibility="gone" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

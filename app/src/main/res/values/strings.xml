@@ -41,7 +41,7 @@
     <string name="gallery">Gallery</string>
     <string name="permission_needed_photo">Permission needed to pick a photo</string>
     <string name="resource_added_success">Resource added successfully!</string>
-    <string name="resource_updated">Resource updated!</string>
+    <string name="resource_updated_success">Resource updated successfully!</string>
     <string name="error_resource_name">Resource name is required</string>
     <string name="error_description">Description is required</string>
     <string name="error_select_category">Please select a category</string>

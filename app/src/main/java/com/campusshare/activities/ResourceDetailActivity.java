@@ -3,7 +3,6 @@ package com.campusshare.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,7 +19,6 @@ import com.google.android.material.chip.Chip;
 
 /**
  * ResourceDetailActivity shows the full details of a resource.
- * The "Request to Borrow" button will be wired to Phase 3 (BorrowRequestActivity).
  */
 public class ResourceDetailActivity extends AppCompatActivity {
 
@@ -80,14 +78,12 @@ public class ResourceDetailActivity extends AppCompatActivity {
             btnBorrow.setText("Not Available");
         }
 
-        if (!resource.getPhotoUrl().isEmpty()) {
         if (resource.getPhotoUrl() != null && !resource.getPhotoUrl().isEmpty()) {
             Glide.with(this).load(resource.getPhotoUrl()).centerCrop().into(ivPhoto);
         } else {
             ivPhoto.setImageResource(R.drawable.ic_resource_placeholder);
         }
 
-        // Phase 3 — wire borrow button to BorrowRequestActivity
         btnBorrow.setOnClickListener(v -> {
             String currentUserID = SessionManager.getUserID(this);
             if (currentUserID != null && currentUserID.equals(resource.getOwnerID())) {
@@ -95,15 +91,6 @@ public class ResourceDetailActivity extends AppCompatActivity {
                 return;
             }
 
-            // Try to launch BorrowRequestActivity if it exists
-            try {
-                Class<?> cls = Class.forName("com.campusshare.activities.BorrowRequestActivity");
-                Intent intent = new Intent(this, cls);
-                intent.putExtra("resource", resource);
-                startActivity(intent);
-            } catch (ClassNotFoundException e) {
-                Toast.makeText(this, "Borrow requests coming soon!", Toast.LENGTH_SHORT).show();
-            }
             Intent intent = new Intent(this, BorrowRequestActivity.class);
             intent.putExtra("resource", resource);
             startActivity(intent);
@@ -112,7 +99,10 @@ public class ResourceDetailActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) { finish(); return true; }
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 }

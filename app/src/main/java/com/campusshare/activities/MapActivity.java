@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -56,7 +57,7 @@ public class MapActivity extends AppCompatActivity {
         setContentView(R.layout.activity_map);
 
         currentUser = SessionManager.getUser(this);
-        resourceRepository = new ResourceRepository();
+        resourceRepository = new ResourceRepository(this);
 
         map = findViewById(R.id.mapView);
         map.setTileSource(TileSourceFactory.MAPNIK);
@@ -69,8 +70,9 @@ public class MapActivity extends AppCompatActivity {
         GeoPoint startPoint = new GeoPoint(ANNA_UNIVERSITY_LAT, ANNA_UNIVERSITY_LNG);
         mapController.setCenter(startPoint);
 
-        FloatingActionButton fabBack = findViewById(R.id.fab_back);
-        fabBack.setOnClickListener(v -> finish());
+        // Fixed: R.id.fab_back is an ImageView inside a CardView, not a FloatingActionButton
+        View btnBack = findViewById(R.id.fab_back);
+        btnBack.setOnClickListener(v -> finish());
 
         FloatingActionButton fabMyLocation = findViewById(R.id.fab_my_location);
         fabMyLocation.setOnClickListener(v -> {

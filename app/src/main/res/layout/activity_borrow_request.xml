@@ -5,13 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backgroundColor">
-    android:background="#F5F7FA">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary">
-        android:layout_height="wrap_content">
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
@@ -19,12 +17,9 @@
             app:titleTextColor="@color/surfaceColor"
             app:navigationIcon="?attr/homeAsUpIndicator"
             app:popupTheme="@style/ThemeOverlay.MaterialComponents.Light" />
-            android:background="#1A237E"
-            android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
-    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -35,17 +30,11 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Priority badge (hidden by default, shown when priority detected) -->
-            <LinearLayout
             <!-- Priority banner -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/layout_priority"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="#FFF8E1"
-                android:padding="14dp"
-                android:layout_marginBottom="16dp">
                 app:cardCornerRadius="12dp"
                 app:cardElevation="0dp"
                 app:cardBackgroundColor="#FFF8E1"
@@ -60,16 +49,6 @@
                     android:orientation="vertical"
                     android:padding="16dp">
 
-                <TextView
-                    android:id="@+id/tv_priority_badge"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="PRIORITY REQUEST"
-                    android:textColor="#E65100"
-                    android:textStyle="bold"
-                    android:textSize="13sp"
-                    android:layout_marginBottom="4dp"
-                    android:visibility="gone" />
                     <TextView
                         android:id="@+id/tv_priority_badge"
                         android:layout_width="wrap_content"
@@ -90,25 +69,11 @@
                         android:lineSpacingMultiplier="1.4" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
-                <TextView
-                    android:id="@+id/tv_priority_explain"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:textColor="#BF360C"
-                    android:textSize="13sp"
-                    android:lineSpacingMultiplier="1.4"
-                    android:visibility="gone" />
-            </LinearLayout>
 
             <!-- Resource card -->
-            <androidx.cardview.widget.CardView
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="3dp"
-                android:layout_marginBottom="16dp">
                 app:cardCornerRadius="16dp"
                 app:cardElevation="2dp"
                 app:strokeWidth="0dp"
@@ -123,7 +88,6 @@
                         android:id="@+id/iv_request_photo"
                         android:layout_width="match_parent"
                         android:layout_height="220dp"
-                        android:layout_height="200dp"
                         android:scaleType="centerCrop"
                         android:src="@drawable/ic_resource_placeholder" />
 
@@ -132,7 +96,6 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:padding="20dp">
-                        android:padding="16dp">
 
                         <TextView
                             android:id="@+id/tv_request_resource_name"
@@ -140,12 +103,9 @@
                             android:layout_height="wrap_content"
                             android:text="Resource Name"
                             android:textSize="20sp"
-                            android:textSize="18sp"
                             android:textStyle="bold"
                             android:textColor="@color/textPrimary"
                             android:layout_marginBottom="8dp" />
-                            android:textColor="#212121"
-                            android:layout_marginBottom="6dp" />
 
                         <TextView
                             android:id="@+id/tv_request_owner"
@@ -154,8 +114,6 @@
                             android:text="Owner: "
                             android:textSize="15sp"
                             android:textColor="@color/textSecondary"
-                            android:textSize="14sp"
-                            android:textColor="#616161"
                             android:layout_marginBottom="4dp" />
 
                         <TextView
@@ -165,8 +123,6 @@
                             android:text="Category"
                             android:textSize="14sp"
                             android:textColor="@color/textHint"
-                            android:textSize="13sp"
-                            android:textColor="#9E9E9E"
                             android:layout_marginBottom="4dp" />
 
                         <TextView
@@ -176,12 +132,9 @@
                             android:text="Condition: "
                             android:textSize="14sp"
                             android:textColor="@color/textHint" />
-                            android:textSize="13sp"
-                            android:textColor="#9E9E9E" />
                     </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
-            </androidx.cardview.widget.CardView>
 
             <!-- Info note -->
             <com.google.android.material.card.MaterialCardView
@@ -215,26 +168,15 @@
                         android:lineSpacingMultiplier="1.4" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="By sending a request, the owner will be notified and can accept or reject it. If accepted, you have 7 days to return the item."
-                android:textSize="13sp"
-                android:textColor="#757575"
-                android:lineSpacingMultiplier="1.5"
-                android:layout_marginBottom="24dp" />
 
             <!-- Send button -->
-            <Button
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_send_request"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:text="Send Request"
                 android:text="Confirm and Send Request"
                 android:textSize="16sp"
                 android:textColor="#FFFFFF"
-                android:backgroundTint="#1A237E"
                 android:textAllCaps="false"
                 app:cornerRadius="12dp"
                 android:backgroundTint="@color/colorPrimary"
@@ -251,5 +193,4 @@
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-    </ScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

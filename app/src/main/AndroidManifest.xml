@@ -13,9 +13,6 @@
     <!-- Required for Android 13+ to access images -->
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED" />
-
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
-        android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <!-- Declare that the camera is not strictly required so the app can be installed on devices without one -->
@@ -30,13 +27,10 @@
         android:supportsRtl="true"
         android:requestLegacyExternalStorage="true"
         android:theme="@style/Theme.CampusShare">
-        android:theme="@style/Theme.MaterialComponents.Light.NoActionBar">
 
         <activity
             android:name=".activities.SplashActivity"
             android:exported="true">
-        <!-- Phase 1 - Auth -->
-        <activity android:name=".activities.LoginActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

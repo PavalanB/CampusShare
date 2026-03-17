@@ -4,40 +4,34 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/backgroundColor">
-    android:background="#F5F7FA">
+    android:background="@drawable/bg_main_gradient">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary">
-        android:layout_height="wrap_content">
+        android:background="@android:color/transparent"
+        app:elevation="0dp">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:titleTextColor="@color/surfaceColor"
+            app:title="Inbox"
+            app:titleTextColor="@color/text_primary"
             app:navigationIcon="?attr/homeAsUpIndicator"
-            app:popupTheme="@style/ThemeOverlay.MaterialComponents.Light" />
-            android:background="#1A237E"
-            android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar" />
+            app:navigationIconTint="@color/text_primary" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
-            android:background="#1A237E"
-            app:tabTextColor="#9FA8DA"
-            app:tabSelectedTextColor="@color/surfaceColor"
-            app:tabIndicatorColor="@color/surfaceColor"
-            app:tabIndicatorHeight="3dp"
-            app:tabRippleColor="#20FFFFFF"
+            android:background="@android:color/transparent"
+            app:tabTextColor="@color/text_secondary"
+            app:tabSelectedTextColor="@color/primary_glow"
+            app:tabIndicatorColor="@color/primary_glow"
+            app:tabIndicatorHeight="2dp"
+            app:tabRippleColor="@color/glass_white_10"
             app:tabTextAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
-            app:tabSelectedTextColor="#FFFFFF"
-            app:tabIndicatorColor="#FFFFFF"
-            app:tabIndicatorHeight="3dp" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -50,7 +44,6 @@
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="8dp"
             android:padding="12dp"
             android:clipToPadding="false" />
 
@@ -59,6 +52,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:indeterminateTint="@color/primary_glow"
             android:visibility="gone" />
 
         <LinearLayout
@@ -75,27 +69,16 @@
                 android:layout_height="80dp"
                 android:src="@drawable/ic_notification"
                 android:alpha="0.2"
-                app:tint="@color/textSecondary" />
+                app:tint="@color/text_secondary" />
 
             <TextView
                 android:id="@+id/tv_empty"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:gravity="center"
-                android:text="No notifications yet"
-                android:textSize="16sp"
-                android:textColor="@color/textSecondary" />
+                android:text="No messages yet"
+                android:textColor="@color/text_secondary" />
         </LinearLayout>
-        <TextView
-            android:id="@+id/tv_empty"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:textSize="15sp"
-            android:textColor="#9E9E9E"
-            android:visibility="gone" />
 
     </FrameLayout>
 

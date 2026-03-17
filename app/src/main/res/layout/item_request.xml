@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView
-<androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -10,9 +9,6 @@
     app:cardCornerRadius="16dp"
     app:cardElevation="2dp"
     app:strokeWidth="0dp">
-    android:layout_marginBottom="12dp"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="3dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,7 +16,6 @@
         android:orientation="vertical">
 
         <!-- Priority banner (amber strip at top) -->
-        <!-- Priority banner -->
         <TextView
             android:id="@+id/tv_req_priority_badge"
             android:layout_width="match_parent"
@@ -29,13 +24,10 @@
             android:textColor="#E65100"
             android:textStyle="bold"
             android:textSize="11sp"
-            android:textSize="12sp"
             android:background="#FFF3E0"
             android:paddingHorizontal="16dp"
             android:paddingVertical="4dp"
             android:gravity="center"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp"
             android:visibility="gone" />
 
         <!-- Content row: photo + details -->
@@ -45,12 +37,8 @@
             android:orientation="horizontal"
             android:padding="16dp"
             android:gravity="center_vertical">
-            android:padding="14dp">
 
             <com.google.android.material.card.MaterialCardView
-            <!-- Thumbnail -->
-            <ImageView
-                android:id="@+id/iv_request_photo"
                 android:layout_width="72dp"
                 android:layout_height="72dp"
                 app:cardCornerRadius="12dp"
@@ -64,8 +52,6 @@
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_resource_placeholder" />
             </com.google.android.material.card.MaterialCardView>
-                android:scaleType="centerCrop"
-                android:src="@drawable/ic_resource_placeholder" />
 
             <!-- Text details -->
             <LinearLayout
@@ -74,7 +60,6 @@
                 android:layout_weight="1"
                 android:orientation="vertical"
                 android:layout_marginStart="16dp">
-                android:layout_marginStart="12dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -83,23 +68,15 @@
                     android:gravity="center_vertical"
                     android:layout_marginBottom="4dp">
 
-                <TextView
-                    android:id="@+id/tv_req_resource_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Resource Name"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/textPrimary" />
                     <TextView
                         android:id="@+id/tv_req_resource_name"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Resource Name"
-                        android:textSize="15sp"
+                        android:textSize="16sp"
                         android:textStyle="bold"
-                        android:textColor="#212121" />
+                        android:textColor="@color/textPrimary" />
 
                     <!-- Status badge -->
                     <TextView
@@ -120,13 +97,9 @@
                     android:id="@+id/tv_req_person"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
                     android:text="From: Student Name"
                     android:textSize="14sp"
                     android:textColor="@color/textSecondary" />
-                    android:textSize="13sp"
-                    android:textColor="#616161"
-                    android:layout_marginBottom="3dp" />
 
                 <TextView
                     android:id="@+id/tv_req_date"
@@ -135,107 +108,63 @@
                     android:layout_marginTop="2dp"
                     android:text="Requested: 01 Jan 2025"
                     android:textSize="12sp"
-                    android:textColor="#9E9E9E"
-                    android:layout_marginBottom="3dp" />
                     android:textColor="@color/textHint" />
-            </LinearLayout>
 
                 <TextView
                     android:id="@+id/tv_req_due_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
                     android:text="Due: 08 Jan 2025"
                     android:textSize="12sp"
                     android:textColor="#C62828"
                     android:visibility="gone" />
-            <TextView
-                android:id="@+id/tv_req_status"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="PENDING"
-                android:textSize="10sp"
-                android:textStyle="bold"
-                android:textColor="#FFFFFF"
-                android:paddingHorizontal="8dp"
-                android:paddingVertical="4dp"
-                android:background="@drawable/badge_pending" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/tv_req_due_date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="16dp"
-            android:paddingBottom="8dp"
-            android:text="Due: 08 Jan 2025"
-            android:textSize="13sp"
-            android:textStyle="bold"
-            android:textColor="@color/errorColor"
-            android:visibility="gone" />
-
             </LinearLayout>
         </LinearLayout>
 
         <!-- Action buttons (Accept / Reject / Mark Returned) -->
-        <!-- Action buttons -->
         <LinearLayout
             android:id="@+id/ll_req_actions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingHorizontal="12dp"
-            android:paddingStart="14dp"
-            android:paddingEnd="14dp"
+            android:paddingHorizontal="16dp"
             android:paddingBottom="12dp"
             android:gravity="end">
 
             <com.google.android.material.button.MaterialButton
-            <Button
                 android:id="@+id/btn_reject"
                 style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_height="40dp"
                 android:text="Reject"
                 android:textColor="@color/errorColor"
                 android:textAllCaps="false"
-                android:textSize="13sp"
-                android:textColor="#C62828"
-                android:backgroundTint="#FFEBEE"
                 android:layout_marginEnd="8dp"
                 android:visibility="gone" />
 
             <com.google.android.material.button.MaterialButton
-            <Button
                 android:id="@+id/btn_accept"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_height="40dp"
                 android:text="Accept"
                 android:textAllCaps="false"
                 app:cornerRadius="8dp"
-                android:backgroundTint="@color/successColor"
-                android:textSize="13sp"
-                android:textColor="#FFFFFF"
                 android:backgroundTint="#2E7D32"
+                android:textColor="#FFFFFF"
                 android:visibility="gone" />
 
             <com.google.android.material.button.MaterialButton
-            <Button
                 android:id="@+id/btn_returned"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_height="40dp"
                 android:text="Mark Returned"
                 android:textAllCaps="false"
                 app:cornerRadius="8dp"
                 android:backgroundTint="@color/colorPrimary"
-                android:textSize="13sp"
                 android:textColor="#FFFFFF"
-                android:backgroundTint="#1A237E"
                 android:visibility="gone" />
 
         </LinearLayout>
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>
-</androidx.cardview.widget.CardView>

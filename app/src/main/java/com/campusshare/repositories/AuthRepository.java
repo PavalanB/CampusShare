@@ -7,15 +7,13 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 /**
  * AuthRepository handles all Firebase Authentication and Firestore
- * user profile operations. Activities never call Firebase directly —
- * they always go through this class.
+ * user profile operations.
  */
 public class AuthRepository {
 
     private final FirebaseAuth firebaseAuth;
     private final FirebaseFirestore db;
 
-    // Callback interfaces so Activities can respond to async results
     public interface AuthCallback {
         void onSuccess(FirebaseUser user);
         void onFailure(String errorMessage);
@@ -31,19 +29,11 @@ public class AuthRepository {
         this.db = FirebaseFirestore.getInstance();
     }
 
-    // ─── Login ────────────────────────────────────────────────────────────────
-
-    /**
-     * Logs in with email and password using Firebase Auth.
-     * On success, fetches the user's Firestore profile and returns it.
-     */
     public void login(String email, String password, UserProfileCallback callback) {
         firebaseAuth.signInWithEmailAndPassword(email, password)
             .addOnSuccessListener(authResult -> {
-                // Auth succeeded — now fetch their Firestore profile
                 if (authResult.getUser() != null) {
-                    String uid = authResult.getUser().getUid();
-                    fetchUserProfile(uid, callback);
+                    fetchUserProfile(authResult.getUser().getUid(), callback);
                 } else {
                     callback.onFailure("Authentication failed: User is null");
                 }
@@ -51,12 +41,6 @@ public class AuthRepository {
             .addOnFailureListener(e -> callback.onFailure(getFriendlyError(e.getMessage())));
     }
 
-    // ─── Register ─────────────────────────────────────────────────────────────
-
-    /**
-     * Creates a new Firebase Auth account, then saves the user profile
-     * document in Firestore under /users/{uid}.
-     */
     public void register(String email, String password, String name, String phone,
                          String department, String year, String collegeID,
                          UserProfileCallback callback) {
@@ -65,11 +49,8 @@ public class AuthRepository {
             .addOnSuccessListener(authResult -> {
                 if (authResult.getUser() != null) {
                     String uid = authResult.getUser().getUid();
-
-                    // Build the user model
                     User newUser = new User(uid, name, email, phone, department, year, collegeID);
 
-                    // Save to Firestore /users/{uid}
                     db.collection("users")
                         .document(uid)
                         .set(newUser)
@@ -82,22 +63,12 @@ public class AuthRepository {
             .addOnFailureListener(e -> callback.onFailure(getFriendlyError(e.getMessage())));
     }
 
-    // ─── Forgot Password ──────────────────────────────────────────────────────
-
-    /**
-     * Sends a password reset email via Firebase Auth.
-     */
     public void sendPasswordReset(String email, AuthCallback callback) {
         firebaseAuth.sendPasswordResetEmail(email)
             .addOnSuccessListener(unused -> callback.onSuccess(null))
             .addOnFailureListener(e -> callback.onFailure(getFriendlyError(e.getMessage())));
     }
 
-    // ─── Fetch Profile ────────────────────────────────────────────────────────
-
-    /**
-     * Reads the user document from Firestore and returns a User object.
-     */
     public void fetchUserProfile(String uid, UserProfileCallback callback) {
         db.collection("users")
             .document(uid)
@@ -111,57 +82,37 @@ public class AuthRepository {
                         callback.onFailure("User profile is empty.");
                     }
                 } else {
-                    callback.onFailure("User profile not found.");
                     callback.onFailure("User profile not found in database.");
                 }
             })
-            .addOnFailureListener(e -> callback.onFailure(e.getMessage()));
             .addOnFailureListener(e -> callback.onFailure("Firestore Error: " + e.getMessage()));
     }
 
-    // ─── Session Helpers ──────────────────────────────────────────────────────
-
-    /** Returns the currently logged-in Firebase user, or null if not logged in. */
     public FirebaseUser getCurrentUser() {
         return firebaseAuth.getCurrentUser();
     }
 
-    /** Signs out the current user from Firebase Auth. */
     public void logout() {
         firebaseAuth.signOut();
     }
 
-    // ─── Error Translator ─────────────────────────────────────────────────────
-
-    /**
-     * Converts Firebase error messages into plain English for users.
-     */
     private String getFriendlyError(String firebaseError) {
         if (firebaseError == null) return "Something went wrong. Please try again.";
-        String lower = firebaseError.toLowerCase();
         String lowerError = firebaseError.toLowerCase();
 
         if (lowerError.contains("email address is already in use") || lowerError.contains("already-in-use"))
-        if (lower.contains("email address is already in use"))
             return "This email is already registered. Try logging in.";
         if (lowerError.contains("no user record") || lowerError.contains("user-not-found"))
-        if (lower.contains("no user record"))
             return "No account found with this email.";
         if (lowerError.contains("password is invalid") || lowerError.contains("wrong-password") || lowerError.contains("invalid_login_credentials"))
             return "Incorrect password or email. Please try again.";
         if (lowerError.contains("badly formatted") || lowerError.contains("invalid-email"))
-        if (lower.contains("password is invalid") || lower.contains("invalid_login_credentials"))
-            return "Incorrect password. Please try again.";
-        if (lower.contains("badly formatted"))
             return "Please enter a valid email address.";
-        if (lower.contains("network error") || lower.contains("network_error"))
         if (lowerError.contains("network error") || lowerError.contains("network-request-failed"))
             return "Network error. Check your internet connection.";
         if (lowerError.contains("too many requests") || lowerError.contains("too-many-requests"))
             return "Too many attempts. Please try again later.";
 
-        // If it's none of the above, return the actual error so we can debug it
-        return "Error: " + firebaseError;
         return "Authentication error: " + firebaseError;
     }
 }
