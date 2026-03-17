@@ -19,7 +19,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
     private EditText etEmail;
     private Button btnSendReset;
-    private TextView tvBackToLogin;
+    private Button btnBackToLogin;
     private ProgressBar progressBar;
 
     private AuthRepository authRepository;
@@ -33,7 +33,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
         etEmail = findViewById(R.id.et_email);
         btnSendReset = findViewById(R.id.btn_send_reset);
-        tvBackToLogin = findViewById(R.id.tv_back_to_login);
+        btnBackToLogin = findViewById(R.id.btn_back_to_login);
         progressBar = findViewById(R.id.progress_bar);
 
         btnSendReset.setOnClickListener(v -> {
@@ -69,7 +69,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             });
         });
 
-        tvBackToLogin.setOnClickListener(v -> finish());
+        btnBackToLogin.setOnClickListener(v -> finish());
     }
 
     private void showLoading(boolean show) {

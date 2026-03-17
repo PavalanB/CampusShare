@@ -6,4 +6,5 @@
     <color name="nfs_text_primary">#FFFFFF</color>
     <color name="nfs_text_secondary">#B0FFFFFF</color>
     <color name="nfs_divider">#40FFFFFF</color>
+    <color name="nfs_blue_accent">#3F51B5</color>
 </resources>

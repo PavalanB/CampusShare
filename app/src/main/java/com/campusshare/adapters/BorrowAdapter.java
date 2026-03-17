@@ -43,25 +43,28 @@ public class BorrowAdapter extends RecyclerView.Adapter<BorrowAdapter.BorrowView
 
         holder.tvResourceName.setText(request.getResourceName());
         holder.tvOwner.setText("Owner: " + request.getOwnerName());
-        holder.tvDate.setText("Requested: " + dateFormat.format(request.getRequestDate()));
+        holder.tvDate.setText("Requested: " + (request.getRequestDate() != null ? dateFormat.format(request.getRequestDate().toDate()) : "N/A"));
         holder.tvStatus.setText(request.getStatus());
 
         // Status styling
-        switch (request.getStatus()) {
-            case "PENDING":
-                holder.tvStatus.setBackgroundResource(R.drawable.badge_available); // Blue/Purple
-                break;
-            case "APPROVED":
-                holder.tvStatus.setBackgroundResource(R.drawable.badge_available); 
-                break;
-            case "REJECTED":
-            case "RETURNED":
-                holder.tvStatus.setBackgroundResource(R.drawable.badge_unavailable); // Red/Grey
-                break;
+        if (request.getStatus() != null) {
+            switch (request.getStatus()) {
+                case "PENDING":
+                    holder.tvStatus.setBackgroundResource(R.drawable.badge_available); // Blue/Purple
+                    break;
+                case "APPROVED":
+                case "ACCEPTED":
+                    holder.tvStatus.setBackgroundResource(R.drawable.badge_available);
+                    break;
+                case "REJECTED":
+                case "RETURNED":
+                    holder.tvStatus.setBackgroundResource(R.drawable.badge_unavailable); // Red/Grey
+                    break;
+            }
         }
 
-        if (request.getResourcePhotoUrl() != null && !request.getResourcePhotoUrl().isEmpty()) {
-            Glide.with(context).load(request.getResourcePhotoUrl()).centerCrop().into(holder.ivPhoto);
+        if (request.getResourcePhoto() != null && !request.getResourcePhoto().isEmpty()) {
+            Glide.with(context).load(request.getResourcePhoto()).centerCrop().into(holder.ivPhoto);
         } else {
             holder.ivPhoto.setImageResource(R.drawable.ic_resource_placeholder);
         }

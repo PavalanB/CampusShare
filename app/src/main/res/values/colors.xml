@@ -23,4 +23,14 @@
     <color name="accent_orange">#FF9800</color>
     <color name="success_green">#4CAF50</color>
     <color name="error_red">#F44336</color>
+
+    <!-- NFS Themed Colors -->
+    <color name="nfs_blue_accent">#1A237E</color>
+    <color name="nfs_card_bg">#FFFFFF</color>
+    <color name="nfs_bg">#F5F7FA</color>
+    <color name="nfs_text_primary">#212121</color>
+    <color name="nfs_text_secondary">#757575</color>
+    <color name="nfs_divider">#E0E0E0</color>
+    <color name="nfs_purple_glow">#BB86FC</color>
+    <color name="nfs_bg_dark_fixed">#1A237E</color>
 </resources>
