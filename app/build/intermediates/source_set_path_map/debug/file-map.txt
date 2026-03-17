@@ -1,41 +1,41 @@
-com.campusshare.app-lifecycle-livedata-core-2.6.1-0 C:\Users\thane\.gradle\caches\9.0-milestone-1\transforms\03c7869470e6d3c794aecdad39de710f\transformed\lifecycle-livedata-core-2.6.1\res
-com.campusshare.app-jetified-lifecycle-viewmodel-savedstate-2.6.1-1 C:\Users\thane\.gradle\caches\9.0-milestone-1\transforms\148cee99be4e3f2dcddabac36ababbae\transformed\jetified-lifecycle-viewmodel-savedstate-2.6.1\res
-com.campusshare.app-jetified-emoji2-views-helper-1.2.0-2 C:\Users\thane\.gradle\caches\9.0-milestone-1\transforms\15e4d1c59cf54dce006c4f34444d195b\transformed\jetified-emoji2-views-helper-1.2.0\res
-com.campusshare.app-transition-1.2.0-3 C:\Users\thane\.gradle\caches\9.0-milestone-1\transforms\325699cd0c51ad4b48bdbe786f06e216\transformed\transition-1.2.0\res
-com.campusshare.app-jetified-profileinstaller-1.3.0-4 C:\Users\thane\.gradle\caches\9.0-milestone-1\transforms\3a42b56afcc1b2e6a1c2f94c2bc8ea0d\transformed\jetified-profileinstaller-1.3.0\res
-com.campusshare.app-jetified-annotation-experimental-1.3.0-5 C:\Users\thane\.gradle\caches\9.0-milestone-1\transforms\3e6b732fb85645f90178618ff64365dc\transformed\jetified-annotation-experimental-1.3.0\res
-com.campusshare.app-jetified-glide-4.16.0-6 C:\Users\thane\.gradle\caches\9.0-milestone-1\transforms\42e8c29e6b58035b226ecbd4af524715\transformed\jetified-glide-4.16.0\res
-com.campusshare.app-lifecycle-livedata-2.6.1-7 C:\Users\thane\.gradle\caches\9.0-milestone-1\transforms\4b64cc1b44b1d947f4b7061689c7cc40\transformed\lifecycle-livedata-2.6.1\res
-com.campusshare.app-fragment-1.3.6-8 C:\Users\thane\.gradle\caches\9.0-milestone-1\transforms\579428277a3266fda5438b55f794d83e\transformed\fragment-1.3.6\res
-com.campusshare.app-jetified-appcompat-resources-1.6.1-9 C:\Users\thane\.gradle\caches\9.0-milestone-1\transforms\5ebf92d09c96072acf460d9059262582\transformed\jetified-appcompat-resources-1.6.1\res
-com.campusshare.app-jetified-play-services-base-18.0.1-10 C:\Users\thane\.gradle\caches\9.0-milestone-1\transforms\68dfe9e33b04a08919f37661aa5d20d7\transformed\jetified-play-services-base-18.0.1\res
-com.campusshare.app-jetified-lifecycle-process-2.6.1-11 C:\Users\thane\.gradle\caches\9.0-milestone-1\transforms\6a1335d88c34a74e03b8db0911b805fc\transformed\jetified-lifecycle-process-2.6.1\res
-com.campusshare.app-core-runtime-2.2.0-12 C:\Users\thane\.gradle\caches\9.0-milestone-1\transforms\74b9dd55c6e380ca8e8a070fa4412234\transformed\core-runtime-2.2.0\res
-com.campusshare.app-core-1.9.0-13 C:\Users\thane\.gradle\caches\9.0-milestone-1\transforms\7ccbb45231dca23f5b50213ed78f0180\transformed\core-1.9.0\res
-com.campusshare.app-jetified-firebase-messaging-23.4.0-14 C:\Users\thane\.gradle\caches\9.0-milestone-1\transforms\7fe622da5b9e7fc119b1e75a03080dd4\transformed\jetified-firebase-messaging-23.4.0\res
-com.campusshare.app-jetified-viewpager2-1.0.0-15 C:\Users\thane\.gradle\caches\9.0-milestone-1\transforms\847205245956748a6a6e958ae20717e0\transformed\jetified-viewpager2-1.0.0\res
-com.campusshare.app-jetified-activity-1.8.0-16 C:\Users\thane\.gradle\caches\9.0-milestone-1\transforms\89e36c9b6da7050cef63bc2704a8a1fb\transformed\jetified-activity-1.8.0\res
-com.campusshare.app-browser-1.4.0-17 C:\Users\thane\.gradle\caches\9.0-milestone-1\transforms\8d1b40b969b471965ce667b270332d3c\transformed\browser-1.4.0\res
-com.campusshare.app-material-1.11.0-18 C:\Users\thane\.gradle\caches\9.0-milestone-1\transforms\99fda1f1914a3ce8fcea4aa5dbd23ab8\transformed\material-1.11.0\res
-com.campusshare.app-lifecycle-runtime-2.6.1-19 C:\Users\thane\.gradle\caches\9.0-milestone-1\transforms\9a19c8b053f1605c8a70bfbffdbf1268\transformed\lifecycle-runtime-2.6.1\res
-com.campusshare.app-jetified-savedstate-1.2.1-20 C:\Users\thane\.gradle\caches\9.0-milestone-1\transforms\a30d97e2a198953f31c1ccad423d504e\transformed\jetified-savedstate-1.2.1\res
-com.campusshare.app-recyclerview-1.1.0-21 C:\Users\thane\.gradle\caches\9.0-milestone-1\transforms\af647e72ebb25efababaa3b5d1f8e742\transformed\recyclerview-1.1.0\res
-com.campusshare.app-drawerlayout-1.1.1-22 C:\Users\thane\.gradle\caches\9.0-milestone-1\transforms\b24d0566d2b120e8a78bdada8dca6007\transformed\drawerlayout-1.1.1\res
-com.campusshare.app-cardview-1.0.0-23 C:\Users\thane\.gradle\caches\9.0-milestone-1\transforms\bcf8f15c8bbd0ee4c6b1959d67c3e213\transformed\cardview-1.0.0\res
-com.campusshare.app-constraintlayout-2.1.4-24 C:\Users\thane\.gradle\caches\9.0-milestone-1\transforms\bf0aaaf86ec4dddeb3bad997e2d1dfd7\transformed\constraintlayout-2.1.4\res
-com.campusshare.app-jetified-core-ktx-1.9.0-25 C:\Users\thane\.gradle\caches\9.0-milestone-1\transforms\c9fca661595c82d9db36b1f5d3030899\transformed\jetified-core-ktx-1.9.0\res
-com.campusshare.app-jetified-firebase-common-20.4.2-26 C:\Users\thane\.gradle\caches\9.0-milestone-1\transforms\d59b29282431ab6969413293e13cfea8\transformed\jetified-firebase-common-20.4.2\res
-com.campusshare.app-coordinatorlayout-1.1.0-27 C:\Users\thane\.gradle\caches\9.0-milestone-1\transforms\de4150d0893a51dacb893e65b8c1d35c\transformed\coordinatorlayout-1.1.0\res
-com.campusshare.app-appcompat-1.6.1-28 C:\Users\thane\.gradle\caches\9.0-milestone-1\transforms\e9f739cc85dbbfdd3ec15e9a97cf3212\transformed\appcompat-1.6.1\res
-com.campusshare.app-jetified-play-services-basement-18.1.0-29 C:\Users\thane\.gradle\caches\9.0-milestone-1\transforms\ed16b780794254f7f6f530f2b59c2f9d\transformed\jetified-play-services-basement-18.1.0\res
-com.campusshare.app-jetified-emoji2-1.2.0-30 C:\Users\thane\.gradle\caches\9.0-milestone-1\transforms\ee9bbe3e63df4c87e2b792d1865ae58c\transformed\jetified-emoji2-1.2.0\res
-com.campusshare.app-jetified-startup-runtime-1.1.1-31 C:\Users\thane\.gradle\caches\9.0-milestone-1\transforms\f170a27ecccdc16bea409402e6b8a0ec\transformed\jetified-startup-runtime-1.1.1\res
-com.campusshare.app-lifecycle-viewmodel-2.6.1-32 C:\Users\thane\.gradle\caches\9.0-milestone-1\transforms\f38908421e5a98b43d965cc6952aea6e\transformed\lifecycle-viewmodel-2.6.1\res
-com.campusshare.app-pngs-33 E:\CampusShare\app\build\generated\res\pngs\debug
-com.campusshare.app-res-34 E:\CampusShare\app\build\generated\res\processDebugGoogleServices
-com.campusshare.app-resValues-35 E:\CampusShare\app\build\generated\res\resValues\debug
-com.campusshare.app-packageDebugResources-36 E:\CampusShare\app\build\intermediates\incremental\debug\packageDebugResources\merged.dir
-com.campusshare.app-packageDebugResources-37 E:\CampusShare\app\build\intermediates\incremental\debug\packageDebugResources\stripped.dir
-com.campusshare.app-merged_res-38 E:\CampusShare\app\build\intermediates\merged_res\debug
-com.campusshare.app-debug-39 E:\CampusShare\app\src\debug\res
-com.campusshare.app-main-40 E:\CampusShare\app\src\main\res
+com.campusshare.app-lifecycle-livedata-core-2.6.1-0 C:\Users\PAVALAN\.gradle\caches\9.0-milestone-1\transforms\03c7869470e6d3c794aecdad39de710f\transformed\lifecycle-livedata-core-2.6.1\res
+com.campusshare.app-jetified-lifecycle-viewmodel-savedstate-2.6.1-1 C:\Users\PAVALAN\.gradle\caches\9.0-milestone-1\transforms\148cee99be4e3f2dcddabac36ababbae\transformed\jetified-lifecycle-viewmodel-savedstate-2.6.1\res
+com.campusshare.app-jetified-emoji2-views-helper-1.2.0-2 C:\Users\PAVALAN\.gradle\caches\9.0-milestone-1\transforms\15e4d1c59cf54dce006c4f34444d195b\transformed\jetified-emoji2-views-helper-1.2.0\res
+com.campusshare.app-transition-1.2.0-3 C:\Users\PAVALAN\.gradle\caches\9.0-milestone-1\transforms\325699cd0c51ad4b48bdbe786f06e216\transformed\transition-1.2.0\res
+com.campusshare.app-jetified-profileinstaller-1.3.0-4 C:\Users\PAVALAN\.gradle\caches\9.0-milestone-1\transforms\3a42b56afcc1b2e6a1c2f94c2bc8ea0d\transformed\jetified-profileinstaller-1.3.0\res
+com.campusshare.app-jetified-annotation-experimental-1.3.0-5 C:\Users\PAVALAN\.gradle\caches\9.0-milestone-1\transforms\3e6b732fb85645f90178618ff64365dc\transformed\jetified-annotation-experimental-1.3.0\res
+com.campusshare.app-jetified-glide-4.16.0-6 C:\Users\PAVALAN\.gradle\caches\9.0-milestone-1\transforms\42e8c29e6b58035b226ecbd4af524715\transformed\jetified-glide-4.16.0\res
+com.campusshare.app-lifecycle-livedata-2.6.1-7 C:\Users\PAVALAN\.gradle\caches\9.0-milestone-1\transforms\4b64cc1b44b1d947f4b7061689c7cc40\transformed\lifecycle-livedata-2.6.1\res
+com.campusshare.app-fragment-1.3.6-8 C:\Users\PAVALAN\.gradle\caches\9.0-milestone-1\transforms\579428277a3266fda5438b55f794d83e\transformed\fragment-1.3.6\res
+com.campusshare.app-jetified-appcompat-resources-1.6.1-9 C:\Users\PAVALAN\.gradle\caches\9.0-milestone-1\transforms\5ebf92d09c96072acf460d9059262582\transformed\jetified-appcompat-resources-1.6.1\res
+com.campusshare.app-jetified-play-services-base-18.0.1-10 C:\Users\PAVALAN\.gradle\caches\9.0-milestone-1\transforms\68dfe9e33b04a08919f37661aa5d20d7\transformed\jetified-play-services-base-18.0.1\res
+com.campusshare.app-jetified-lifecycle-process-2.6.1-11 C:\Users\PAVALAN\.gradle\caches\9.0-milestone-1\transforms\6a1335d88c34a74e03b8db0911b805fc\transformed\jetified-lifecycle-process-2.6.1\res
+com.campusshare.app-core-runtime-2.2.0-12 C:\Users\PAVALAN\.gradle\caches\9.0-milestone-1\transforms\74b9dd55c6e380ca8e8a070fa4412234\transformed\core-runtime-2.2.0\res
+com.campusshare.app-core-1.9.0-13 C:\Users\PAVALAN\.gradle\caches\9.0-milestone-1\transforms\7ccbb45231dca23f5b50213ed78f0180\transformed\core-1.9.0\res
+com.campusshare.app-jetified-firebase-messaging-23.4.0-14 C:\Users\PAVALAN\.gradle\caches\9.0-milestone-1\transforms\7fe622da5b9e7fc119b1e75a03080dd4\transformed\jetified-firebase-messaging-23.4.0\res
+com.campusshare.app-jetified-viewpager2-1.0.0-15 C:\Users\PAVALAN\.gradle\caches\9.0-milestone-1\transforms\847205245956748a6a6e958ae20717e0\transformed\jetified-viewpager2-1.0.0\res
+com.campusshare.app-jetified-activity-1.8.0-16 C:\Users\PAVALAN\.gradle\caches\9.0-milestone-1\transforms\89e36c9b6da7050cef63bc2704a8a1fb\transformed\jetified-activity-1.8.0\res
+com.campusshare.app-browser-1.4.0-17 C:\Users\PAVALAN\.gradle\caches\9.0-milestone-1\transforms\8d1b40b969b471965ce667b270332d3c\transformed\browser-1.4.0\res
+com.campusshare.app-material-1.11.0-18 C:\Users\PAVALAN\.gradle\caches\9.0-milestone-1\transforms\99fda1f1914a3ce8fcea4aa5dbd23ab8\transformed\material-1.11.0\res
+com.campusshare.app-lifecycle-runtime-2.6.1-19 C:\Users\PAVALAN\.gradle\caches\9.0-milestone-1\transforms\9a19c8b053f1605c8a70bfbffdbf1268\transformed\lifecycle-runtime-2.6.1\res
+com.campusshare.app-jetified-savedstate-1.2.1-20 C:\Users\PAVALAN\.gradle\caches\9.0-milestone-1\transforms\a30d97e2a198953f31c1ccad423d504e\transformed\jetified-savedstate-1.2.1\res
+com.campusshare.app-recyclerview-1.1.0-21 C:\Users\PAVALAN\.gradle\caches\9.0-milestone-1\transforms\af647e72ebb25efababaa3b5d1f8e742\transformed\recyclerview-1.1.0\res
+com.campusshare.app-drawerlayout-1.1.1-22 C:\Users\PAVALAN\.gradle\caches\9.0-milestone-1\transforms\b24d0566d2b120e8a78bdada8dca6007\transformed\drawerlayout-1.1.1\res
+com.campusshare.app-cardview-1.0.0-23 C:\Users\PAVALAN\.gradle\caches\9.0-milestone-1\transforms\bcf8f15c8bbd0ee4c6b1959d67c3e213\transformed\cardview-1.0.0\res
+com.campusshare.app-constraintlayout-2.1.4-24 C:\Users\PAVALAN\.gradle\caches\9.0-milestone-1\transforms\bf0aaaf86ec4dddeb3bad997e2d1dfd7\transformed\constraintlayout-2.1.4\res
+com.campusshare.app-jetified-core-ktx-1.9.0-25 C:\Users\PAVALAN\.gradle\caches\9.0-milestone-1\transforms\c9fca661595c82d9db36b1f5d3030899\transformed\jetified-core-ktx-1.9.0\res
+com.campusshare.app-jetified-firebase-common-20.4.2-26 C:\Users\PAVALAN\.gradle\caches\9.0-milestone-1\transforms\d59b29282431ab6969413293e13cfea8\transformed\jetified-firebase-common-20.4.2\res
+com.campusshare.app-coordinatorlayout-1.1.0-27 C:\Users\PAVALAN\.gradle\caches\9.0-milestone-1\transforms\de4150d0893a51dacb893e65b8c1d35c\transformed\coordinatorlayout-1.1.0\res
+com.campusshare.app-appcompat-1.6.1-28 C:\Users\PAVALAN\.gradle\caches\9.0-milestone-1\transforms\e9f739cc85dbbfdd3ec15e9a97cf3212\transformed\appcompat-1.6.1\res
+com.campusshare.app-jetified-play-services-basement-18.1.0-29 C:\Users\PAVALAN\.gradle\caches\9.0-milestone-1\transforms\ed16b780794254f7f6f530f2b59c2f9d\transformed\jetified-play-services-basement-18.1.0\res
+com.campusshare.app-jetified-emoji2-1.2.0-30 C:\Users\PAVALAN\.gradle\caches\9.0-milestone-1\transforms\ee9bbe3e63df4c87e2b792d1865ae58c\transformed\jetified-emoji2-1.2.0\res
+com.campusshare.app-jetified-startup-runtime-1.1.1-31 C:\Users\PAVALAN\.gradle\caches\9.0-milestone-1\transforms\f170a27ecccdc16bea409402e6b8a0ec\transformed\jetified-startup-runtime-1.1.1\res
+com.campusshare.app-lifecycle-viewmodel-2.6.1-32 C:\Users\PAVALAN\.gradle\caches\9.0-milestone-1\transforms\f38908421e5a98b43d965cc6952aea6e\transformed\lifecycle-viewmodel-2.6.1\res
+com.campusshare.app-pngs-33 D:\SEM 2\MAD project\CampusShare\CampusShare\app\build\generated\res\pngs\debug
+com.campusshare.app-res-34 D:\SEM 2\MAD project\CampusShare\CampusShare\app\build\generated\res\processDebugGoogleServices
+com.campusshare.app-resValues-35 D:\SEM 2\MAD project\CampusShare\CampusShare\app\build\generated\res\resValues\debug
+com.campusshare.app-packageDebugResources-36 D:\SEM 2\MAD project\CampusShare\CampusShare\app\build\intermediates\incremental\debug\packageDebugResources\merged.dir
+com.campusshare.app-packageDebugResources-37 D:\SEM 2\MAD project\CampusShare\CampusShare\app\build\intermediates\incremental\debug\packageDebugResources\stripped.dir
+com.campusshare.app-merged_res-38 D:\SEM 2\MAD project\CampusShare\CampusShare\app\build\intermediates\merged_res\debug
+com.campusshare.app-debug-39 D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\debug\res
+com.campusshare.app-main-40 D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\main\res

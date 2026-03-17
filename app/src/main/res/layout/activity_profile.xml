@@ -4,38 +4,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-<<<<<<< HEAD
     android:background="@color/backgroundColor">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary">
-=======
-    android:background="#F5F7FA">
-
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-<<<<<<< HEAD
             app:titleTextColor="@color/surfaceColor"
             app:navigationIcon="?attr/homeAsUpIndicator"
             app:popupTheme="@style/ThemeOverlay.MaterialComponents.Light" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
-=======
-            android:background="#1A237E"
-            android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar" />
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <ScrollView
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -47,20 +31,12 @@
             android:padding="16dp">
 
             <!-- Avatar + name card -->
-<<<<<<< HEAD
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="24dp"
                 app:cardElevation="4dp"
                 app:strokeWidth="0dp"
-=======
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="3dp"
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
                 android:layout_marginBottom="16dp">
 
                 <LinearLayout
@@ -68,16 +44,11 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:gravity="center"
-<<<<<<< HEAD
                     android:padding="32dp">
-=======
-                    android:padding="24dp">
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
 
                     <!-- Initials circle avatar -->
                     <TextView
                         android:id="@+id/tv_initials"
-<<<<<<< HEAD
                         android:layout_width="100dp"
                         android:layout_height="100dp"
                         android:gravity="center"
@@ -88,32 +59,15 @@
                         android:background="@drawable/circle_avatar"
                         android:layout_marginBottom="16dp"
                         android:elevation="4dp" />
-=======
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:gravity="center"
-                        android:text="AB"
-                        android:textSize="28sp"
-                        android:textStyle="bold"
-                        android:textColor="#FFFFFF"
-                        android:background="@drawable/circle_avatar"
-                        android:layout_marginBottom="12dp" />
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
 
                     <TextView
                         android:id="@+id/tv_profile_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Student Name"
-<<<<<<< HEAD
                         android:textSize="24sp"
                         android:textStyle="bold"
                         android:textColor="@color/textPrimary"
-=======
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:textColor="#212121"
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
                         android:layout_marginBottom="4dp" />
 
                     <TextView
@@ -121,13 +75,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="ID: CS2021001"
-<<<<<<< HEAD
                         android:textSize="14sp"
                         android:textColor="@color/textSecondary"
-=======
-                        android:textSize="13sp"
-                        android:textColor="#757575"
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
                         android:layout_marginBottom="4dp" />
 
                     <TextView
@@ -135,17 +84,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Computer Science · 2nd Year"
-<<<<<<< HEAD
                         android:textSize="14sp"
                         android:textColor="@color/textSecondary" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
-=======
-                        android:textSize="13sp"
-                        android:textColor="#757575" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
 
             <!-- Credit + Rating stats -->
             <LinearLayout
@@ -154,7 +96,6 @@
                 android:orientation="horizontal"
                 android:layout_marginBottom="16dp">
 
-<<<<<<< HEAD
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -162,14 +103,6 @@
                     app:cardCornerRadius="16dp"
                     app:cardElevation="2dp"
                     app:strokeWidth="0dp"
-=======
-                <androidx.cardview.widget.CardView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="2dp"
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
                     android:layout_marginEnd="8dp">
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -184,17 +117,12 @@
                             android:text="0"
                             android:textSize="28sp"
                             android:textStyle="bold"
-<<<<<<< HEAD
                             android:textColor="@color/colorPrimary" />
-=======
-                            android:textColor="#1A237E" />
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Credit Score"
                             android:textSize="12sp"
-<<<<<<< HEAD
                             android:textAllCaps="true"
                             android:textColor="@color/textHint" />
                     </LinearLayout>
@@ -207,18 +135,6 @@
                     app:cardCornerRadius="16dp"
                     app:cardElevation="2dp"
                     app:strokeWidth="0dp"
-=======
-                            android:textColor="#9E9E9E" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="2dp"
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
                     android:layout_marginStart="8dp">
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -231,21 +147,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="—"
-<<<<<<< HEAD
                             android:textSize="28sp"
                             android:textStyle="bold"
                             android:textColor="@color/colorPrimary" />
-=======
-                            android:textSize="22sp"
-                            android:textStyle="bold"
-                            android:textColor="#1A237E" />
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Avg Rating"
                             android:textSize="12sp"
-<<<<<<< HEAD
                             android:textAllCaps="true"
                             android:textColor="@color/textHint" />
                     </LinearLayout>
@@ -259,33 +168,15 @@
                 app:cardCornerRadius="16dp"
                 app:cardElevation="2dp"
                 app:strokeWidth="0dp">
-=======
-                            android:textColor="#9E9E9E" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-            </LinearLayout>
-
-            <!-- Contact details card -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="2dp">
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-<<<<<<< HEAD
                     android:padding="24dp">
-=======
-                    android:padding="20dp">
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-<<<<<<< HEAD
                         android:text="Contact Information"
                         android:textSize="14sp"
                         android:textStyle="bold"
@@ -348,33 +239,4 @@
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-=======
-                        android:text="Contact Info"
-                        android:textSize="15sp"
-                        android:textStyle="bold"
-                        android:textColor="#212121"
-                        android:layout_marginBottom="12dp" />
-
-                    <TextView
-                        android:id="@+id/tv_profile_email"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text=""
-                        android:textSize="14sp"
-                        android:textColor="#424242"
-                        android:layout_marginBottom="8dp" />
-
-                    <TextView
-                        android:id="@+id/tv_profile_phone"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text=""
-                        android:textSize="14sp"
-                        android:textColor="#424242" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-        </LinearLayout>
-    </ScrollView>
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

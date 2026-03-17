@@ -4,19 +4,16 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
-
-<<<<<<< HEAD
-    <!-- Camera is used for photo uploads but not required for all devices -->
-    <uses-feature android:name="android.hardware.camera" android:required="false" />
-
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
-        android:maxSdkVersion="32" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
-
-    <!-- Required for Android 14+ photo picker compatibility -->
     <uses-permission android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED" />
-
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
 
     <application
         android:allowBackup="true"
@@ -26,85 +23,34 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CampusShare">
 
-        <!-- Phase 1 - Auth -->
-        <activity android:name=".activities.LoginActivity" android:exported="true">
-=======
-    <!-- Requirement 9: Location based services -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-
-    <!-- Requirement 7: SMS and E-Mail services -->
-    <uses-permission android:name="android.permission.SEND_SMS" />
-
-    <!-- Requirement 8: SD card writing and Notification Manager -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-
-    <!-- Required for camera hardware declaration -->
-    <uses-feature android:name="android.hardware.camera" android:required="false" />
-
-    <application
-        android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="CampusShare"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
-        android:theme="@style/Theme.MaterialComponents.Light.NoActionBar">
-
-        <!-- Requirement 5: Splash Screen with Animation (New Launcher) -->
         <activity
             android:name=".activities.SplashActivity"
             android:exported="true">
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-<<<<<<< HEAD
-        <activity android:name=".activities.RegisterActivity"       android:exported="false" />
-        <activity android:name=".activities.ForgotPasswordActivity" android:exported="false" />
-
-        <!-- Phase 2 - Resources -->
-=======
 
         <activity android:name=".activities.LoginActivity"         android:exported="false" />
         <activity android:name=".activities.RegisterActivity"       android:exported="false" />
         <activity android:name=".activities.ForgotPasswordActivity" android:exported="false" />
 
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
         <activity android:name=".activities.MainActivity"           android:exported="false" />
         <activity android:name=".activities.AddResourceActivity"    android:exported="false" />
         <activity android:name=".activities.ResourceDetailActivity" android:exported="false" />
         <activity android:name=".activities.ProfileActivity"        android:exported="false" />
 
-<<<<<<< HEAD
-        <!-- Phase 3 - Borrow Requests -->
         <activity android:name=".activities.BorrowRequestActivity"  android:exported="false" />
         <activity android:name=".activities.InboxActivity"          android:exported="false" />
-
-        <!-- Phase 4 - Search, Ratings, Notifications -->
         <activity android:name=".activities.SearchActivity"         android:exported="false" />
         <activity android:name=".activities.RatingActivity"         android:exported="false" />
-
-        <!-- FCM Service -->
-        <service
-            android:name=".services.FCMService"
-=======
-        <!-- Requirement 4: Native Calculator -->
         <activity android:name=".activities.CalculatorActivity"     android:exported="false" />
-
-        <!-- Requirement 10: Simple Gaming -->
         <activity android:name=".activities.GameActivity"           android:exported="false" />
-
-        <!-- Requirement 8: SD Card & Notification Manager -->
         <activity android:name=".activities.ReportActivity"         android:exported="false" />
 
-        <!-- Requirement 7: Firebase Messaging -->
         <service
-            android:name=".services.MyFirebaseMessagingService"
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
+            android:name=".services.FCMService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

@@ -10,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-<<<<<<< HEAD
         android:padding="24dp">
 
         <TextView
@@ -20,25 +19,6 @@
             android:layout_marginBottom="4dp"
             android:text="Create Account"
             android:textSize="28sp"
-=======
-        android:gravity="center_horizontal"
-        android:padding="24dp">
-
-        <ImageView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginTop="16dp"
-            android:src="@drawable/ic_register_symbol"
-            app:tint="@color/colorPrimary" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="4dp"
-            android:text="Create Account"
-            android:textSize="26sp"
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
             android:textStyle="bold"
             android:textColor="@color/colorPrimary" />
 
@@ -48,7 +28,6 @@
             android:layout_marginBottom="24dp"
             android:text="Join the campus sharing network"
             android:textSize="14sp"
-<<<<<<< HEAD
             android:textColor="@color/textSecondary" />
 
         <com.google.android.material.card.MaterialCardView
@@ -57,26 +36,12 @@
             app:cardCornerRadius="24dp"
             app:cardElevation="4dp"
             app:strokeWidth="0dp">
-=======
-            android:textColor="@color/text_secondary" />
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="8dp">
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-<<<<<<< HEAD
                 android:padding="24dp">
-=======
-                android:padding="24dp"
-                android:background="@color/surfaceColor">
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
 
                 <!-- Full Name -->
                 <com.google.android.material.textfield.TextInputLayout
@@ -84,18 +49,12 @@
                     android:layout_height="wrap_content"
                     android:hint="Full Name"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-<<<<<<< HEAD
                     app:boxCornerRadiusTopStart="12dp"
                     app:boxCornerRadiusTopEnd="12dp"
                     app:boxCornerRadiusBottomStart="12dp"
                     app:boxCornerRadiusBottomEnd="12dp"
                     android:layout_marginBottom="16dp"
                     app:startIconDrawable="@android:drawable/ic_menu_edit">
-=======
-                    android:layout_marginBottom="12dp"
-                    app:boxStrokeColor="@color/colorPrimary"
-                    app:hintTextColor="@color/colorPrimary">
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_name"
                         android:layout_width="match_parent"
@@ -108,7 +67,6 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-<<<<<<< HEAD
                     android:hint="College ID (e.g. CS2021001)"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     app:boxCornerRadiusTopStart="12dp"
@@ -117,13 +75,6 @@
                     app:boxCornerRadiusBottomEnd="12dp"
                     android:layout_marginBottom="16dp"
                     app:startIconDrawable="@android:drawable/ic_dialog_info">
-=======
-                    android:hint="College ID"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_marginBottom="12dp"
-                    app:boxStrokeColor="@color/colorPrimary"
-                    app:hintTextColor="@color/colorPrimary">
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_college_id"
                         android:layout_width="match_parent"
@@ -138,18 +89,12 @@
                     android:layout_height="wrap_content"
                     android:hint="College Email"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-<<<<<<< HEAD
                     app:boxCornerRadiusTopStart="12dp"
                     app:boxCornerRadiusTopEnd="12dp"
                     app:boxCornerRadiusBottomStart="12dp"
                     app:boxCornerRadiusBottomEnd="12dp"
                     android:layout_marginBottom="16dp"
                     app:startIconDrawable="@android:drawable/ic_dialog_email">
-=======
-                    android:layout_marginBottom="12dp"
-                    app:boxStrokeColor="@color/colorPrimary"
-                    app:hintTextColor="@color/colorPrimary">
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_email"
                         android:layout_width="match_parent"
@@ -164,18 +109,12 @@
                     android:layout_height="wrap_content"
                     android:hint="Phone Number"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-<<<<<<< HEAD
                     app:boxCornerRadiusTopStart="12dp"
                     app:boxCornerRadiusTopEnd="12dp"
                     app:boxCornerRadiusBottomStart="12dp"
                     app:boxCornerRadiusBottomEnd="12dp"
                     android:layout_marginBottom="16dp"
                     app:startIconDrawable="@android:drawable/ic_menu_call">
-=======
-                    android:layout_marginBottom="12dp"
-                    app:boxStrokeColor="@color/colorPrimary"
-                    app:hintTextColor="@color/colorPrimary">
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_phone"
                         android:layout_width="match_parent"
@@ -190,57 +129,33 @@
                     android:layout_height="wrap_content"
                     android:text="Department"
                     android:textSize="12sp"
-<<<<<<< HEAD
                     android:textColor="@color/textSecondary"
                     android:layout_marginBottom="4dp"
                     android:layout_marginStart="4dp"/>
-=======
-                    android:textColor="@color/colorPrimary"
-                    android:layout_marginBottom="4dp"/>
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
 
                 <Spinner
                     android:id="@+id/spinner_department"
                     android:layout_width="match_parent"
-<<<<<<< HEAD
                     android:layout_height="52dp"
                     android:background="@drawable/spinner_background"
                     android:layout_marginBottom="16dp" />
-=======
-                    android:layout_height="56dp"
-                    android:layout_marginBottom="12dp"
-                    android:background="@drawable/spinner_background" />
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
 
                 <!-- Year Spinner -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-<<<<<<< HEAD
                     android:text="Year of Study"
                     android:textSize="12sp"
                     android:textColor="@color/textSecondary"
                     android:layout_marginBottom="4dp"
                     android:layout_marginStart="4dp"/>
-=======
-                    android:text="Year"
-                    android:textSize="12sp"
-                    android:textColor="@color/colorPrimary"
-                    android:layout_marginBottom="4dp"/>
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
 
                 <Spinner
                     android:id="@+id/spinner_year"
                     android:layout_width="match_parent"
-<<<<<<< HEAD
                     android:layout_height="52dp"
                     android:background="@drawable/spinner_background"
                     android:layout_marginBottom="16dp" />
-=======
-                    android:layout_height="56dp"
-                    android:layout_marginBottom="24dp"
-                    android:background="@drawable/spinner_background" />
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
 
                 <!-- Password -->
                 <com.google.android.material.textfield.TextInputLayout
@@ -248,7 +163,6 @@
                     android:layout_height="wrap_content"
                     android:hint="Password"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-<<<<<<< HEAD
                     app:boxCornerRadiusTopStart="12dp"
                     app:boxCornerRadiusTopEnd="12dp"
                     app:boxCornerRadiusBottomStart="12dp"
@@ -256,12 +170,6 @@
                     app:endIconMode="password_toggle"
                     android:layout_marginBottom="16dp"
                     app:startIconDrawable="@android:drawable/ic_lock_idle_lock">
-=======
-                    app:endIconMode="password_toggle"
-                    android:layout_marginBottom="12dp"
-                    app:boxStrokeColor="@color/colorPrimary"
-                    app:hintTextColor="@color/colorPrimary">
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_password"
                         android:layout_width="match_parent"
@@ -276,7 +184,6 @@
                     android:layout_height="wrap_content"
                     android:hint="Confirm Password"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-<<<<<<< HEAD
                     app:boxCornerRadiusTopStart="12dp"
                     app:boxCornerRadiusTopEnd="12dp"
                     app:boxCornerRadiusBottomStart="12dp"
@@ -284,12 +191,6 @@
                     app:endIconMode="password_toggle"
                     android:layout_marginBottom="24dp"
                     app:startIconDrawable="@android:drawable/ic_lock_idle_lock">
-=======
-                    app:endIconMode="password_toggle"
-                    android:layout_marginBottom="24dp"
-                    app:boxStrokeColor="@color/colorPrimary"
-                    app:hintTextColor="@color/colorPrimary">
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_confirm_password"
                         android:layout_width="match_parent"
@@ -299,22 +200,14 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <!-- Register Button -->
-<<<<<<< HEAD
                 <com.google.android.material.button.MaterialButton
-=======
-                <Button
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
                     android:id="@+id/btn_register"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
                     android:text="Create Account"
                     android:textSize="16sp"
-<<<<<<< HEAD
                     android:textAllCaps="false"
                     app:cornerRadius="12dp"
-=======
-                    android:textColor="@color/white"
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
                     android:backgroundTint="@color/colorPrimary"
                     android:layout_marginBottom="16dp" />
 
@@ -335,11 +228,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Already have an account? "
-<<<<<<< HEAD
                         android:textColor="@color/textSecondary"
-=======
-                        android:textColor="@color/text_secondary"
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
                         android:textSize="14sp" />
                     <TextView
                         android:id="@+id/tv_login"
@@ -352,11 +241,7 @@
                 </LinearLayout>
 
             </LinearLayout>
-<<<<<<< HEAD
         </com.google.android.material.card.MaterialCardView>
-=======
-        </androidx.cardview.widget.CardView>
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
 
         <View android:layout_width="match_parent" android:layout_height="32dp" />
 
