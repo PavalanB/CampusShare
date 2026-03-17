@@ -6,7 +6,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -78,7 +77,7 @@ public class ProfileActivity extends AppCompatActivity {
         View rlBorrowHistory = findViewById(R.id.rl_borrow_history);
         if (rlBorrowHistory != null) {
             rlBorrowHistory.setOnClickListener(v -> {
-                Toast.makeText(this, "Borrowing History coming in Phase 3!", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(this, BorrowHistoryActivity.class));
             });
         }
 

@@ -1,207 +1,227 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<androidx.drawerlayout.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/nfs_bg">
 
-    <!-- Background Glow -->
-    <View
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:layout_gravity="top|end"
-        android:layout_marginTop="-150dp"
-        android:layout_marginEnd="-150dp"
-        android:background="@drawable/nfs_center_glow"
-        android:alpha="0.1" />
-
-    <com.google.android.material.appbar.AppBarLayout
+    <!-- Main Content -->
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        app:elevation="0dp">
+        android:layout_height="match_parent">
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar"
+        <!-- Background Glow -->
+        <View
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_gravity="top|end"
+            android:layout_marginTop="-150dp"
+            android:layout_marginEnd="-150dp"
+            android:background="@drawable/nfs_center_glow"
+            android:alpha="0.1" />
+
+        <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/nfs_bg"
-            app:titleTextColor="@color/nfs_text_primary"
-            app:titleCentered="true">
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            app:elevation="0dp">
 
-            <RelativeLayout
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clipChildren="false"
-                android:clipToPadding="false">
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/nfs_bg"
+                app:titleTextColor="@color/nfs_text_primary"
+                app:titleCentered="true">
 
-                <!-- Left-aligned dynamic page title -->
-                <TextView
-                    android:id="@+id/tv_page_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentStart="true"
-                    android:text="BROWSE"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/nfs_blue_accent"
-                    android:letterSpacing="0.2" />
-
-                <!-- Center-aligned App Branding -->
                 <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:clipChildren="false"
                     android:clipToPadding="false">
 
+                    <!-- Left-aligned dynamic page title -->
                     <TextView
-                        android:id="@+id/toolbar_logo_1"
+                        android:id="@+id/tv_page_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="CAMPUS"
-                        android:textSize="18sp"
-                        android:fontFamily="sans-serif-black"
-                        android:textStyle="bold|italic"
-                        android:textColor="@color/nfs_text_primary"
-                        android:letterSpacing="-0.05"
-                        android:shadowColor="@color/nfs_blue_accent"
-                        android:shadowDx="1"
-                        android:shadowDy="1"
-                        android:shadowRadius="2" />
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentStart="true"
+                        android:text="BROWSE"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/nfs_blue_accent"
+                        android:letterSpacing="0.2" />
 
-                    <TextView
-                        android:id="@+id/toolbar_logo_2"
+                    <!-- Center-aligned App Branding -->
+                    <RelativeLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_toEndOf="@id/toolbar_logo_1"
-                        android:layout_marginStart="-6dp"
-                        android:layout_marginTop="2dp"
-                        android:rotation="-5"
-                        android:text="Share"
-                        android:textSize="20sp"
-                        android:fontFamily="cursive"
-                        android:textStyle="bold|italic"
-                        android:textColor="@color/nfs_text_primary"
-                        android:shadowColor="@color/nfs_purple_glow"
-                        android:shadowDx="1"
-                        android:shadowDy="1"
-                        android:shadowRadius="3" />
+                        android:layout_centerInParent="true"
+                        android:clipChildren="false"
+                        android:clipToPadding="false">
+
+                        <TextView
+                            android:id="@+id/toolbar_logo_1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="CAMPUS"
+                            android:textSize="18sp"
+                            android:fontFamily="sans-serif-black"
+                            android:textStyle="bold|italic"
+                            android:textColor="@color/nfs_text_primary"
+                            android:letterSpacing="-0.05"
+                            android:shadowColor="@color/nfs_blue_accent"
+                            android:shadowDx="1"
+                            android:shadowDy="1"
+                            android:shadowRadius="2" />
+
+                        <TextView
+                            android:id="@+id/toolbar_logo_2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toEndOf="@id/toolbar_logo_1"
+                            android:layout_marginStart="-6dp"
+                            android:layout_marginTop="2dp"
+                            android:rotation="-5"
+                            android:text="Share"
+                            android:textSize="20sp"
+                            android:fontFamily="cursive"
+                            android:textStyle="bold|italic"
+                            android:textColor="@color/nfs_text_primary"
+                            android:shadowColor="@color/nfs_purple_glow"
+                            android:shadowDx="1"
+                            android:shadowDy="1"
+                            android:shadowRadius="3" />
+                    </RelativeLayout>
                 </RelativeLayout>
-            </RelativeLayout>
 
-        </com.google.android.material.appbar.MaterialToolbar>
+            </com.google.android.material.appbar.MaterialToolbar>
 
-        <!-- Search Bar Section -->
-        <LinearLayout
-            android:id="@+id/search_bar_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="16dp"
-            android:paddingBottom="12dp"
-            android:background="@color/nfs_bg"
-            android:orientation="vertical">
-
-            <androidx.appcompat.widget.SearchView
-                android:id="@+id/search_view"
+            <!-- Search Bar Section -->
+            <LinearLayout
+                android:id="@+id/search_bar_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/search_bg"
-                app:iconifiedByDefault="false"
-                app:queryHint="Search resources..."
-                app:queryBackground="@android:color/transparent"
-                app:searchIcon="@android:drawable/ic_menu_search"
-                android:theme="@style/SearchViewTheme" />
-        </LinearLayout>
+                android:paddingHorizontal="16dp"
+                android:paddingBottom="12dp"
+                android:background="@color/nfs_bg"
+                android:orientation="vertical">
 
-        <!-- Neon Divider Line -->
+                <androidx.appcompat.widget.SearchView
+                    android:id="@+id/search_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/search_bg"
+                    app:iconifiedByDefault="false"
+                    app:queryHint="Search resources..."
+                    app:queryBackground="@android:color/transparent"
+                    app:searchIcon="@android:drawable/ic_menu_search"
+                    android:theme="@style/SearchViewTheme" />
+            </LinearLayout>
+
+            <!-- Neon Divider Line -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/nfs_blue_accent"
+                android:alpha="0.3" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    android:clipToPadding="false"
+                    android:paddingBottom="100dp" />
+
+                <ProgressBar
+                    android:id="@+id/progress_bar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    android:indeterminateTint="@color/nfs_purple_glow" />
+
+                <TextView
+                    android:id="@+id/tv_empty"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_marginTop="64dp"
+                    android:text="NO RESOURCES FOUND"
+                    android:textSize="12sp"
+                    android:textColor="@color/nfs_text_secondary"
+                    android:letterSpacing="0.1"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/fab_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="90dp"
+            android:text="SHARE RESOURCE"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            app:icon="@android:drawable/ic_input_add"
+            app:iconTint="@color/white"
+            app:backgroundTint="@color/nfs_purple_glow"
+            app:elevation="12dp" />
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_nav"
+            android:layout_width="match_parent"
+            android:layout_height="72dp"
+            android:layout_gravity="bottom"
+            android:background="@color/nfs_bg"
+            app:elevation="20dp"
+            app:menu="@menu/menu_bottom_nav"
+            app:itemIconTint="@color/nfs_blue_accent"
+            app:itemTextColor="@color/nfs_text_primary"
+            app:itemRippleColor="@color/nfs_purple_glow"
+            app:labelVisibilityMode="labeled" />
+
+        <!-- Neon Top Border for Bottom Nav -->
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/nfs_blue_accent"
-            android:alpha="0.3" />
+            android:layout_height="2dp"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="72dp"
+            android:background="@color/nfs_purple_glow"
+            android:alpha="0.4" />
 
-    </com.google.android.material.appbar.AppBarLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
+    <!-- Sidebar (Navigation Drawer from the right) -->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="280dp"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false"
-                android:clipToPadding="false"
-                android:paddingBottom="100dp" />
-
-            <ProgressBar
-                android:id="@+id/progress_bar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:visibility="gone"
-                android:indeterminateTint="@color/nfs_purple_glow" />
-
-            <TextView
-                android:id="@+id/tv_empty"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_marginTop="64dp"
-                android:text="NO RESOURCES FOUND"
-                android:textSize="12sp"
-                android:textColor="@color/nfs_text_secondary"
-                android:letterSpacing="0.1"
-                android:visibility="gone" />
-
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
-
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/fab_add"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="90dp"
-        android:text="SHARE RESOURCE"
-        android:textStyle="bold"
-        android:textColor="@color/white"
-        app:icon="@android:drawable/ic_input_add"
-        app:iconTint="@color/white"
-        app:backgroundTint="@color/nfs_purple_glow"
-        app:elevation="12dp" />
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_nav"
-        android:layout_width="match_parent"
-        android:layout_height="72dp"
-        android:layout_gravity="bottom"
+        android:layout_gravity="end"
         android:background="@color/nfs_bg"
-        app:elevation="20dp"
-        app:menu="@menu/menu_bottom_nav"
         app:itemIconTint="@color/nfs_blue_accent"
         app:itemTextColor="@color/nfs_text_primary"
-        app:itemRippleColor="@color/nfs_purple_glow"
-        app:labelVisibilityMode="labeled" />
+        app:headerLayout="@layout/nav_header"
+        app:menu="@menu/menu_sidebar" />
 
-    <!-- Neon Top Border for Bottom Nav -->
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_gravity="bottom"
-        android:layout_marginBottom="72dp"
-        android:background="@color/nfs_purple_glow"
-        android:alpha="0.4" />
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.drawerlayout.widget.DrawerLayout>

@@ -9,11 +9,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,10 +29,10 @@ import com.campusshare.repositories.ResourceRepository;
 import com.campusshare.utils.SessionManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,6 +44,9 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private SearchView searchView;
     private View searchBarContainer;
+    
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
 
     private ResourceAdapter adapter;
     private List<Resource> resourceList = new ArrayList<>();
@@ -70,12 +76,23 @@ public class MainActivity extends AppCompatActivity {
         resourceRepository = new ResourceRepository();
         authRepository = new AuthRepository();
 
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayShowTitleEnabled(false);
-        }
+        initViews();
+        setupToolbar();
+        setupRecyclerView(false);
+        setupBottomNav();
+        setupSearch();
+        setupDrawer();
 
+        fabAdd.hide();
+        fabAdd.setOnClickListener(v ->
+            startActivity(new Intent(this, AddResourceActivity.class))
+        );
+
+        handleIntent(getIntent());
+    }
+
+    private void initViews() {
+        toolbar = findViewById(R.id.toolbar);
         tvPageTitle = findViewById(R.id.tv_page_title);
         recyclerView = findViewById(R.id.recycler_view);
         progressBar  = findViewById(R.id.progress_bar);
@@ -84,18 +101,51 @@ public class MainActivity extends AppCompatActivity {
         bottomNav    = findViewById(R.id.bottom_nav);
         searchView   = findViewById(R.id.search_view);
         searchBarContainer = findViewById(R.id.search_bar_container);
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_view);
+    }
 
-        setupRecyclerView(false);
-        setupBottomNav();
-        setupSearch();
+    private void setupToolbar() {
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
+    }
 
-        fabAdd.hide();
-        fabAdd.setOnClickListener(v ->
-            startActivity(new Intent(this, AddResourceActivity.class))
-        );
+    private void setupDrawer() {
+        if (navigationView != null) {
+            // Populate Header
+            View headerView = navigationView.getHeaderView(0);
+            TextView navInitials = headerView.findViewById(R.id.nav_initials);
+            TextView navName = headerView.findViewById(R.id.nav_name);
+            TextView navEmail = headerView.findViewById(R.id.nav_email);
 
-        // Check if we need to navigate somewhere specific (e.g., from Profile)
-        handleIntent(getIntent());
+            if (currentUser != null) {
+                navName.setText(currentUser.getName());
+                navEmail.setText(currentUser.getEmail());
+                
+                String[] parts = currentUser.getName().split(" ");
+                String initials = parts.length >= 2
+                    ? String.valueOf(parts[0].charAt(0)) + parts[1].charAt(0)
+                    : String.valueOf(parts[0].charAt(0));
+                navInitials.setText(initials.toUpperCase());
+            }
+
+            navigationView.setNavigationItemSelectedListener(item -> {
+                int id = item.getItemId();
+                if (id == R.id.nav_settings) {
+                    showSettingsDialog();
+                } else if (id == R.id.nav_theme) {
+                    showThemeSelectionDialog();
+                } else if (id == R.id.nav_about) {
+                    Toast.makeText(this, "CampusShare v1.0", Toast.LENGTH_SHORT).show();
+                } else if (id == R.id.nav_logout) {
+                    performLogout();
+                }
+                drawerLayout.closeDrawer(GravityCompat.END);
+                return true;
+            });
+        }
     }
 
     private void setupSearch() {
@@ -150,7 +200,6 @@ public class MainActivity extends AppCompatActivity {
                 bottomNav.setSelectedItemId(R.id.nav_browse);
             }
         } else {
-            // Default behavior
             loadBrowseFeed();
         }
     }
@@ -159,7 +208,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         if (currentUser == null) return;
-        // The data is refreshed based on the mode set by bottomNav listener
         if (isMyListingsMode) loadMyListings();
         else loadBrowseFeed();
     }
@@ -219,7 +267,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             } else if (id == R.id.nav_profile) {
                 startActivity(new Intent(this, ProfileActivity.class));
-                return false; // don't highlight tab since it's a separate screen
+                return false; 
             }
             return false;
         });
@@ -237,7 +285,6 @@ public class MainActivity extends AppCompatActivity {
                     adapter.updateList(resources);
                     tvEmpty.setVisibility(resources.isEmpty() ? View.VISIBLE : View.GONE);
                     if (resources.isEmpty()) tvEmpty.setText("NO RESOURCES AVAILABLE");
-                    // Apply current filter if any
                     if (searchView != null && !searchView.getQuery().toString().isEmpty()) {
                         filter(searchView.getQuery().toString());
                     }
@@ -285,10 +332,23 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_settings) {
-            showSettingsDialog();
+            if (drawerLayout.isDrawerOpen(GravityCompat.END)) {
+                drawerLayout.closeDrawer(GravityCompat.END);
+            } else {
+                drawerLayout.openDrawer(GravityCompat.END);
+            }
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.END)) {
+            drawerLayout.closeDrawer(GravityCompat.END);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     private void showSettingsDialog() {
