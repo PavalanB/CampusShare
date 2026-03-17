@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -40,8 +41,6 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
-
-import java.util.Locale;
 
 /**
  * AddResourceActivity handles both ADD (new resource) and EDIT (existing resource).
@@ -93,14 +92,11 @@ public class AddResourceActivity extends AppCompatActivity {
             if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                 selectedPhotoUri = result.getData().getData();
                 ivPhoto.setImageURI(selectedPhotoUri);
-                btnAddPhoto.setText("Change Photo");
-                tvAddPhoto.setText(R.string.change_photo);
+                btnAddPhoto.setText(R.string.change_photo);
             }
         });
 
-    // Permission launcher
     private final ActivityResultLauncher<String> permissionLauncher =
-    private final ActivityResultLauncher<String> cameraPermissionLauncher =
         registerForActivityResult(new ActivityResultContracts.RequestPermission(), granted -> {
             if (granted) openGallery();
             else Toast.makeText(this, R.string.permission_needed_photo, Toast.LENGTH_SHORT).show();
@@ -146,8 +142,6 @@ public class AddResourceActivity extends AppCompatActivity {
         spinnerCondition = findViewById(R.id.spinner_condition);
         btnSave         = findViewById(R.id.btn_save);
         progressBar     = findViewById(R.id.progress_bar);
-        btnSave        = findViewById(R.id.btn_save);
-        progressBar    = findViewById(R.id.progress_bar);
         mapPreview     = findViewById(R.id.map_picker);
         tvLocationStatus = findViewById(R.id.tv_location_status);
         mapOverlay     = findViewById(R.id.map_overlay_click);
@@ -167,7 +161,7 @@ public class AddResourceActivity extends AppCompatActivity {
         mapPreview.setTileSource(TileSourceFactory.MAPNIK);
         mapPreview.setMultiTouchControls(false); // Disable interaction to prevent scrolling conflict
         IMapController mapController = mapPreview.getController();
-        mapController.setZoom(19.0); // Increased zoom for detailed campus view
+        mapController.setZoom(19.0);
 
         GeoPoint startPoint = new GeoPoint(ANNA_UNIVERSITY_LAT, ANNA_UNIVERSITY_LNG);
         mapController.setCenter(startPoint);
@@ -198,20 +192,13 @@ public class AddResourceActivity extends AppCompatActivity {
             etDescription.setText(existingResource.getDescription());
         }
 
-        // Set spinner selections
-        etName.setText(existingResource.getResourceName());
-        etDescription.setText(existingResource.getDescription());
         setSpinnerValue(spinnerCategory, CATEGORIES, existingResource.getCategory());
         setSpinnerValue(spinnerCondition, CONDITIONS, existingResource.getCondition());
 
-        // Load existing photo
         String photoUrl = existingResource.getPhotoUrl();
         if (photoUrl != null && !photoUrl.isEmpty()) {
             Glide.with(this).load(photoUrl).centerCrop().into(ivPhoto);
-            btnAddPhoto.setText("Change Photo");
-        if (existingResource.getPhotoUrl() != null && !existingResource.getPhotoUrl().isEmpty()) {
-            Glide.with(this).load(existingResource.getPhotoUrl()).centerCrop().into(ivPhoto);
-            tvAddPhoto.setText(R.string.change_photo);
+            btnAddPhoto.setText(R.string.change_photo);
         }
 
         if (existingResource.getLatitude() != 0 && existingResource.getLongitude() != 0) {
@@ -232,7 +219,6 @@ public class AddResourceActivity extends AppCompatActivity {
     }
 
     private void setClickListeners() {
-        // Photo picker - Both image and button trigger the picker
         ivPhoto.setOnClickListener(v -> showPhotoPickerDialog());
         btnAddPhoto.setOnClickListener(v -> showPhotoPickerDialog());
 
@@ -248,12 +234,6 @@ public class AddResourceActivity extends AppCompatActivity {
             String description = etDescription.getText() != null ? etDescription.getText().toString().trim() : "";
             String category    = spinnerCategory.getSelectedItem() != null ? spinnerCategory.getSelectedItem().toString() : "Select Category";
             String condition   = spinnerCondition.getSelectedItem() != null ? spinnerCondition.getSelectedItem().toString() : "Select Condition";
-            String name = etName.getText().toString().trim();
-            String description = etDescription.getText().toString().trim();
-            Object categoryObj = spinnerCategory.getSelectedItem();
-            String category = categoryObj != null ? categoryObj.toString() : "";
-            Object conditionObj = spinnerCondition.getSelectedItem();
-            String condition = conditionObj != null ? conditionObj.toString() : "";
 
             if (!validateInputs(name, description, category, condition)) return;
 
@@ -267,7 +247,6 @@ public class AddResourceActivity extends AppCompatActivity {
                     @Override public void onFailure(String error) { showLoading(false); Toast.makeText(AddResourceActivity.this, error, Toast.LENGTH_LONG).show(); }
                 });
             } else {
-                // EDIT mode
                 existingResource.setResourceName(name);
                 existingResource.setDescription(description);
                 existingResource.setCategory(category);
@@ -289,21 +268,12 @@ public class AddResourceActivity extends AppCompatActivity {
     }
 
     private void checkPermissionAndOpenGallery() {
-        String permission;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            permission = Manifest.permission.READ_MEDIA_IMAGES;
-        } else {
-            permission = Manifest.permission.READ_EXTERNAL_STORAGE;
-        }
-
+        String permission = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU ? Manifest.permission.READ_MEDIA_IMAGES : Manifest.permission.READ_EXTERNAL_STORAGE;
         if (ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED) {
             openGallery();
         } else {
             permissionLauncher.launch(permission);
         }
-        String permission = android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU ? Manifest.permission.READ_MEDIA_IMAGES : Manifest.permission.READ_EXTERNAL_STORAGE;
-        if (ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED) openGallery();
-        else cameraPermissionLauncher.launch(permission);
     }
 
     private void openGallery() {

@@ -1,29 +1,57 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Theme.CampusShare" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <!-- Base application theme with NFS Heat (Neon & Dark) Vibes -->
+    <style name="Theme.CampusShare" parent="Theme.MaterialComponents.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryVariant">@color/colorPrimaryDark</item>
-        <item name="colorOnPrimary">@color/surfaceColor</item>
+        <item name="colorPrimary">@color/nfs_dark_bg</item>
+        <item name="colorPrimaryVariant">@color/black</item>
+        <item name="colorOnPrimary">@color/white</item>
+
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/colorAccent</item>
-        <item name="colorSecondaryVariant">@color/colorAccent</item>
-        <item name="colorOnSecondary">@color/surfaceColor</item>
+        <item name="colorSecondary">@color/nfs_neon_pink</item>
+        <item name="colorSecondaryVariant">@color/nfs_neon_purple</item>
+        <item name="colorOnSecondary">@color/white</item>
+
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
-        <item name="android:windowBackground">@color/backgroundColor</item>
+        <item name="android:statusBarColor">@color/black</item>
+        <item name="android:windowBackground">@color/nfs_dark_bg</item>
+
+        <!-- Typography -->
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorSecondary">@color/textSecondary</item>
+
+        <!-- Component Styles -->
+        <item name="cardViewStyle">@style/Widget.CampusShare.Card</item>
+        <item name="materialButtonStyle">@style/Widget.CampusShare.Button</item>
+        <item name="textInputStyle">@style/Widget.CampusShare.TextInputLayout</item>
     </style>
 
     <style name="Widget.CampusShare.Card" parent="Widget.MaterialComponents.CardView">
-        <item name="cardCornerRadius">12dp</item>
-        <item name="cardElevation">2dp</item>
+        <item name="cardBackgroundColor">@color/nfs_card_bg</item>
+        <item name="cardCornerRadius">16dp</item>
+        <item name="cardElevation">4dp</item>
+        <item name="strokeColor">#33FFFFFF</item> <!-- Subtle border -->
+        <item name="strokeWidth">1dp</item>
         <item name="android:layout_marginBottom">12dp</item>
     </style>
 
     <style name="Widget.CampusShare.Button" parent="Widget.MaterialComponents.Button">
-        <item name="cornerRadius">8dp</item>
+        <item name="backgroundTint">@color/nfs_neon_pink</item>
+        <item name="rippleColor">@color/nfs_neon_cyan</item>
+        <item name="cornerRadius">24dp</item>
         <item name="android:insetTop">0dp</item>
         <item name="android:insetBottom">0dp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Widget.CampusShare.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/nfs_neon_cyan</item>
+        <item name="boxStrokeWidth">2dp</item>
+        <item name="hintTextColor">@color/nfs_neon_pink</item>
+        <item name="android:textColorHint">@color/textHint</item>
+        <item name="boxCornerRadiusBottomEnd">8dp</item>
+        <item name="boxCornerRadiusBottomStart">8dp</item>
+        <item name="boxCornerRadiusTopEnd">8dp</item>
+        <item name="boxCornerRadiusTopStart">8dp</item>
     </style>
 </resources>

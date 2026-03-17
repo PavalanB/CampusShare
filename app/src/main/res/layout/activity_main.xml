@@ -83,8 +83,6 @@
         app:srcCompat="@android:drawable/ic_input_add"
         app:backgroundTint="@color/colorPrimary"
         app:tint="@color/surfaceColor" />
-        app:backgroundTint="@color/accent_orange"
-        app:tint="@color/white" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_nav"

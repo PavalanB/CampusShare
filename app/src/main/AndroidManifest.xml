@@ -11,13 +11,8 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED" />
-
-    <!-- Requirement 8: SD card writing and Notification Manager -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
-    <!-- Hardware declarations -->
     <uses-feature android:name="android.hardware.camera" android:required="false" />
     <uses-feature android:name="android.hardware.telephony" android:required="false" />
 
@@ -27,9 +22,8 @@
         android:label="CampusShare"
         android:roundIcon="@drawable/ic_resource_placeholder"
         android:supportsRtl="true"
-        android:theme="@style/Theme.CampusShare">
         android:requestLegacyExternalStorage="true"
-        android:theme="@style/Theme.MaterialComponents.Light.NoActionBar">
+        android:theme="@style/Theme.CampusShare">
 
         <activity
             android:name=".activities.SplashActivity"
@@ -53,6 +47,7 @@
         <activity android:name=".activities.InboxActivity"          android:exported="false" />
         <activity android:name=".activities.SearchActivity"         android:exported="false" />
         <activity android:name=".activities.RatingActivity"         android:exported="false" />
+
         <!-- Map Activity using OpenStreetMap -->
         <activity android:name=".activities.MapActivity"            android:exported="false" />
 

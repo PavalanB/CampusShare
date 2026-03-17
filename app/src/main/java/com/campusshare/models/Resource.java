@@ -1,6 +1,7 @@
 package com.campusshare.models;
 
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.Exclude;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -17,10 +18,8 @@ public class Resource implements Serializable {
     private String photoUrl;       // Firebase Storage download URL
     private boolean available;
 
-    // Note: Timestamp is not Serializable. We store it as a Date for Intent passing,
-    // but Firestore handles it fine as a Timestamp in the DB.
-    private Date createdAtDate;
-    private Date createdAt;        // Using java.util.Date because it is Serializable
+    // java.util.Date is Serializable and handled by Firestore as a Timestamp
+    private Date createdAt;
 
     // Location coordinates for Map integration
     private double latitude;
@@ -52,7 +51,7 @@ public class Resource implements Serializable {
         this(ownerID, ownerName, ownerDepartment, resourceName, category, description, condition);
         this.latitude = latitude;
         this.longitude = longitude;
-        this.createdAtDate = new Date();
+        this.createdAt = new Date();
     }
 
     // Getters
@@ -67,11 +66,14 @@ public class Resource implements Serializable {
     public String getPhotoUrl()        { return photoUrl; }
     public boolean isAvailable()       { return available; }
 
-    // Convert between Timestamp and Date for compatibility
-    public Timestamp getCreatedAt() {
-        return createdAtDate != null ? new Timestamp(createdAtDate) : null;
-    }
     public Date getCreatedAt()         { return createdAt; }
+
+    // Convert to Timestamp for Firebase compatibility if needed
+    @Exclude
+    public Timestamp getCreatedAtTimestamp() {
+        return createdAt != null ? new Timestamp(createdAt) : null;
+    }
+
     public double getLatitude()        { return latitude; }
     public double getLongitude()       { return longitude; }
 
@@ -90,7 +92,8 @@ public class Resource implements Serializable {
     public void setLatitude(double latitude)               { this.latitude = latitude; }
     public void setLongitude(double longitude)             { this.longitude = longitude; }
 
-    public void setCreatedAt(Timestamp createdAt) {
-        this.createdAtDate = createdAt != null ? createdAt.toDate() : null;
+    @Exclude
+    public void setCreatedAtTimestamp(Timestamp createdAt) {
+        this.createdAt = createdAt != null ? createdAt.toDate() : null;
     }
 }

@@ -1,24 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_game"
         android:title="Play Game"
-        android:icon="@drawable/ic_gamepad"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_map"
-        android:title="@string/view_map"
+        android:title="View Map"
         android:icon="@android:drawable/ic_dialog_map"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_logout"
         android:title="Logout"
-        android:orderInCategory="100"
-        app:showAsAction="never" />
-        android:title="@string/logout"
         android:orderInCategory="100"
         app:showAsAction="never" />
 </menu>
