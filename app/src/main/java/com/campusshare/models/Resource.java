@@ -17,6 +17,7 @@ public class Resource implements Serializable {
     private String condition;      // "New", "Good", "Fair", "Worn"
     private String photoUrl;       // Firebase Storage download URL
     private boolean available;
+    private Timestamp createdAt;
 
     // java.util.Date is Serializable and handled by Firestore as a Timestamp
     private Date createdAt;
@@ -52,6 +53,7 @@ public class Resource implements Serializable {
         this.latitude = latitude;
         this.longitude = longitude;
         this.createdAt = new Date();
+        this.createdAt = Timestamp.now();
     }
 
     // Getters
@@ -65,6 +67,7 @@ public class Resource implements Serializable {
     public String getCondition()       { return condition; }
     public String getPhotoUrl()        { return photoUrl; }
     public boolean isAvailable()       { return available; }
+    public Timestamp getCreatedAt()    { return createdAt; }
 
     public Date getCreatedAt()         { return createdAt; }
 
@@ -96,4 +99,5 @@ public class Resource implements Serializable {
     public void setCreatedAtTimestamp(Timestamp createdAt) {
         this.createdAt = createdAt != null ? createdAt.toDate() : null;
     }
+    public void setCreatedAt(Timestamp createdAt)          { this.createdAt = createdAt; }
 }

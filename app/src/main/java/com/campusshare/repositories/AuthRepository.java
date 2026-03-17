@@ -41,8 +41,12 @@ public class AuthRepository {
         firebaseAuth.signInWithEmailAndPassword(email, password)
             .addOnSuccessListener(authResult -> {
                 // Auth succeeded — now fetch their Firestore profile
-                String uid = authResult.getUser().getUid();
-                fetchUserProfile(uid, callback);
+                if (authResult.getUser() != null) {
+                    String uid = authResult.getUser().getUid();
+                    fetchUserProfile(uid, callback);
+                } else {
+                    callback.onFailure("Authentication failed: User is null");
+                }
             })
             .addOnFailureListener(e -> callback.onFailure(getFriendlyError(e.getMessage())));
     }
@@ -59,17 +63,21 @@ public class AuthRepository {
 
         firebaseAuth.createUserWithEmailAndPassword(email, password)
             .addOnSuccessListener(authResult -> {
-                String uid = authResult.getUser().getUid();
+                if (authResult.getUser() != null) {
+                    String uid = authResult.getUser().getUid();
 
-                // Build the user model
-                User newUser = new User(uid, name, email, phone, department, year, collegeID);
+                    // Build the user model
+                    User newUser = new User(uid, name, email, phone, department, year, collegeID);
 
-                // Save to Firestore /users/{uid}
-                db.collection("users")
-                    .document(uid)
-                    .set(newUser)
-                    .addOnSuccessListener(unused -> callback.onSuccess(newUser))
-                    .addOnFailureListener(e -> callback.onFailure("Account created but profile save failed: " + e.getMessage()));
+                    // Save to Firestore /users/{uid}
+                    db.collection("users")
+                        .document(uid)
+                        .set(newUser)
+                        .addOnSuccessListener(unused -> callback.onSuccess(newUser))
+                        .addOnFailureListener(e -> callback.onFailure("Account created but profile save failed: " + e.getMessage()));
+                } else {
+                    callback.onFailure("Registration failed: User is null");
+                }
             })
             .addOnFailureListener(e -> callback.onFailure(getFriendlyError(e.getMessage())));
     }
@@ -97,12 +105,18 @@ public class AuthRepository {
             .addOnSuccessListener(snapshot -> {
                 if (snapshot.exists()) {
                     User user = snapshot.toObject(User.class);
-                    callback.onSuccess(user);
+                    if (user != null) {
+                        callback.onSuccess(user);
+                    } else {
+                        callback.onFailure("User profile is empty.");
+                    }
                 } else {
                     callback.onFailure("User profile not found.");
+                    callback.onFailure("User profile not found in database.");
                 }
             })
             .addOnFailureListener(e -> callback.onFailure(e.getMessage()));
+            .addOnFailureListener(e -> callback.onFailure("Firestore Error: " + e.getMessage()));
     }
 
     // ─── Session Helpers ──────────────────────────────────────────────────────
@@ -125,19 +139,29 @@ public class AuthRepository {
     private String getFriendlyError(String firebaseError) {
         if (firebaseError == null) return "Something went wrong. Please try again.";
         String lower = firebaseError.toLowerCase();
-        
+        String lowerError = firebaseError.toLowerCase();
+
+        if (lowerError.contains("email address is already in use") || lowerError.contains("already-in-use"))
         if (lower.contains("email address is already in use"))
             return "This email is already registered. Try logging in.";
+        if (lowerError.contains("no user record") || lowerError.contains("user-not-found"))
         if (lower.contains("no user record"))
             return "No account found with this email.";
+        if (lowerError.contains("password is invalid") || lowerError.contains("wrong-password") || lowerError.contains("invalid_login_credentials"))
+            return "Incorrect password or email. Please try again.";
+        if (lowerError.contains("badly formatted") || lowerError.contains("invalid-email"))
         if (lower.contains("password is invalid") || lower.contains("invalid_login_credentials"))
             return "Incorrect password. Please try again.";
         if (lower.contains("badly formatted"))
             return "Please enter a valid email address.";
         if (lower.contains("network error") || lower.contains("network_error"))
+        if (lowerError.contains("network error") || lowerError.contains("network-request-failed"))
             return "Network error. Check your internet connection.";
-            
+        if (lowerError.contains("too many requests") || lowerError.contains("too-many-requests"))
+            return "Too many attempts. Please try again later.";
+
         // If it's none of the above, return the actual error so we can debug it
         return "Error: " + firebaseError;
+        return "Authentication error: " + firebaseError;
     }
 }

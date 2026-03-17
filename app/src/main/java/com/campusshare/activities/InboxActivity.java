@@ -50,6 +50,7 @@ public class InboxActivity extends AppCompatActivity
             finish();
             return;
         }
+        requestRepository = new BorrowRequestRepository(this);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -106,6 +107,7 @@ public class InboxActivity extends AppCompatActivity
                     showLoading(false);
                     // Show the ACTUAL error from Firestore
                     Toast.makeText(InboxActivity.this, "Error: " + error, Toast.LENGTH_LONG).show();
+                    Toast.makeText(InboxActivity.this, "Could not load requests", Toast.LENGTH_SHORT).show();
                 }
             });
     }
@@ -125,6 +127,7 @@ public class InboxActivity extends AppCompatActivity
                     showLoading(false);
                     // Show the ACTUAL error from Firestore
                     Toast.makeText(InboxActivity.this, "Error: " + error, Toast.LENGTH_LONG).show();
+                    Toast.makeText(InboxActivity.this, "Could not load requests", Toast.LENGTH_SHORT).show();
                 }
             });
     }

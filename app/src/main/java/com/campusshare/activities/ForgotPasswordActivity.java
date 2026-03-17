@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +20,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     private EditText etEmail;
     private Button btnSendReset;
     private Button btnBackToLogin;
+    private TextView tvBackToLogin;
     private ProgressBar progressBar;
 
     private AuthRepository authRepository;
@@ -33,6 +35,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         etEmail = findViewById(R.id.et_email);
         btnSendReset = findViewById(R.id.btn_send_reset);
         btnBackToLogin = findViewById(R.id.btn_back_to_login);
+        tvBackToLogin = findViewById(R.id.tv_back_to_login);
         progressBar = findViewById(R.id.progress_bar);
 
         btnSendReset.setOnClickListener(v -> {
@@ -68,6 +71,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             });
         });
 
+        tvBackToLogin.setOnClickListener(v -> finish());
         btnBackToLogin.setOnClickListener(v -> finish());
     }
 
@@ -78,5 +82,9 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         if (btnSendReset != null) {
             btnSendReset.setEnabled(!show);
         }
+    }
+}
+        progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
+        btnSendReset.setEnabled(!show);
     }
 }

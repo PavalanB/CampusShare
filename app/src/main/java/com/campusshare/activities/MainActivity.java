@@ -2,6 +2,7 @@ package com.campusshare.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +22,7 @@ import com.campusshare.models.Resource;
 import com.campusshare.models.User;
 import com.campusshare.repositories.AuthRepository;
 import com.campusshare.repositories.ResourceRepository;
+import com.campusshare.utils.NotificationHelper;
 import com.campusshare.utils.SessionManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -30,6 +32,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = "MainActivity";
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
     private TextView tvEmpty;
@@ -39,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ResourceAdapter adapter;
     private final List<Resource> resourceList = new ArrayList<>();
+    private List<Resource> resourceList = new ArrayList<>();
     private ResourceRepository resourceRepository;
     private AuthRepository authRepository;
     private User currentUser;
@@ -49,7 +53,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        authRepository = new AuthRepository();
         currentUser = SessionManager.getUser(this);
+
+        // Safety redirect: if session is missing but user is logged in to Firebase, re-fetch
         if (currentUser == null) {
             // No session found, redirect to login
             Intent i = new Intent(this, LoginActivity.class);
@@ -57,10 +64,35 @@ public class MainActivity extends AppCompatActivity {
             startActivity(i);
             finish();
             return;
+            if (authRepository.getCurrentUser() != null) {
+                authRepository.fetchUserProfile(authRepository.getCurrentUser().getUid(),
+                    new AuthRepository.UserProfileCallback() {
+                        @Override
+                        public void onSuccess(User user) {
+                            currentUser = user;
+                            SessionManager.saveUser(MainActivity.this, user);
+                            continueInitialization();
+                        }
+                        @Override
+                        public void onFailure(String error) {
+                            redirectToLogin();
+                        }
+                    });
+                return;
+            } else {
+                redirectToLogin();
+                return;
+            }
         }
 
         resourceRepository = new ResourceRepository();
         authRepository = new AuthRepository();
+        continueInitialization();
+    }
+
+    private void continueInitialization() {
+        resourceRepository = new ResourceRepository(this);
+        NotificationHelper.refreshAndSaveToken();
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -82,12 +114,23 @@ public class MainActivity extends AppCompatActivity {
         loadBrowseFeed();
     }
 
+    private void redirectToLogin() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
         if (currentUser == null) return;
         if (isMyListingsMode) loadMyListings();
         else loadBrowseFeed();
+        if (currentUser != null) {
+            if (isMyListingsMode) loadMyListings();
+            else loadBrowseFeed();
+        }
     }
 
     private void setupRecyclerView(boolean ownerMode) {
@@ -147,6 +190,7 @@ public class MainActivity extends AppCompatActivity {
                 } catch (Exception e) {
                     Toast.makeText(this, "Search coming soon!", Toast.LENGTH_SHORT).show();
                 }
+                startActivity(new Intent(this, SearchActivity.class));
                 return false;
             } else if (id == R.id.nav_inbox) {
                 try {
@@ -154,6 +198,7 @@ public class MainActivity extends AppCompatActivity {
                 } catch (Exception e) {
                     Toast.makeText(this, "Inbox coming soon!", Toast.LENGTH_SHORT).show();
                 }
+                startActivity(new Intent(this, InboxActivity.class));
                 return false;
             } else if (id == R.id.nav_profile) {
                 startActivity(new Intent(this, ProfileActivity.class));
@@ -179,6 +224,8 @@ public class MainActivity extends AppCompatActivity {
                 public void onFailure(String error) {
                     showLoading(false);
                     Toast.makeText(MainActivity.this, "Could not load resources: " + error, Toast.LENGTH_LONG).show();
+                    Log.e(TAG, "Browse feed error: " + error);
+                    Toast.makeText(MainActivity.this, "Error: " + error, Toast.LENGTH_LONG).show();
                 }
             });
     }
@@ -199,6 +246,8 @@ public class MainActivity extends AppCompatActivity {
                 public void onFailure(String error) {
                     showLoading(false);
                     Toast.makeText(MainActivity.this, "Could not load your listings: " + error, Toast.LENGTH_LONG).show();
+                    Log.e(TAG, "My listings error: " + error);
+                    Toast.makeText(MainActivity.this, "Error: " + error, Toast.LENGTH_LONG).show();
                 }
             });
     }
@@ -216,10 +265,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_logout) {
         int id = item.getItemId();
         if (id == R.id.action_logout) {
             authRepository.logout();
             SessionManager.clearSession(this);
+            redirectToLogin();
             Intent i = new Intent(this, LoginActivity.class);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(i);

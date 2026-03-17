@@ -10,9 +10,11 @@
         android:title="View Map"
         android:icon="@android:drawable/ic_dialog_map"
         app:showAsAction="ifRoom" />
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/action_logout"
         android:title="Logout"
         android:orderInCategory="100"
         app:showAsAction="never" />
+        android:orderInCategory="100" />
 </menu>

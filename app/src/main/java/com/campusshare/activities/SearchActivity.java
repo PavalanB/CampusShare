@@ -67,6 +67,7 @@ public class SearchActivity extends AppCompatActivity {
 
         currentUserID      = SessionManager.getUserID(this);
         resourceRepository = new ResourceRepository();
+        resourceRepository = new ResourceRepository(this);
 
         setupToolbar();
         initViews();

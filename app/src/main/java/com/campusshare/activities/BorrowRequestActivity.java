@@ -58,6 +58,7 @@ public class BorrowRequestActivity extends AppCompatActivity {
         if (resource == null || currentUser == null) { finish(); return; }
 
         requestRepository = new BorrowRequestRepository();
+        requestRepository = new BorrowRequestRepository(this);
         creditManager     = new CreditManager();
 
         setupToolbar();

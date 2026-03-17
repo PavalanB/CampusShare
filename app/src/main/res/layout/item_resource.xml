@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView
+<androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -9,6 +10,9 @@
     app:cardCornerRadius="16dp"
     app:cardElevation="2dp"
     app:strokeWidth="0dp">
+    android:layout_marginBottom="12dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="3dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,7 +29,30 @@
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_resource_placeholder" />
+        <!-- Resource photo -->
+        <ImageView
+            android:id="@+id/iv_resource_photo"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_resource_placeholder" />
 
+        <!-- Availability badge overlaid on photo -->
+        <TextView
+            android:id="@+id/tv_availability"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-180dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginBottom="148dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:text="Available"
+            android:textSize="11sp"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/badge_available" />
             <View
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
@@ -47,17 +74,22 @@
                 android:background="@drawable/badge_available" />
         </FrameLayout>
 
+        <!-- Content area -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="16dp">
+            android:padding="14dp">
 
+            <!-- Name + Category chip -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="top">
+                android:gravity="center_vertical"
+                android:layout_marginBottom="6dp">
 
                 <TextView
                     android:id="@+id/tv_resource_name"
@@ -66,8 +98,10 @@
                     android:layout_weight="1"
                     android:text="Resource Name"
                     android:textSize="18sp"
+                    android:textSize="16sp"
                     android:textStyle="bold"
                     android:textColor="@color/textPrimary" />
+                    android:textColor="#212121" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_category"
@@ -80,14 +114,19 @@
                     app:chipMinHeight="24dp"
                     app:chipCornerRadius="12dp"
                     app:chipStrokeWidth="0dp" />
+                    app:chipMinHeight="28dp" />
             </LinearLayout>
 
+            <!-- Owner -->
             <TextView
                 android:id="@+id/tv_owner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="Owner · Department"
+                android:textSize="13sp"
+                android:textColor="#757575"
+                android:layout_marginBottom="4dp" />
                 android:textSize="14sp"
                 android:textColor="@color/textSecondary" />
 
@@ -103,6 +142,14 @@
                 android:orientation="horizontal"
                 android:gravity="center_vertical">
 
+            <!-- Condition -->
+            <TextView
+                android:id="@+id/tv_condition"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Condition: Good"
+                android:textSize="12sp"
+                android:textColor="#9E9E9E" />
                 <TextView
                     android:id="@+id/tv_condition"
                     android:layout_width="0dp"
@@ -117,6 +164,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
+            <!-- Owner-only actions (edit / delete) -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:gravity="end">
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_edit"
@@ -129,7 +183,36 @@
                         android:textColor="@color/colorPrimary"
                         android:textSize="13sp"
                         android:visibility="gone" />
+                <TextView
+                    android:id="@+id/tv_edit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Edit"
+                    android:textColor="#1A237E"
+                    android:textSize="13sp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
+                    android:visibility="gone" />
 
+                <TextView
+                    android:id="@+id/tv_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Delete"
+                    android:textColor="#C62828"
+                    android:textSize="13sp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_delete"
                         style="@style/Widget.MaterialComponents.Button.TextButton"

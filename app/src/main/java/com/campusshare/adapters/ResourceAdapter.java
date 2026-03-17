@@ -85,8 +85,14 @@ public class ResourceAdapter extends RecyclerView.Adapter<ResourceAdapter.Resour
             holder.llOwnerActions.setVisibility(View.VISIBLE);
             holder.btnEdit.setOnClickListener(v -> listener.onEditClick(resource));
             holder.btnDelete.setOnClickListener(v -> listener.onDeleteClick(resource));
+            holder.tvEdit.setVisibility(View.VISIBLE);
+            holder.tvDelete.setVisibility(View.VISIBLE);
+            holder.tvEdit.setOnClickListener(v -> listener.onEditClick(resource));
+            holder.tvDelete.setOnClickListener(v -> listener.onDeleteClick(resource));
         } else {
             holder.llOwnerActions.setVisibility(View.GONE);
+            holder.tvEdit.setVisibility(View.GONE);
+            holder.tvDelete.setVisibility(View.GONE);
         }
 
         // Card click → Resource Detail screen
@@ -111,6 +117,7 @@ public class ResourceAdapter extends RecyclerView.Adapter<ResourceAdapter.Resour
         TextView tvName, tvOwner, tvCondition, tvAvailability;
         MaterialButton btnEdit, btnDelete;
         View llOwnerActions;
+        TextView tvName, tvOwner, tvCondition, tvAvailability, tvEdit, tvDelete;
         Chip chipCategory;
 
         ResourceViewHolder(@NonNull View itemView) {
@@ -124,6 +131,8 @@ public class ResourceAdapter extends RecyclerView.Adapter<ResourceAdapter.Resour
             btnEdit         = itemView.findViewById(R.id.btn_edit);
             btnDelete       = itemView.findViewById(R.id.btn_delete);
             llOwnerActions  = itemView.findViewById(R.id.ll_owner_actions);
+            tvEdit          = itemView.findViewById(R.id.tv_edit);
+            tvDelete        = itemView.findViewById(R.id.tv_delete);
         }
     }
 }

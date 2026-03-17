@@ -2,9 +2,13 @@
 // CampusShare - Authentication Module
 // Make sure your project-level build.gradle has the Google Services classpath
 
+// app/build.gradle — Cloudinary version
+// Firebase Auth + Firestore + FCM | Cloudinary for photos (no Firebase Storage needed)
+
 plugins {
     id 'com.android.application'
     id 'com.google.gms.google-services'  // Firebase plugin
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -41,6 +45,7 @@ dependencies {
     implementation 'androidx.preference:preference:1.2.1'
 
     // Firebase BOM — manages all Firebase versions consistently
+    // Firebase BOM — Auth, Firestore, FCM only. NO firebase-storage.
     implementation platform('com.google.firebase:firebase-bom:32.7.0')
 
     // Firebase Authentication
@@ -55,12 +60,16 @@ dependencies {
     // Firebase Cloud Messaging (for notifications — Phase 6)
     implementation 'com.google.firebase:firebase-messaging'
 
+    // NOTE: firebase-storage intentionally removed — Cloudinary handles photos
+    // Cloudinary needs zero extra libraries — plain HttpURLConnection does the upload
+
+    // Image loading — Glide loads Cloudinary URLs just like any other HTTPS URL
     // Glide for loading profile images (Phase 2+)
     implementation 'com.github.bumptech.glide:glide:4.16.0'
 
     // OpenStreetMap (Free Alternative to Google Maps)
     implementation 'org.osmdroid:osmdroid-android:6.1.20'
-    
+
     // Play Services Location (Still useful for GPS coordinates)
     implementation 'com.google.android.gms:play-services-location:21.3.0'
 }

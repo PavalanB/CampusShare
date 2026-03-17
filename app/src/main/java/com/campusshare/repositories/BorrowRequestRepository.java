@@ -1,5 +1,7 @@
 package com.campusshare.repositories;
 
+import android.content.Context;
+
 import com.campusshare.models.BorrowRequest;
 import com.campusshare.utils.CreditManager;
 import com.campusshare.utils.NotificationHelper;
@@ -9,12 +11,15 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * BorrowRequestRepository — all Firestore operations for borrow requests.
+ *
+ * Sorting is handled in-memory to avoid requiring manual Firestore Indexes.
  */
 public class BorrowRequestRepository {
 
@@ -39,8 +44,10 @@ public class BorrowRequestRepository {
     }
 
     public BorrowRequestRepository() {
+    public BorrowRequestRepository(Context context) {
         this.db                 = FirebaseFirestore.getInstance();
         this.resourceRepository = new ResourceRepository();
+        this.resourceRepository = new ResourceRepository(context);
         this.creditManager      = new CreditManager();
     }
 
@@ -53,6 +60,7 @@ public class BorrowRequestRepository {
                 request.setRequestID(docRef.getId());
                 docRef.update("requestID", docRef.getId())
                     .addOnSuccessListener(v -> {
+                        // Notify owner a new request arrived
                         NotificationHelper.notifyRequestReceived(request);
                         callback.onSuccess(request);
                     })
@@ -84,6 +92,7 @@ public class BorrowRequestRepository {
                         @Override public void onSuccess() {}
                         @Override public void onFailure(String e) {}
                     });
+                // Notify borrower their request was accepted
                 NotificationHelper.notifyRequestAccepted(request);
                 callback.onSuccess();
             })
@@ -97,6 +106,7 @@ public class BorrowRequestRepository {
             .document(request.getRequestID())
             .update("status", BorrowRequest.STATUS_REJECTED)
             .addOnSuccessListener(unused -> {
+                // Notify borrower their request was rejected
                 NotificationHelper.notifyRequestRejected(request);
                 callback.onSuccess();
             })
@@ -127,6 +137,7 @@ public class BorrowRequestRepository {
                         @Override public void onSuccess() {}
                         @Override public void onFailure(String e) {}
                     });
+                // Notify borrower to rate the experience
                 NotificationHelper.notifyItemReturned(request);
                 callback.onSuccess();
             })
@@ -144,6 +155,16 @@ public class BorrowRequestRepository {
                 List<BorrowRequest> list = new ArrayList<>();
                 for (QueryDocumentSnapshot doc : snapshots)
                     list.add(doc.toObject(BorrowRequest.class));
+
+                // Sort in-memory: Priority first, then newest date
+                Collections.sort(list, (r1, r2) -> {
+                    if (r1.isPriority() != r2.isPriority()) {
+                        return r1.isPriority() ? -1 : 1;
+                    }
+                    if (r1.getRequestDate() == null || r2.getRequestDate() == null) return 0;
+                    return r2.getRequestDate().compareTo(r1.getRequestDate());
+                });
+
                 callback.onSuccess(list);
             })
             .addOnFailureListener(e -> callback.onFailure(e.getMessage()));
@@ -160,6 +181,13 @@ public class BorrowRequestRepository {
                 List<BorrowRequest> list = new ArrayList<>();
                 for (QueryDocumentSnapshot doc : snapshots)
                     list.add(doc.toObject(BorrowRequest.class));
+
+                // Sort in-memory: Newest date first
+                Collections.sort(list, (r1, r2) -> {
+                    if (r1.getRequestDate() == null || r2.getRequestDate() == null) return 0;
+                    return r2.getRequestDate().compareTo(r1.getRequestDate());
+                });
+
                 callback.onSuccess(list);
             })
             .addOnFailureListener(e -> callback.onFailure(e.getMessage()));
