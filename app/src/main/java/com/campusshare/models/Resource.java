@@ -1,12 +1,8 @@
 package com.campusshare.models;
 
-<<<<<<< HEAD
 import com.google.firebase.Timestamp;
 import java.io.Serializable;
-=======
-import java.io.Serializable;
 import java.util.Date;
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
 
 public class Resource implements Serializable {
 
@@ -20,14 +16,10 @@ public class Resource implements Serializable {
     private String condition;      // "New", "Good", "Fair", "Worn"
     private String photoUrl;       // Firebase Storage download URL
     private boolean available;
-<<<<<<< HEAD
     
     // Note: Timestamp is not Serializable. We store it as a Date for Intent passing, 
     // but Firestore handles it fine as a Timestamp in the DB.
-    private java.util.Date createdAtDate;
-=======
-    private Date createdAt;        // Using java.util.Date because it is Serializable
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
+    private Date createdAtDate;
 
     // Required empty constructor for Firestore deserialization
     public Resource() {}
@@ -44,11 +36,7 @@ public class Resource implements Serializable {
         this.condition = condition;
         this.available = true;
         this.photoUrl = "";
-<<<<<<< HEAD
-        this.createdAtDate = new java.util.Date();
-=======
-        this.createdAt = new Date(); // Current time
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
+        this.createdAtDate = new Date();
     }
 
     // Getters
@@ -62,15 +50,11 @@ public class Resource implements Serializable {
     public String getCondition()       { return condition; }
     public String getPhotoUrl()        { return photoUrl; }
     public boolean isAvailable()       { return available; }
-<<<<<<< HEAD
     
     // Convert between Timestamp and Date for compatibility
     public Timestamp getCreatedAt() { 
         return createdAtDate != null ? new Timestamp(createdAtDate) : null; 
     }
-=======
-    public Date getCreatedAt()         { return createdAt; }
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
 
     // Setters
     public void setResourceID(String resourceID)           { this.resourceID = resourceID; }
@@ -83,12 +67,8 @@ public class Resource implements Serializable {
     public void setCondition(String condition)             { this.condition = condition; }
     public void setPhotoUrl(String photoUrl)               { this.photoUrl = photoUrl; }
     public void setAvailable(boolean available)            { this.available = available; }
-<<<<<<< HEAD
     
     public void setCreatedAt(Timestamp createdAt) { 
         this.createdAtDate = createdAt != null ? createdAt.toDate() : null; 
     }
-=======
-    public void setCreatedAt(Date createdAt)               { this.createdAt = createdAt; }
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
 }

@@ -16,11 +16,8 @@ import java.util.UUID;
 /**
  * ResourceRepository handles all Firestore reads/writes for resources
  * and Firebase Storage uploads for resource photos.
-<<<<<<< HEAD
  *
  * All Activities and Fragments call this class — never Firebase directly.
-=======
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
  */
 public class ResourceRepository {
 
@@ -29,11 +26,8 @@ public class ResourceRepository {
 
     private static final String COLLECTION = "resources";
 
-<<<<<<< HEAD
     // ─── Callback interfaces ──────────────────────────────────────────────────
 
-=======
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
     public interface ResourceCallback {
         void onSuccess(Resource resource);
         void onFailure(String error);
@@ -59,7 +53,6 @@ public class ResourceRepository {
         this.storageRef = FirebaseStorage.getInstance().getReference();
     }
 
-<<<<<<< HEAD
     // ─── Add Resource ─────────────────────────────────────────────────────────
 
     /**
@@ -69,10 +62,6 @@ public class ResourceRepository {
     public void addResource(Resource resource, Uri photoUri, ResourceCallback callback) {
         if (photoUri != null) {
             // Upload photo first, then save resource
-=======
-    public void addResource(Resource resource, Uri photoUri, ResourceCallback callback) {
-        if (photoUri != null) {
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
             uploadPhoto(photoUri, new PhotoUploadCallback() {
                 @Override
                 public void onSuccess(String downloadUrl) {
@@ -81,10 +70,7 @@ public class ResourceRepository {
                 }
                 @Override
                 public void onFailure(String error) {
-<<<<<<< HEAD
                     // Save resource without photo rather than failing entirely
-=======
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
                     saveResourceToFirestore(resource, callback);
                 }
             });
@@ -94,7 +80,6 @@ public class ResourceRepository {
     }
 
     private void saveResourceToFirestore(Resource resource, ResourceCallback callback) {
-<<<<<<< HEAD
         // Let Firestore auto-generate the document ID
         db.collection(COLLECTION)
             .add(resource)
@@ -104,20 +89,10 @@ public class ResourceRepository {
                 docRef.update("resourceID", docRef.getId())
                     .addOnSuccessListener(unused -> callback.onSuccess(resource))
                     .addOnFailureListener(e -> callback.onSuccess(resource)); // non-critical failure
-=======
-        db.collection(COLLECTION)
-            .add(resource)
-            .addOnSuccessListener(docRef -> {
-                resource.setResourceID(docRef.getId());
-                docRef.update("resourceID", docRef.getId())
-                    .addOnSuccessListener(unused -> callback.onSuccess(resource))
-                    .addOnFailureListener(e -> callback.onSuccess(resource));
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
             })
             .addOnFailureListener(e -> callback.onFailure("Failed to add resource: " + e.getMessage()));
     }
 
-<<<<<<< HEAD
     // ─── Upload Photo ─────────────────────────────────────────────────────────
 
     /**
@@ -126,9 +101,6 @@ public class ResourceRepository {
      */
     public void uploadPhoto(Uri photoUri, PhotoUploadCallback callback) {
         // Unique filename prevents collisions
-=======
-    public void uploadPhoto(Uri photoUri, PhotoUploadCallback callback) {
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
         String filename = "resource_photos/" + UUID.randomUUID().toString() + ".jpg";
         StorageReference photoRef = storageRef.child(filename);
 
@@ -141,15 +113,12 @@ public class ResourceRepository {
             .addOnFailureListener(e -> callback.onFailure("Photo upload failed: " + e.getMessage()));
     }
 
-<<<<<<< HEAD
     // ─── Fetch All Available Resources ───────────────────────────────────────
 
     /**
      * Fetches all available resources, excluding the current user's own listings.
      * Ordered by newest first.
      */
-=======
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
     public void fetchAvailableResources(String currentUserID, ResourceListCallback callback) {
         db.collection(COLLECTION)
             .whereEqualTo("available", true)
@@ -159,12 +128,8 @@ public class ResourceRepository {
                 List<Resource> list = new ArrayList<>();
                 for (QueryDocumentSnapshot doc : snapshots) {
                     Resource r = doc.toObject(Resource.class);
-<<<<<<< HEAD
                     // Don't show the user their own resources in the browse feed
-                    if (!r.getOwnerID().equals(currentUserID)) {
-=======
                     if (r.getOwnerID() != null && !r.getOwnerID().equals(currentUserID)) {
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
                         list.add(r);
                     }
                 }
@@ -173,14 +138,11 @@ public class ResourceRepository {
             .addOnFailureListener(e -> callback.onFailure(e.getMessage()));
     }
 
-<<<<<<< HEAD
     // ─── Fetch My Listings ────────────────────────────────────────────────────
 
     /**
      * Fetches all resources listed by the current user (their "My Listings" screen).
      */
-=======
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
     public void fetchMyResources(String userID, ResourceListCallback callback) {
         db.collection(COLLECTION)
             .whereEqualTo("ownerID", userID)
@@ -196,7 +158,6 @@ public class ResourceRepository {
             .addOnFailureListener(e -> callback.onFailure(e.getMessage()));
     }
 
-<<<<<<< HEAD
     // ─── Fetch by Category ────────────────────────────────────────────────────
 
     public void fetchByCategory(String category, String currentUserID, ResourceListCallback callback) {
@@ -209,7 +170,7 @@ public class ResourceRepository {
                 List<Resource> list = new ArrayList<>();
                 for (QueryDocumentSnapshot doc : snapshots) {
                     Resource r = doc.toObject(Resource.class);
-                    if (!r.getOwnerID().equals(currentUserID)) {
+                    if (r.getOwnerID() != null && !r.getOwnerID().equals(currentUserID)) {
                         list.add(r);
                     }
                 }
@@ -220,8 +181,6 @@ public class ResourceRepository {
 
     // ─── Update Resource ──────────────────────────────────────────────────────
 
-=======
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
     public void updateResource(Resource resource, Uri newPhotoUri, ResourceCallback callback) {
         if (newPhotoUri != null) {
             uploadPhoto(newPhotoUri, new PhotoUploadCallback() {
@@ -248,7 +207,6 @@ public class ResourceRepository {
             .addOnFailureListener(e -> callback.onFailure("Update failed: " + e.getMessage()));
     }
 
-<<<<<<< HEAD
     // ─── Toggle Availability ──────────────────────────────────────────────────
 
     public void setAvailability(String resourceID, boolean available, SimpleCallback callback) {
@@ -261,8 +219,6 @@ public class ResourceRepository {
 
     // ─── Delete Resource ──────────────────────────────────────────────────────
 
-=======
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
     public void deleteResource(String resourceID, SimpleCallback callback) {
         db.collection(COLLECTION)
             .document(resourceID)
@@ -270,7 +226,6 @@ public class ResourceRepository {
             .addOnSuccessListener(unused -> callback.onSuccess())
             .addOnFailureListener(e -> callback.onFailure("Delete failed: " + e.getMessage()));
     }
-<<<<<<< HEAD
 
     // ─── Fetch Single Resource ────────────────────────────────────────────────
 
@@ -287,6 +242,4 @@ public class ResourceRepository {
             })
             .addOnFailureListener(e -> callback.onFailure(e.getMessage()));
     }
-=======
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
 }

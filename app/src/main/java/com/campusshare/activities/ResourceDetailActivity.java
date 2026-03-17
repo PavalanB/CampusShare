@@ -3,10 +3,7 @@ package com.campusshare.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-<<<<<<< HEAD
-=======
 import android.view.View;
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,23 +18,16 @@ import com.campusshare.models.Resource;
 import com.campusshare.utils.SessionManager;
 import com.google.android.material.chip.Chip;
 
-<<<<<<< HEAD
-=======
 /**
  * ResourceDetailActivity shows the full details of a resource.
  * The "Request to Borrow" button will be wired to Phase 3 (BorrowRequestActivity).
  */
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
 public class ResourceDetailActivity extends AppCompatActivity {
 
     private ImageView ivPhoto;
     private TextView tvName, tvOwner, tvDepartment, tvDescription, tvCondition, tvAvailability;
     private Chip chipCategory;
     private Button btnBorrow;
-<<<<<<< HEAD
-=======
-
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
     private Resource resource;
 
     @Override
@@ -55,14 +45,11 @@ public class ResourceDetailActivity extends AppCompatActivity {
             getSupportActionBar().setTitle(resource.getResourceName());
         }
 
-<<<<<<< HEAD
-=======
         initViews();
         populateData();
     }
 
     private void initViews() {
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
         ivPhoto        = findViewById(R.id.iv_detail_photo);
         tvName         = findViewById(R.id.tv_detail_name);
         tvOwner        = findViewById(R.id.tv_detail_owner);
@@ -72,13 +59,9 @@ public class ResourceDetailActivity extends AppCompatActivity {
         tvAvailability = findViewById(R.id.tv_detail_availability);
         chipCategory   = findViewById(R.id.chip_detail_category);
         btnBorrow      = findViewById(R.id.btn_borrow);
-<<<<<<< HEAD
-
-=======
     }
 
     private void populateData() {
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
         tvName.setText(resource.getResourceName());
         tvOwner.setText("Owner: " + resource.getOwnerName());
         tvDepartment.setText("Department: " + resource.getOwnerDepartment());
@@ -97,34 +80,28 @@ public class ResourceDetailActivity extends AppCompatActivity {
             btnBorrow.setText("Not Available");
         }
 
-        if (!resource.getPhotoUrl().isEmpty()) {
+        if (resource.getPhotoUrl() != null && !resource.getPhotoUrl().isEmpty()) {
             Glide.with(this).load(resource.getPhotoUrl()).centerCrop().into(ivPhoto);
         } else {
             ivPhoto.setImageResource(R.drawable.ic_resource_placeholder);
         }
 
-<<<<<<< HEAD
-        // Phase 3 — wire borrow button to BorrowRequestActivity
         btnBorrow.setOnClickListener(v -> {
             String currentUserID = SessionManager.getUserID(this);
             if (currentUserID != null && currentUserID.equals(resource.getOwnerID())) {
                 Toast.makeText(this, "This is your own resource.", Toast.LENGTH_SHORT).show();
                 return;
             }
-            Intent intent = new Intent(this, BorrowRequestActivity.class);
-            intent.putExtra("resource", resource);
-            startActivity(intent);
-=======
-        // Phase 3 will wire this button to BorrowRequestActivity
-        btnBorrow.setOnClickListener(v -> {
-            String currentUserID = SessionManager.getUserID(this);
-            if (currentUserID.equals(resource.getOwnerID())) {
-                Toast.makeText(this, "This is your own resource.", Toast.LENGTH_SHORT).show();
-                return;
+            
+            // Try to launch BorrowRequestActivity if it exists
+            try {
+                Class<?> cls = Class.forName("com.campusshare.activities.BorrowRequestActivity");
+                Intent intent = new Intent(this, cls);
+                intent.putExtra("resource", resource);
+                startActivity(intent);
+            } catch (ClassNotFoundException e) {
+                Toast.makeText(this, "Borrow requests coming soon!", Toast.LENGTH_SHORT).show();
             }
-            // TODO Phase 3: start BorrowRequestActivity with resource
-            Toast.makeText(this, "Borrow requests coming in Phase 3!", Toast.LENGTH_SHORT).show();
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
         });
     }
 

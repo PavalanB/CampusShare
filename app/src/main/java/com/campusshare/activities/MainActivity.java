@@ -21,10 +21,6 @@ import com.campusshare.models.Resource;
 import com.campusshare.models.User;
 import com.campusshare.repositories.AuthRepository;
 import com.campusshare.repositories.ResourceRepository;
-<<<<<<< HEAD
-import com.campusshare.utils.NotificationHelper;
-=======
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
 import com.campusshare.utils.SessionManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -54,11 +50,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         currentUser = SessionManager.getUser(this);
-<<<<<<< HEAD
-        resourceRepository = new ResourceRepository();
-        authRepository = new AuthRepository();
-        NotificationHelper.refreshAndSaveToken();
-=======
         if (currentUser == null) {
             // No session found, redirect to login
             Intent i = new Intent(this, LoginActivity.class);
@@ -70,7 +61,6 @@ public class MainActivity extends AppCompatActivity {
 
         resourceRepository = new ResourceRepository();
         authRepository = new AuthRepository();
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -95,10 +85,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-<<<<<<< HEAD
-=======
         if (currentUser == null) return;
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
         if (isMyListingsMode) loadMyListings();
         else loadBrowseFeed();
     }
@@ -127,11 +114,7 @@ public class MainActivity extends AppCompatActivity {
                             new ResourceRepository.SimpleCallback() {
                                 @Override public void onSuccess() { loadMyListings(); }
                                 @Override public void onFailure(String e) {
-<<<<<<< HEAD
-                                    Toast.makeText(MainActivity.this, "Delete failed", Toast.LENGTH_SHORT).show();
-=======
                                     Toast.makeText(MainActivity.this, "Delete failed: " + e, Toast.LENGTH_SHORT).show();
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
                                 }
                             }))
                     .setNegativeButton("Cancel", null).show();
@@ -158,15 +141,20 @@ public class MainActivity extends AppCompatActivity {
                 fabAdd.show();
                 loadMyListings();
                 return true;
-<<<<<<< HEAD
             } else if (id == R.id.nav_search) {
-                startActivity(new Intent(this, SearchActivity.class));
+                try {
+                    startActivity(new Intent(this, Class.forName("com.campusshare.activities.SearchActivity")));
+                } catch (Exception e) {
+                    Toast.makeText(this, "Search coming soon!", Toast.LENGTH_SHORT).show();
+                }
                 return false;
             } else if (id == R.id.nav_inbox) {
-                startActivity(new Intent(this, InboxActivity.class));
+                try {
+                    startActivity(new Intent(this, Class.forName("com.campusshare.activities.InboxActivity")));
+                } catch (Exception e) {
+                    Toast.makeText(this, "Inbox coming soon!", Toast.LENGTH_SHORT).show();
+                }
                 return false;
-=======
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
             } else if (id == R.id.nav_profile) {
                 startActivity(new Intent(this, ProfileActivity.class));
                 return false; // don't highlight tab since it's a separate screen
@@ -176,10 +164,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadBrowseFeed() {
-<<<<<<< HEAD
-=======
         if (currentUser == null) return;
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
         showLoading(true);
         resourceRepository.fetchAvailableResources(currentUser.getUserID(),
             new ResourceRepository.ResourceListCallback() {
@@ -193,21 +178,13 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(String error) {
                     showLoading(false);
-<<<<<<< HEAD
-                    Toast.makeText(MainActivity.this, "Could not load resources", Toast.LENGTH_SHORT).show();
-=======
-                    // Show actual error to help debugging (e.g. missing Firestore index)
                     Toast.makeText(MainActivity.this, "Could not load resources: " + error, Toast.LENGTH_LONG).show();
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
                 }
             });
     }
 
     private void loadMyListings() {
-<<<<<<< HEAD
-=======
         if (currentUser == null) return;
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
         showLoading(true);
         resourceRepository.fetchMyResources(currentUser.getUserID(),
             new ResourceRepository.ResourceListCallback() {
@@ -221,11 +198,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(String error) {
                     showLoading(false);
-<<<<<<< HEAD
-                    Toast.makeText(MainActivity.this, "Could not load your listings", Toast.LENGTH_SHORT).show();
-=======
                     Toast.makeText(MainActivity.this, "Could not load your listings: " + error, Toast.LENGTH_LONG).show();
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
                 }
             });
     }

@@ -124,19 +124,6 @@ public class AuthRepository {
      */
     private String getFriendlyError(String firebaseError) {
         if (firebaseError == null) return "Something went wrong. Please try again.";
-<<<<<<< HEAD
-        if (firebaseError.contains("email address is already in use"))
-            return "This email is already registered. Try logging in.";
-        if (firebaseError.contains("no user record"))
-            return "No account found with this email.";
-        if (firebaseError.contains("password is invalid") || firebaseError.contains("INVALID_LOGIN_CREDENTIALS"))
-            return "Incorrect password. Please try again.";
-        if (firebaseError.contains("badly formatted"))
-            return "Please enter a valid email address.";
-        if (firebaseError.contains("network error") || firebaseError.contains("NETWORK_ERROR"))
-            return "Network error. Check your internet connection.";
-        return "Something went wrong. Please try again.";
-=======
         String lower = firebaseError.toLowerCase();
         
         if (lower.contains("email address is already in use"))
@@ -152,6 +139,5 @@ public class AuthRepository {
             
         // If it's none of the above, return the actual error so we can debug it
         return "Error: " + firebaseError;
->>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
     }
 }
