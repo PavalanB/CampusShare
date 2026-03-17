@@ -12,7 +12,11 @@ buildscript {
     }
 }
 
+<<<<<<< HEAD
+// Repositories for project dependencies are managed in settings.gradle via dependencyResolutionManagement
+=======
 // Repositories are now managed in settings.gradle via dependencyResolutionManagement
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
 
 task clean(type: Delete) {
     delete rootProject.buildDir

@@ -9,14 +9,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
-import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,10 +21,13 @@ import com.campusshare.models.Resource;
 import com.campusshare.models.User;
 import com.campusshare.repositories.AuthRepository;
 import com.campusshare.repositories.ResourceRepository;
+<<<<<<< HEAD
+import com.campusshare.utils.NotificationHelper;
+=======
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
 import com.campusshare.utils.SessionManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
-import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,19 +36,13 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
-    private TextView tvEmpty, tvPageTitle;
-    private ExtendedFloatingActionButton fabAdd;
+    private TextView tvEmpty;
+    private FloatingActionButton fabAdd;
     private BottomNavigationView bottomNav;
     private Toolbar toolbar;
-    private SearchView searchView;
-    private View searchBarContainer;
-    
-    private DrawerLayout drawerLayout;
-    private NavigationView navigationView;
 
     private ResourceAdapter adapter;
     private List<Resource> resourceList = new ArrayList<>();
-    private List<Resource> fullResourceList = new ArrayList<>();
     private ResourceRepository resourceRepository;
     private AuthRepository authRepository;
     private User currentUser;
@@ -58,12 +50,15 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // Apply theme before super.onCreate
-        SessionManager.applyTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         currentUser = SessionManager.getUser(this);
+<<<<<<< HEAD
+        resourceRepository = new ResourceRepository();
+        authRepository = new AuthRepository();
+        NotificationHelper.refreshAndSaveToken();
+=======
         if (currentUser == null) {
             // No session found, redirect to login
             Intent i = new Intent(this, LoginActivity.class);
@@ -75,139 +70,35 @@ public class MainActivity extends AppCompatActivity {
 
         resourceRepository = new ResourceRepository();
         authRepository = new AuthRepository();
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
 
-        initViews();
-        setupToolbar();
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        recyclerView = findViewById(R.id.recycler_view);
+        progressBar  = findViewById(R.id.progress_bar);
+        tvEmpty      = findViewById(R.id.tv_empty);
+        fabAdd       = findViewById(R.id.fab_add);
+        bottomNav    = findViewById(R.id.bottom_nav);
+
         setupRecyclerView(false);
         setupBottomNav();
-        setupSearch();
-        setupDrawer();
 
         fabAdd.hide();
         fabAdd.setOnClickListener(v ->
             startActivity(new Intent(this, AddResourceActivity.class))
         );
 
-        handleIntent(getIntent());
-    }
-
-    private void initViews() {
-        toolbar = findViewById(R.id.toolbar);
-        tvPageTitle = findViewById(R.id.tv_page_title);
-        recyclerView = findViewById(R.id.recycler_view);
-        progressBar  = findViewById(R.id.progress_bar);
-        tvEmpty      = findViewById(R.id.tv_empty);
-        fabAdd       = findViewById(R.id.fab_add);
-        bottomNav    = findViewById(R.id.bottom_nav);
-        searchView   = findViewById(R.id.search_view);
-        searchBarContainer = findViewById(R.id.search_bar_container);
-        drawerLayout = findViewById(R.id.drawer_layout);
-        navigationView = findViewById(R.id.nav_view);
-    }
-
-    private void setupToolbar() {
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayShowTitleEnabled(false);
-        }
-    }
-
-    private void setupDrawer() {
-        if (navigationView != null) {
-            // Populate Header
-            View headerView = navigationView.getHeaderView(0);
-            TextView navInitials = headerView.findViewById(R.id.nav_initials);
-            TextView navName = headerView.findViewById(R.id.nav_name);
-            TextView navEmail = headerView.findViewById(R.id.nav_email);
-
-            if (currentUser != null) {
-                navName.setText(currentUser.getName());
-                navEmail.setText(currentUser.getEmail());
-                
-                String[] parts = currentUser.getName().split(" ");
-                String initials = parts.length >= 2
-                    ? String.valueOf(parts[0].charAt(0)) + parts[1].charAt(0)
-                    : String.valueOf(parts[0].charAt(0));
-                navInitials.setText(initials.toUpperCase());
-            }
-
-            navigationView.setNavigationItemSelectedListener(item -> {
-                int id = item.getItemId();
-                if (id == R.id.nav_settings) {
-                    showSettingsDialog();
-                } else if (id == R.id.nav_theme) {
-                    showThemeSelectionDialog();
-                } else if (id == R.id.nav_about) {
-                    Toast.makeText(this, "CampusShare v1.0", Toast.LENGTH_SHORT).show();
-                } else if (id == R.id.nav_logout) {
-                    performLogout();
-                }
-                drawerLayout.closeDrawer(GravityCompat.END);
-                return true;
-            });
-        }
-    }
-
-    private void setupSearch() {
-        if (searchView != null) {
-            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                @Override
-                public boolean onQueryTextSubmit(String query) {
-                    filter(query);
-                    return true;
-                }
-
-                @Override
-                public boolean onQueryTextChange(String newText) {
-                    filter(newText);
-                    return true;
-                }
-            });
-        }
-    }
-
-    private void filter(String text) {
-        List<Resource> filteredList = new ArrayList<>();
-        if (text.isEmpty()) {
-            filteredList.addAll(fullResourceList);
-        } else {
-            String query = text.toLowerCase().trim();
-            for (Resource item : fullResourceList) {
-                if (item.getResourceName().toLowerCase().contains(query) ||
-                    item.getCategory().toLowerCase().contains(query) ||
-                    item.getDescription().toLowerCase().contains(query)) {
-                    filteredList.add(item);
-                }
-            }
-        }
-        adapter.updateList(filteredList);
-        tvEmpty.setVisibility(filteredList.isEmpty() ? View.VISIBLE : View.GONE);
-    }
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        setIntent(intent);
-        handleIntent(intent);
-    }
-
-    private void handleIntent(Intent intent) {
-        if (intent != null && intent.hasExtra("navigate_to")) {
-            String destination = intent.getStringExtra("navigate_to");
-            if ("my_listings".equals(destination)) {
-                bottomNav.setSelectedItemId(R.id.nav_my_listings);
-            } else if ("browse".equals(destination)) {
-                bottomNav.setSelectedItemId(R.id.nav_browse);
-            }
-        } else {
-            loadBrowseFeed();
-        }
+        loadBrowseFeed();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+<<<<<<< HEAD
+=======
         if (currentUser == null) return;
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
         if (isMyListingsMode) loadMyListings();
         else loadBrowseFeed();
     }
@@ -236,7 +127,11 @@ public class MainActivity extends AppCompatActivity {
                             new ResourceRepository.SimpleCallback() {
                                 @Override public void onSuccess() { loadMyListings(); }
                                 @Override public void onFailure(String e) {
+<<<<<<< HEAD
+                                    Toast.makeText(MainActivity.this, "Delete failed", Toast.LENGTH_SHORT).show();
+=======
                                     Toast.makeText(MainActivity.this, "Delete failed: " + e, Toast.LENGTH_SHORT).show();
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
                                 }
                             }))
                     .setNegativeButton("Cancel", null).show();
@@ -251,69 +146,86 @@ public class MainActivity extends AppCompatActivity {
             int id = item.getItemId();
             if (id == R.id.nav_browse) {
                 isMyListingsMode = false;
-                if (tvPageTitle != null) tvPageTitle.setText("BROWSE");
-                if (searchBarContainer != null) searchBarContainer.setVisibility(View.VISIBLE);
+                if (getSupportActionBar() != null) getSupportActionBar().setTitle("Browse Resources");
                 setupRecyclerView(false);
                 fabAdd.hide();
                 loadBrowseFeed();
                 return true;
             } else if (id == R.id.nav_my_listings) {
                 isMyListingsMode = true;
-                if (tvPageTitle != null) tvPageTitle.setText("MY ITEMS");
-                if (searchBarContainer != null) searchBarContainer.setVisibility(View.GONE);
+                if (getSupportActionBar() != null) getSupportActionBar().setTitle("My Listings");
                 setupRecyclerView(true);
                 fabAdd.show();
                 loadMyListings();
                 return true;
+<<<<<<< HEAD
+            } else if (id == R.id.nav_search) {
+                startActivity(new Intent(this, SearchActivity.class));
+                return false;
+            } else if (id == R.id.nav_inbox) {
+                startActivity(new Intent(this, InboxActivity.class));
+                return false;
+=======
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
             } else if (id == R.id.nav_profile) {
                 startActivity(new Intent(this, ProfileActivity.class));
-                return false; 
+                return false; // don't highlight tab since it's a separate screen
             }
             return false;
         });
     }
 
     private void loadBrowseFeed() {
+<<<<<<< HEAD
+=======
         if (currentUser == null) return;
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
         showLoading(true);
         resourceRepository.fetchAvailableResources(currentUser.getUserID(),
             new ResourceRepository.ResourceListCallback() {
                 @Override
                 public void onSuccess(List<Resource> resources) {
                     showLoading(false);
-                    fullResourceList = new ArrayList<>(resources);
                     adapter.updateList(resources);
                     tvEmpty.setVisibility(resources.isEmpty() ? View.VISIBLE : View.GONE);
-                    if (resources.isEmpty()) tvEmpty.setText("NO RESOURCES AVAILABLE");
-                    if (searchView != null && !searchView.getQuery().toString().isEmpty()) {
-                        filter(searchView.getQuery().toString());
-                    }
+                    if (resources.isEmpty()) tvEmpty.setText("No resources available yet.\nBe the first to share!");
                 }
                 @Override
                 public void onFailure(String error) {
                     showLoading(false);
+<<<<<<< HEAD
+                    Toast.makeText(MainActivity.this, "Could not load resources", Toast.LENGTH_SHORT).show();
+=======
+                    // Show actual error to help debugging (e.g. missing Firestore index)
                     Toast.makeText(MainActivity.this, "Could not load resources: " + error, Toast.LENGTH_LONG).show();
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
                 }
             });
     }
 
     private void loadMyListings() {
+<<<<<<< HEAD
+=======
         if (currentUser == null) return;
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
         showLoading(true);
         resourceRepository.fetchMyResources(currentUser.getUserID(),
             new ResourceRepository.ResourceListCallback() {
                 @Override
                 public void onSuccess(List<Resource> resources) {
                     showLoading(false);
-                    fullResourceList = new ArrayList<>(resources);
                     adapter.updateList(resources);
                     tvEmpty.setVisibility(resources.isEmpty() ? View.VISIBLE : View.GONE);
-                    if (resources.isEmpty()) tvEmpty.setText("YOU HAVE NO LISTINGS");
+                    if (resources.isEmpty()) tvEmpty.setText("You have no listings yet.\nTap + to add one!");
                 }
                 @Override
                 public void onFailure(String error) {
                     showLoading(false);
+<<<<<<< HEAD
+                    Toast.makeText(MainActivity.this, "Could not load your listings", Toast.LENGTH_SHORT).show();
+=======
                     Toast.makeText(MainActivity.this, "Could not load your listings: " + error, Toast.LENGTH_LONG).show();
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
                 }
             });
     }
@@ -331,60 +243,15 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_settings) {
-            if (drawerLayout.isDrawerOpen(GravityCompat.END)) {
-                drawerLayout.closeDrawer(GravityCompat.END);
-            } else {
-                drawerLayout.openDrawer(GravityCompat.END);
-            }
+        if (item.getItemId() == R.id.action_logout) {
+            authRepository.logout();
+            SessionManager.clearSession(this);
+            Intent i = new Intent(this, LoginActivity.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(i);
+            finish();
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.END)) {
-            drawerLayout.closeDrawer(GravityCompat.END);
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-    private void showSettingsDialog() {
-        String[] options = {"Themes", "Logout"};
-        new AlertDialog.Builder(this)
-                .setTitle("Settings")
-                .setItems(options, (dialog, which) -> {
-                    if (which == 0) {
-                        showThemeSelectionDialog();
-                    } else if (which == 1) {
-                        performLogout();
-                    }
-                })
-                .show();
-    }
-
-    private void showThemeSelectionDialog() {
-        String[] themes = {"Light Theme", "Dark Theme"};
-        new AlertDialog.Builder(this)
-                .setTitle("Select Theme")
-                .setItems(themes, (dialog, which) -> {
-                    if (which == 0) {
-                        SessionManager.setThemeMode(this, AppCompatDelegate.MODE_NIGHT_NO);
-                    } else {
-                        SessionManager.setThemeMode(this, AppCompatDelegate.MODE_NIGHT_YES);
-                    }
-                })
-                .show();
-    }
-
-    private void performLogout() {
-        authRepository.logout();
-        SessionManager.clearSession(this);
-        Intent i = new Intent(this, LoginActivity.class);
-        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(i);
-        finish();
     }
 }

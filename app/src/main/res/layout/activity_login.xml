@@ -4,248 +4,223 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:background="@drawable/login_background">
+    android:background="@color/backgroundColor">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <!-- DECORATIVE ELEMENTS (Neon Student Tools) -->
-        <ImageView
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="-20dp"
-            android:layout_marginTop="20dp"
-            android:alpha="0.4"
-            android:rotation="-20"
-            android:src="@android:drawable/ic_menu_agenda"
-            app:tint="@color/nfs_purple_glow" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:padding="32dp">
 
         <ImageView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="-10dp"
-            android:layout_marginTop="100dp"
-            android:alpha="0.4"
-            android:rotation="15"
-            android:src="@android:drawable/ic_menu_slideshow"
-            app:tint="@color/nfs_blue_accent" />
+<<<<<<< HEAD
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginTop="48dp"
+            android:src="@drawable/ic_resource_placeholder"
+=======
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="32dp"
+            android:src="@drawable/ic_login_symbol"
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
+            app:tint="@color/colorPrimary" />
 
-        <LinearLayout
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="CampusShare"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+<<<<<<< HEAD
+            android:layout_marginBottom="40dp"
+            android:text="Borrow · Share · Build Trust"
+            android:textSize="14sp"
+            android:textColor="@color/textSecondary" />
+
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center_horizontal"
-            android:padding="20dp">
+            app:cardCornerRadius="24dp"
+            app:cardElevation="4dp"
+            app:strokeWidth="0dp">
+=======
+            android:layout_marginBottom="32dp"
+            android:text="Borrow · Share · Build Trust"
+            android:textSize="14sp"
+            android:textColor="@color/text_secondary" />
 
-            <!-- Profile Picture / Logo at Top -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_marginTop="30dp"
-                app:cardCornerRadius="50dp"
-                app:cardElevation="15dp"
-                app:cardBackgroundColor="@color/nfs_bg_dark_fixed">
-                <ImageView
-                    android:id="@+id/iv_profile_top"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="20dp"
-                    android:src="@drawable/ic_login_symbol"
-                    android:scaleType="centerInside"
-                    app:tint="@color/white" />
-            </androidx.cardview.widget.CardView>
-
-            <!-- NFS Heat Inspired App Name -->
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:clipChildren="false"
-                android:clipToPadding="false">
-
-                <TextView
-                    android:id="@+id/tv_app_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="CAMPUS"
-                    android:textSize="50sp"
-                    android:fontFamily="sans-serif-black"
-                    android:textStyle="bold|italic"
-                    android:textColor="@color/nfs_text_primary"
-                    android:letterSpacing="-0.05"
-                    android:paddingEnd="10dp"
-                    android:shadowColor="@color/nfs_blue_accent"
-                    android:shadowDx="5"
-                    android:shadowDy="5"
-                    android:shadowRadius="12" />
-
-                <TextView
-                    android:id="@+id/tv_app_name_2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/tv_app_name"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="-30dp"
-                    android:rotation="-5"
-                    android:text="Share"
-                    android:textSize="60sp"
-                    android:fontFamily="cursive"
-                    android:textStyle="bold|italic"
-                    android:textColor="@color/nfs_text_primary"
-                    android:paddingStart="15dp"
-                    android:paddingEnd="15dp"
-                    android:paddingBottom="8dp"
-                    android:shadowColor="@color/nfs_purple_glow"
-                    android:shadowDx="5"
-                    android:shadowDy="5"
-                    android:shadowRadius="18" />
-            </RelativeLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Your Campus Resource Hub"
-                android:textSize="12sp"
-                android:textColor="@color/nfs_text_secondary"
-                android:layout_marginBottom="25dp" />
-
-            <!-- Login Card -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardCornerRadius="28dp"
-                app:cardElevation="20dp"
-                app:cardBackgroundColor="@color/nfs_card_bg"
-                android:layout_marginBottom="20dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="30dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Login"
-                        android:textSize="24sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/nfs_text_primary"
-                        android:layout_marginBottom="24dp" />
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Email Address"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_marginBottom="16dp"
-                        app:startIconDrawable="@android:drawable/ic_dialog_email"
-                        app:startIconTint="@color/nfs_blue_accent"
-                        app:boxStrokeColor="@color/nfs_blue_accent"
-                        app:hintTextColor="@color/nfs_blue_accent"
-                        android:textColorHint="@color/nfs_text_secondary"
-                        app:boxCornerRadiusTopStart="15dp"
-                        app:boxCornerRadiusTopEnd="15dp"
-                        app:boxCornerRadiusBottomStart="15dp"
-                        app:boxCornerRadiusBottomEnd="15dp">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/et_email"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/nfs_text_primary"
-                            android:inputType="textEmailAddress" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Password"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        app:startIconDrawable="@android:drawable/ic_lock_idle_lock"
-                        app:startIconTint="@color/nfs_purple_glow"
-                        app:endIconMode="password_toggle"
-                        app:endIconTint="@color/nfs_text_secondary"
-                        android:layout_marginBottom="8dp"
-                        app:boxStrokeColor="@color/nfs_purple_glow"
-                        app:hintTextColor="@color/nfs_purple_glow"
-                        android:textColorHint="@color/nfs_text_secondary"
-                        app:boxCornerRadiusTopStart="15dp"
-                        app:boxCornerRadiusTopEnd="15dp"
-                        app:boxCornerRadiusBottomStart="15dp"
-                        app:boxCornerRadiusBottomEnd="15dp">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/et_password"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/nfs_text_primary"
-                            android:inputType="textPassword" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <TextView
-                        android:id="@+id/tv_forgot_password"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        android:text="Forgot Password?"
-                        android:textColor="@color/nfs_blue_accent"
-                        android:textStyle="bold"
-                        android:textSize="13sp"
-                        android:layout_marginBottom="32dp" />
-
-                    <Button
-                        android:id="@+id/btn_login"
-                        android:layout_width="match_parent"
-                        android:layout_height="56dp"
-                        android:text="LOGIN"
-                        android:textStyle="bold"
-                        android:textSize="16sp"
-                        android:textColor="@color/white"
-                        android:backgroundTint="@color/nfs_purple_glow"
-                        app:cornerRadius="15dp"
-                        android:elevation="10dp" />
-
-                    <ProgressBar
-                        android:id="@+id/progress_bar"
-                        style="?android:attr/progressBarStyleHorizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:indeterminate="true"
-                        android:visibility="gone"
-                        app:indicatorColor="@color/nfs_blue_accent" />
-
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="8dp">
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_marginTop="16dp"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="New to CampusShare? "
-                    android:textColor="@color/nfs_text_secondary"
-                    android:textSize="15sp" />
-                <TextView
-                    android:id="@+id/tv_register"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Create Account"
-                    android:textColor="@color/nfs_blue_accent"
-                    android:textStyle="bold"
-                    android:textSize="15sp" />
-            </LinearLayout>
+                android:orientation="vertical"
+<<<<<<< HEAD
+                android:padding="24dp">
+=======
+                android:padding="24dp"
+                android:background="@color/surfaceColor">
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
 
-        </LinearLayout>
-    </RelativeLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+<<<<<<< HEAD
+                    android:text="Welcome Back"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/textPrimary"
+                    android:layout_marginBottom="24dp" />
+=======
+                    android:text="Sign In"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:layout_marginBottom="20dp" />
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="College Email"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+<<<<<<< HEAD
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    android:layout_marginBottom="16dp"
+                    app:startIconDrawable="@android:drawable/ic_dialog_email">
+=======
+                    android:layout_marginBottom="16dp"
+                    app:boxStrokeColor="@color/colorPrimary"
+                    app:hintTextColor="@color/colorPrimary">
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textEmailAddress"
+                        android:imeOptions="actionNext" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Password"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+<<<<<<< HEAD
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    app:endIconMode="password_toggle"
+                    android:layout_marginBottom="8dp"
+                    app:startIconDrawable="@android:drawable/ic_lock_idle_lock">
+=======
+                    app:endIconMode="password_toggle"
+                    android:layout_marginBottom="8dp"
+                    app:boxStrokeColor="@color/colorPrimary"
+                    app:hintTextColor="@color/colorPrimary">
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPassword"
+                        android:imeOptions="actionDone" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/tv_forgot_password"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:text="Forgot Password?"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="13sp"
+<<<<<<< HEAD
+                    android:textStyle="bold"
+                    android:padding="8dp"
+                    android:layout_marginBottom="16dp" />
+
+                <com.google.android.material.button.MaterialButton
+=======
+                    android:layout_marginBottom="24dp" />
+
+                <Button
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
+                    android:id="@+id/btn_login"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:text="Sign In"
+                    android:textSize="16sp"
+<<<<<<< HEAD
+                    android:textAllCaps="false"
+                    app:cornerRadius="12dp"
+=======
+                    android:textColor="@color/white"
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
+                    android:backgroundTint="@color/colorPrimary"
+                    android:layout_marginBottom="16dp" />
+
+                <ProgressBar
+                    android:id="@+id/progress_bar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    android:layout_marginBottom="8dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Don't have an account? "
+<<<<<<< HEAD
+                        android:textColor="@color/textSecondary"
+=======
+                        android:textColor="@color/text_secondary"
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tv_register"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Register"
+                        android:textColor="@color/colorPrimary"
+                        android:textStyle="bold"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+            </LinearLayout>
+<<<<<<< HEAD
+        </com.google.android.material.card.MaterialCardView>
+=======
+        </androidx.cardview.widget.CardView>
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
+
+    </LinearLayout>
 </ScrollView>

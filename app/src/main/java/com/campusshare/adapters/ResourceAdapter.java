@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,6 +13,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.campusshare.R;
 import com.campusshare.models.Resource;
+<<<<<<< HEAD
+import com.google.android.material.button.MaterialButton;
+=======
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
 import com.google.android.material.chip.Chip;
 
 import java.util.List;
@@ -82,13 +85,21 @@ public class ResourceAdapter extends RecyclerView.Adapter<ResourceAdapter.Resour
 
         // Owner-only actions (My Listings screen)
         if (isOwnerView) {
-            holder.btnEdit.setVisibility(View.VISIBLE);
-            holder.btnDelete.setVisibility(View.VISIBLE);
+<<<<<<< HEAD
+            holder.llOwnerActions.setVisibility(View.VISIBLE);
             holder.btnEdit.setOnClickListener(v -> listener.onEditClick(resource));
             holder.btnDelete.setOnClickListener(v -> listener.onDeleteClick(resource));
         } else {
-            holder.btnEdit.setVisibility(View.GONE);
-            holder.btnDelete.setVisibility(View.GONE);
+            holder.llOwnerActions.setVisibility(View.GONE);
+=======
+            holder.tvEdit.setVisibility(View.VISIBLE);
+            holder.tvDelete.setVisibility(View.VISIBLE);
+            holder.tvEdit.setOnClickListener(v -> listener.onEditClick(resource));
+            holder.tvDelete.setOnClickListener(v -> listener.onDeleteClick(resource));
+        } else {
+            holder.tvEdit.setVisibility(View.GONE);
+            holder.tvDelete.setVisibility(View.GONE);
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
         }
 
         // Card click → Resource Detail screen
@@ -110,8 +121,13 @@ public class ResourceAdapter extends RecyclerView.Adapter<ResourceAdapter.Resour
 
     static class ResourceViewHolder extends RecyclerView.ViewHolder {
         ImageView ivPhoto;
+<<<<<<< HEAD
         TextView tvName, tvOwner, tvCondition, tvAvailability;
-        ImageButton btnEdit, btnDelete;
+        MaterialButton btnEdit, btnDelete;
+        View llOwnerActions;
+=======
+        TextView tvName, tvOwner, tvCondition, tvAvailability, tvEdit, tvDelete;
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
         Chip chipCategory;
 
         ResourceViewHolder(@NonNull View itemView) {
@@ -122,8 +138,14 @@ public class ResourceAdapter extends RecyclerView.Adapter<ResourceAdapter.Resour
             tvCondition     = itemView.findViewById(R.id.tv_condition);
             tvAvailability  = itemView.findViewById(R.id.tv_availability);
             chipCategory    = itemView.findViewById(R.id.chip_category);
+<<<<<<< HEAD
             btnEdit         = itemView.findViewById(R.id.btn_edit);
             btnDelete       = itemView.findViewById(R.id.btn_delete);
+            llOwnerActions  = itemView.findViewById(R.id.ll_owner_actions);
+=======
+            tvEdit          = itemView.findViewById(R.id.tv_edit);
+            tvDelete        = itemView.findViewById(R.id.tv_delete);
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
         }
     }
 }

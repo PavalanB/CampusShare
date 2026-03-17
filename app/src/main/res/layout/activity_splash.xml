@@ -1,145 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/nfs_bg">
+    android:background="@color/white"
+    android:gravity="center">
 
-    <!-- Deep Background Glow -->
-    <View
-        android:layout_width="400dp"
-        android:layout_height="400dp"
-        android:layout_gravity="center"
-        android:background="@drawable/nfs_center_glow"
-        android:alpha="0.4" />
+    <ImageView
+        android:id="@+id/iv_logo"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@mipmap/ic_launcher" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/tv_app_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/iv_logo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:text="CampusShare"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="#3F51B5" />
 
-        <!-- Animated Grid/Tech Background (Simulated) -->
-        <ImageView
-            android:id="@+id/iv_bg_pattern"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:alpha="0.1"
-            android:src="@android:drawable/ic_dialog_dialer"
-            app:tint="@color/nfs_blue_accent" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <!-- Larger Central Logo -->
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cv_logo"
-                android:layout_width="160dp"
-                android:layout_height="160dp"
-                app:cardCornerRadius="80dp"
-                app:cardElevation="30dp"
-                app:cardBackgroundColor="@color/nfs_bg_dark_fixed">
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="35dp"
-                    android:src="@drawable/ic_login_symbol"
-                    android:scaleType="centerInside"
-                    app:tint="@color/white" />
-            </androidx.cardview.widget.CardView>
-
-            <!-- NFS Heat Inspired App Name -->
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
-                android:clipChildren="false"
-                android:clipToPadding="false">
-
-                <TextView
-                    android:id="@+id/tv_app_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="CAMPUS"
-                    android:textSize="64sp"
-                    android:fontFamily="sans-serif-black"
-                    android:textStyle="bold|italic"
-                    android:textColor="@color/nfs_text_primary"
-                    android:letterSpacing="-0.05"
-                    android:paddingEnd="12dp"
-                    android:shadowColor="@color/nfs_blue_accent"
-                    android:shadowDx="8"
-                    android:shadowDy="8"
-                    android:shadowRadius="15" />
-
-                <TextView
-                    android:id="@+id/tv_app_name_2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/tv_app_name"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="-40dp"
-                    android:rotation="-6"
-                    android:text="Share"
-                    android:textSize="80sp"
-                    android:fontFamily="cursive"
-                    android:textStyle="bold|italic"
-                    android:textColor="@color/nfs_text_primary"
-                    android:paddingStart="20dp"
-                    android:paddingEnd="20dp"
-                    android:paddingBottom="10dp"
-                    android:shadowColor="@color/nfs_purple_glow"
-                    android:shadowDx="8"
-                    android:shadowDy="8"
-                    android:shadowRadius="25" />
-            </RelativeLayout>
-
-            <TextView
-                android:id="@+id/tv_tagline"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="ACCESSING SECURE SERVER..."
-                android:textSize="12sp"
-                android:textStyle="bold"
-                android:textColor="@color/nfs_blue_accent"
-                android:layout_marginTop="20dp"
-                android:letterSpacing="0.3" />
-
-        </LinearLayout>
-
-        <!-- Loading Section -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="50dp"
-            android:orientation="vertical"
-            android:gravity="center">
-
-            <ProgressBar
-                android:id="@+id/pb_loading"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="200dp"
-                android:layout_height="4dp"
-                android:indeterminate="true"
-                android:indeterminateTint="@color/nfs_purple_glow" />
-
-            <TextView
-                android:id="@+id/tv_loading_status"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="CONNECTING"
-                android:textSize="10sp"
-                android:textColor="@color/nfs_text_secondary"
-                android:layout_marginTop="8dp"
-                android:letterSpacing="0.2" />
-
-        </LinearLayout>
-
-    </RelativeLayout>
-
-</FrameLayout>
+</RelativeLayout>

@@ -4,17 +4,27 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+<<<<<<< HEAD
+import android.os.Build;
+=======
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+<<<<<<< HEAD
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.Spinner;
+=======
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -30,6 +40,10 @@ import com.campusshare.models.Resource;
 import com.campusshare.models.User;
 import com.campusshare.repositories.ResourceRepository;
 import com.campusshare.utils.SessionManager;
+<<<<<<< HEAD
+import com.google.android.material.button.MaterialButton;
+=======
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
 import com.google.android.material.textfield.TextInputEditText;
 
 /**
@@ -40,10 +54,17 @@ public class AddResourceActivity extends AppCompatActivity {
 
     // UI
     private ImageView ivPhoto;
+<<<<<<< HEAD
+    private MaterialButton btnAddPhoto;
+    private TextInputEditText etName, etDescription;
+    private Spinner spinnerCategory, spinnerCondition;
+    private MaterialButton btnSave;
+=======
     private TextView tvAddPhoto;
     private TextInputEditText etName, etDescription;
     private Spinner spinnerCategory, spinnerCondition;
     private Button btnSave;
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
     private ProgressBar progressBar;
 
     // State
@@ -69,12 +90,21 @@ public class AddResourceActivity extends AppCompatActivity {
             if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                 selectedPhotoUri = result.getData().getData();
                 ivPhoto.setImageURI(selectedPhotoUri);
+<<<<<<< HEAD
+                btnAddPhoto.setText("Change Photo");
+            }
+        });
+
+    // Permission launcher
+    private final ActivityResultLauncher<String> permissionLauncher =
+=======
                 tvAddPhoto.setText("Change photo");
             }
         });
 
     // Camera permission
     private final ActivityResultLauncher<String> cameraPermissionLauncher =
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
         registerForActivityResult(new ActivityResultContracts.RequestPermission(), granted -> {
             if (granted) openGallery();
             else Toast.makeText(this, "Permission needed to pick a photo", Toast.LENGTH_SHORT).show();
@@ -113,6 +143,16 @@ public class AddResourceActivity extends AppCompatActivity {
     }
 
     private void initViews() {
+<<<<<<< HEAD
+        ivPhoto         = findViewById(R.id.iv_photo);
+        btnAddPhoto     = findViewById(R.id.btn_add_photo);
+        etName          = findViewById(R.id.et_resource_name);
+        etDescription   = findViewById(R.id.et_description);
+        spinnerCategory  = findViewById(R.id.spinner_category);
+        spinnerCondition = findViewById(R.id.spinner_condition);
+        btnSave         = findViewById(R.id.btn_save);
+        progressBar     = findViewById(R.id.progress_bar);
+=======
         ivPhoto        = findViewById(R.id.iv_photo);
         tvAddPhoto     = findViewById(R.id.tv_add_photo);
         etName         = findViewById(R.id.et_resource_name);
@@ -121,6 +161,7 @@ public class AddResourceActivity extends AppCompatActivity {
         spinnerCondition = findViewById(R.id.spinner_condition);
         btnSave        = findViewById(R.id.btn_save);
         progressBar    = findViewById(R.id.progress_bar);
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
     }
 
     private void setupSpinners() {
@@ -137,21 +178,43 @@ public class AddResourceActivity extends AppCompatActivity {
 
     // Populate fields when editing an existing resource
     private void populateEditMode() {
+<<<<<<< HEAD
+        if (existingResource == null) return;
+
+        if (existingResource.getResourceName() != null) {
+            etName.setText(existingResource.getResourceName());
+        }
+        if (existingResource.getDescription() != null) {
+            etDescription.setText(existingResource.getDescription());
+        }
+=======
         etName.setText(existingResource.getResourceName());
         etDescription.setText(existingResource.getDescription());
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
 
         // Set spinner selections
         setSpinnerValue(spinnerCategory, CATEGORIES, existingResource.getCategory());
         setSpinnerValue(spinnerCondition, CONDITIONS, existingResource.getCondition());
 
         // Load existing photo
+<<<<<<< HEAD
+        String photoUrl = existingResource.getPhotoUrl();
+        if (photoUrl != null && !photoUrl.isEmpty()) {
+            Glide.with(this).load(photoUrl).centerCrop().into(ivPhoto);
+            btnAddPhoto.setText("Change Photo");
+=======
         if (!existingResource.getPhotoUrl().isEmpty()) {
             Glide.with(this).load(existingResource.getPhotoUrl()).centerCrop().into(ivPhoto);
             tvAddPhoto.setText("Change photo");
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
         }
     }
 
     private void setSpinnerValue(Spinner spinner, String[] values, String target) {
+<<<<<<< HEAD
+        if (target == null) return;
+=======
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
         for (int i = 0; i < values.length; i++) {
             if (values[i].equals(target)) {
                 spinner.setSelection(i);
@@ -161,6 +224,17 @@ public class AddResourceActivity extends AppCompatActivity {
     }
 
     private void setClickListeners() {
+<<<<<<< HEAD
+        // Photo picker - Both image and button trigger the picker
+        ivPhoto.setOnClickListener(v -> showPhotoPickerDialog());
+        btnAddPhoto.setOnClickListener(v -> showPhotoPickerDialog());
+
+        btnSave.setOnClickListener(v -> {
+            String name        = etName.getText() != null ? etName.getText().toString().trim() : "";
+            String description = etDescription.getText() != null ? etDescription.getText().toString().trim() : "";
+            String category    = spinnerCategory.getSelectedItem() != null ? spinnerCategory.getSelectedItem().toString() : "Select Category";
+            String condition   = spinnerCondition.getSelectedItem() != null ? spinnerCondition.getSelectedItem().toString() : "Select Condition";
+=======
         // Photo picker — show camera/gallery dialog
         ivPhoto.setOnClickListener(v -> showPhotoPickerDialog());
         tvAddPhoto.setOnClickListener(v -> showPhotoPickerDialog());
@@ -170,6 +244,7 @@ public class AddResourceActivity extends AppCompatActivity {
             String description = etDescription.getText().toString().trim();
             String category    = spinnerCategory.getSelectedItem().toString();
             String condition   = spinnerCondition.getSelectedItem().toString();
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
 
             if (!validateInputs(name, description, category, condition)) return;
 
@@ -197,7 +272,11 @@ public class AddResourceActivity extends AppCompatActivity {
                         }
                     });
             } else {
+<<<<<<< HEAD
+                // EDIT mode
+=======
                 // EDIT mode — update fields
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
                 existingResource.setResourceName(name);
                 existingResource.setDescription(description);
                 existingResource.setCategory(category);
@@ -222,8 +301,11 @@ public class AddResourceActivity extends AppCompatActivity {
         });
     }
 
+<<<<<<< HEAD
+=======
     // ─── Photo Picker Dialog ──────────────────────────────────────────────────
 
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
     private void showPhotoPickerDialog() {
         new AlertDialog.Builder(this)
             .setTitle("Choose Photo")
@@ -234,6 +316,19 @@ public class AddResourceActivity extends AppCompatActivity {
     }
 
     private void checkPermissionAndOpenGallery() {
+<<<<<<< HEAD
+        String permission;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            permission = Manifest.permission.READ_MEDIA_IMAGES;
+        } else {
+            permission = Manifest.permission.READ_EXTERNAL_STORAGE;
+        }
+
+        if (ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED) {
+            openGallery();
+        } else {
+            permissionLauncher.launch(permission);
+=======
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES)
                     == PackageManager.PERMISSION_GRANTED) {
@@ -248,10 +343,18 @@ public class AddResourceActivity extends AppCompatActivity {
             } else {
                 cameraPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE);
             }
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
         }
     }
 
     private void openGallery() {
+<<<<<<< HEAD
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+        galleryLauncher.launch(intent);
+    }
+
+=======
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intent.setType("image/*");
         galleryLauncher.launch(intent);
@@ -259,6 +362,7 @@ public class AddResourceActivity extends AppCompatActivity {
 
     // ─── Validation ───────────────────────────────────────────────────────────
 
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
     private boolean validateInputs(String name, String description, String category, String condition) {
         if (TextUtils.isEmpty(name)) {
             etName.setError("Resource name is required"); etName.requestFocus(); return false;

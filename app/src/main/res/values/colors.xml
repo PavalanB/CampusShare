@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+<<<<<<< HEAD
+    <color name="colorPrimary">#1A237E</color>
+    <color name="colorPrimaryDark">#000051</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="backgroundColor">#F5F7FA</color>
+    <color name="surfaceColor">#FFFFFF</color>
+    <color name="textPrimary">#212121</color>
+    <color name="textSecondary">#757575</color>
+    <color name="textHint">#9E9E9E</color>
+    <color name="errorColor">#C62828</color>
+    <color name="successColor">#2E7D32</color>
+=======
     <!-- Anna University Inspired Theme Colors -->
     <color name="colorPrimary">#1A237E</color> <!-- Deep Indigo/Blue -->
     <color name="colorPrimaryDark">#0D1240</color>
@@ -19,21 +31,5 @@
     <color name="success_green">#4CAF50</color>
     <color name="error_red">#F44336</color>
     <color name="text_secondary">#757575</color>
-
-    <!-- Custom Colors -->
-    <color name="pink_design">#FF69B4</color>
-    <color name="sky_blue">#87CEEB</color>
-
-    <!-- Dynamic Theme Colors - DEFAULT (DAY) -->
-    <color name="nfs_bg">#FFFFFF</color>
-    <color name="nfs_card_bg">#F2F2F2</color> <!-- Light grey for cards -->
-    <color name="nfs_text_primary">#050112</color>
-    <color name="nfs_text_secondary">#80050112</color>
-    <color name="nfs_divider">#20000000</color>
-
-    <!-- Constant Neon Accents -->
-    <color name="nfs_bg_dark">#050112</color>
-    <color name="nfs_bg_dark_fixed">#050112</color>
-    <color name="nfs_purple_glow">#9D00FF</color>
-    <color name="nfs_blue_accent">#00D4FF</color>
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
 </resources>

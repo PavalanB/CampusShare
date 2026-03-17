@@ -5,6 +5,30 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
 
+<<<<<<< HEAD
+    <!-- Camera is used for photo uploads but not required for all devices -->
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+
+    <!-- Required for Android 14+ photo picker compatibility -->
+    <uses-permission android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED" />
+
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_resource_placeholder"
+        android:label="CampusShare"
+        android:roundIcon="@drawable/ic_resource_placeholder"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.CampusShare">
+
+        <!-- Phase 1 - Auth -->
+        <activity android:name=".activities.LoginActivity" android:exported="true">
+=======
     <!-- Requirement 9: Location based services -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -32,21 +56,42 @@
         <activity
             android:name=".activities.SplashActivity"
             android:exported="true">
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+<<<<<<< HEAD
+        <activity android:name=".activities.RegisterActivity"       android:exported="false" />
+        <activity android:name=".activities.ForgotPasswordActivity" android:exported="false" />
+
+        <!-- Phase 2 - Resources -->
+=======
 
         <activity android:name=".activities.LoginActivity"         android:exported="false" />
         <activity android:name=".activities.RegisterActivity"       android:exported="false" />
         <activity android:name=".activities.ForgotPasswordActivity" android:exported="false" />
 
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
         <activity android:name=".activities.MainActivity"           android:exported="false" />
         <activity android:name=".activities.AddResourceActivity"    android:exported="false" />
         <activity android:name=".activities.ResourceDetailActivity" android:exported="false" />
         <activity android:name=".activities.ProfileActivity"        android:exported="false" />
 
+<<<<<<< HEAD
+        <!-- Phase 3 - Borrow Requests -->
+        <activity android:name=".activities.BorrowRequestActivity"  android:exported="false" />
+        <activity android:name=".activities.InboxActivity"          android:exported="false" />
+
+        <!-- Phase 4 - Search, Ratings, Notifications -->
+        <activity android:name=".activities.SearchActivity"         android:exported="false" />
+        <activity android:name=".activities.RatingActivity"         android:exported="false" />
+
+        <!-- FCM Service -->
+        <service
+            android:name=".services.FCMService"
+=======
         <!-- Requirement 4: Native Calculator -->
         <activity android:name=".activities.CalculatorActivity"     android:exported="false" />
 
@@ -59,6 +104,7 @@
         <!-- Requirement 7: Firebase Messaging -->
         <service
             android:name=".services.MyFirebaseMessagingService"
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

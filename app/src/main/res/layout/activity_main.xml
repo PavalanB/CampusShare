@@ -1,227 +1,154 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/nfs_bg">
+<<<<<<< HEAD
+    android:background="@color/backgroundColor">
 
-    <!-- Main Content -->
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary">
+=======
+    android:background="#F5F7FA">
 
-        <!-- Background Glow -->
-        <View
-            android:layout_width="300dp"
-            android:layout_height="300dp"
-            android:layout_gravity="top|end"
-            android:layout_marginTop="-150dp"
-            android:layout_marginEnd="-150dp"
-            android:background="@drawable/nfs_center_glow"
-            android:alpha="0.1" />
-
-        <com.google.android.material.appbar.AppBarLayout
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            app:elevation="0dp">
+            android:layout_height="?attr/actionBarSize"
+<<<<<<< HEAD
+            app:titleTextColor="@color/surfaceColor"
+            app:popupTheme="@style/ThemeOverlay.MaterialComponents.Light" />
+    </com.google.android.material.appbar.AppBarLayout>
 
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/toolbar"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh"
+=======
+            android:background="#1A237E"
+            android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
+            app:titleTextColor="#FFFFFF" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <FrameLayout
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+<<<<<<< HEAD
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="@color/nfs_bg"
-                app:titleTextColor="@color/nfs_text_primary"
-                app:titleCentered="true">
+                android:layout_height="match_parent"
+                android:padding="8dp"
+                android:clipToPadding="false"
+                android:paddingBottom="80dp" />
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:clipChildren="false"
-                    android:clipToPadding="false">
-
-                    <!-- Left-aligned dynamic page title -->
-                    <TextView
-                        android:id="@+id/tv_page_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_alignParentStart="true"
-                        android:text="BROWSE"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/nfs_blue_accent"
-                        android:letterSpacing="0.2" />
-
-                    <!-- Center-aligned App Branding -->
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:clipChildren="false"
-                        android:clipToPadding="false">
-
-                        <TextView
-                            android:id="@+id/toolbar_logo_1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="CAMPUS"
-                            android:textSize="18sp"
-                            android:fontFamily="sans-serif-black"
-                            android:textStyle="bold|italic"
-                            android:textColor="@color/nfs_text_primary"
-                            android:letterSpacing="-0.05"
-                            android:shadowColor="@color/nfs_blue_accent"
-                            android:shadowDx="1"
-                            android:shadowDy="1"
-                            android:shadowRadius="2" />
-
-                        <TextView
-                            android:id="@+id/toolbar_logo_2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_toEndOf="@id/toolbar_logo_1"
-                            android:layout_marginStart="-6dp"
-                            android:layout_marginTop="2dp"
-                            android:rotation="-5"
-                            android:text="Share"
-                            android:textSize="20sp"
-                            android:fontFamily="cursive"
-                            android:textStyle="bold|italic"
-                            android:textColor="@color/nfs_text_primary"
-                            android:shadowColor="@color/nfs_purple_glow"
-                            android:shadowDx="1"
-                            android:shadowDy="1"
-                            android:shadowRadius="3" />
-                    </RelativeLayout>
-                </RelativeLayout>
-
-            </com.google.android.material.appbar.MaterialToolbar>
-
-            <!-- Search Bar Section -->
-            <LinearLayout
-                android:id="@+id/search_bar_container"
-                android:layout_width="match_parent"
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingHorizontal="16dp"
-                android:paddingBottom="12dp"
-                android:background="@color/nfs_bg"
-                android:orientation="vertical">
-
-                <androidx.appcompat.widget.SearchView
-                    android:id="@+id/search_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/search_bg"
-                    app:iconifiedByDefault="false"
-                    app:queryHint="Search resources..."
-                    app:queryBackground="@android:color/transparent"
-                    app:searchIcon="@android:drawable/ic_menu_search"
-                    android:theme="@style/SearchViewTheme" />
-            </LinearLayout>
-
-            <!-- Neon Divider Line -->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/nfs_blue_accent"
-                android:alpha="0.3" />
-
-        </com.google.android.material.appbar.AppBarLayout>
-
-        <androidx.core.widget.NestedScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+                android:layout_gravity="center"
+                android:visibility="gone" />
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:id="@+id/ll_empty"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:visibility="gone">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false"
-                    android:clipToPadding="false"
-                    android:paddingBottom="100dp" />
-
-                <ProgressBar
-                    android:id="@+id/progress_bar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:visibility="gone"
-                    android:indeterminateTint="@color/nfs_purple_glow" />
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/ic_resource_placeholder"
+                    android:alpha="0.3"
+                    app:tint="@color/textSecondary" />
 
                 <TextView
                     android:id="@+id/tv_empty"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
                     android:gravity="center"
-                    android:layout_marginTop="64dp"
-                    android:text="NO RESOURCES FOUND"
-                    android:textSize="12sp"
-                    android:textColor="@color/nfs_text_secondary"
-                    android:letterSpacing="0.1"
-                    android:visibility="gone" />
-
+                    android:text="No resources found"
+                    android:textSize="16sp"
+                    android:textColor="@color/textSecondary" />
             </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
+        </FrameLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+=======
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="12dp"
+            android:clipToPadding="false"
+            android:paddingBottom="72dp" />
 
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/fab_add"
+        <ProgressBar
+            android:id="@+id/progress_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="90dp"
-            android:text="SHARE RESOURCE"
-            android:textStyle="bold"
-            android:textColor="@color/white"
-            app:icon="@android:drawable/ic_input_add"
-            app:iconTint="@color/white"
-            app:backgroundTint="@color/nfs_purple_glow"
-            app:elevation="12dp" />
+            android:layout_gravity="center"
+            android:visibility="gone" />
 
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottom_nav"
-            android:layout_width="match_parent"
-            android:layout_height="72dp"
-            android:layout_gravity="bottom"
-            android:background="@color/nfs_bg"
-            app:elevation="20dp"
-            app:menu="@menu/menu_bottom_nav"
-            app:itemIconTint="@color/nfs_blue_accent"
-            app:itemTextColor="@color/nfs_text_primary"
-            app:itemRippleColor="@color/nfs_purple_glow"
-            app:labelVisibilityMode="labeled" />
+        <TextView
+            android:id="@+id/tv_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:textColor="#9E9E9E"
+            android:visibility="gone" />
+    </FrameLayout>
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
 
-        <!-- Neon Top Border for Bottom Nav -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="72dp"
-            android:background="@color/nfs_purple_glow"
-            android:alpha="0.4" />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+<<<<<<< HEAD
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="72dp"
+        android:contentDescription="Add Resource"
+        app:srcCompat="@android:drawable/ic_input_add"
+        app:backgroundTint="@color/colorPrimary"
+        app:tint="@color/surfaceColor" />
+=======
+        android:layout_margin="80dp"
+        android:contentDescription="Add Resource"
+        app:srcCompat="@android:drawable/ic_input_add"
+        app:backgroundTint="#1A237E" />
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_nav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+<<<<<<< HEAD
+        android:background="@color/surfaceColor"
+        app:menu="@menu/menu_bottom_nav"
+        app:elevation="8dp"
+=======
+        android:background="#FFFFFF"
+        app:menu="@menu/menu_bottom_nav"
+>>>>>>> 7f31e5da9ccded4a3555fe38e2ea6a769e9225c3
+        app:labelVisibilityMode="labeled" />
 
-    <!-- Sidebar (Navigation Drawer from the right) -->
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_view"
-        android:layout_width="280dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="end"
-        android:background="@color/nfs_bg"
-        app:itemIconTint="@color/nfs_blue_accent"
-        app:itemTextColor="@color/nfs_text_primary"
-        app:headerLayout="@layout/nav_header"
-        app:menu="@menu/menu_sidebar" />
-
-</androidx.drawerlayout.widget.DrawerLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
