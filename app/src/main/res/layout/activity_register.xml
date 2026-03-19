@@ -1,41 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:background="@color/backgroundColor">
+    android:background="@drawable/bg_login_gradient"
+    tools:context=".activities.RegisterActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
         android:orientation="vertical"
         android:padding="24dp">
 
+        <!-- App Title (Small version) -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="4dp"
-            android:text="Create Account"
+            android:layout_marginTop="20dp"
+            android:fontFamily="sans-serif-black"
+            android:text="CAMPUS"
+            android:textColor="@color/accent_cyan"
             android:textSize="28sp"
-            android:textStyle="bold"
-            android:textColor="@color/colorPrimary" />
+            android:letterSpacing="0.1"
+            android:shadowColor="@color/accent_cyan"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="10" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:text="Join the campus sharing network"
-            android:textSize="14sp"
-            android:textColor="@color/textSecondary" />
+            android:layout_marginTop="-8dp"
+            android:fontFamily="cursive"
+            android:text="Share"
+            android:textColor="@color/white"
+            android:textSize="38sp"
+            android:textStyle="bold"
+            android:shadowColor="@color/primary_purple"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="15" />
 
+        <!-- Register Card -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="24dp"
-            app:cardElevation="4dp"
-            app:strokeWidth="0dp">
+            android:layout_marginTop="30dp"
+            app:cardBackgroundColor="#CC1A1C2C"
+            app:cardCornerRadius="32dp"
+            app:cardElevation="0dp"
+            app:strokeColor="@color/glass_white_10"
+            app:strokeWidth="1dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -43,64 +61,89 @@
                 android:orientation="vertical"
                 android:padding="24dp">
 
-                <!-- Full Name -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Join Community"
+                    android:textColor="@color/white"
+                    android:textSize="22sp"
+                    android:fontFamily="cursive"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="24dp" />
+
+                <!-- Name -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Full Name"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    app:boxCornerRadiusTopStart="12dp"
-                    app:boxCornerRadiusTopEnd="12dp"
-                    app:boxCornerRadiusBottomStart="12dp"
-                    app:boxCornerRadiusBottomEnd="12dp"
-                    android:layout_marginBottom="16dp"
-                    app:startIconDrawable="@android:drawable/ic_menu_edit">
+                    android:layout_marginBottom="12dp"
+                    app:hintTextColor="@color/accent_cyan"
+                    android:textColorHint="@color/accent_cyan"
+                    app:boxStrokeColor="@color/accent_cyan"
+                    app:boxCornerRadiusTopStart="15dp"
+                    app:boxCornerRadiusTopEnd="15dp"
+                    app:boxCornerRadiusBottomStart="15dp"
+                    app:boxCornerRadiusBottomEnd="15dp"
+                    app:startIconDrawable="@android:drawable/ic_menu_edit"
+                    app:startIconTint="@color/accent_cyan"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="textPersonName"
-                        android:imeOptions="actionNext"/>
+                        android:textColor="@color/white"
+                        android:inputType="textPersonName" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <!-- College ID -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="College ID (e.g. CS2021001)"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    app:boxCornerRadiusTopStart="12dp"
-                    app:boxCornerRadiusTopEnd="12dp"
-                    app:boxCornerRadiusBottomStart="12dp"
-                    app:boxCornerRadiusBottomEnd="12dp"
-                    android:layout_marginBottom="16dp"
-                    app:startIconDrawable="@android:drawable/ic_dialog_info">
+                    android:hint="College ID"
+                    android:layout_marginBottom="12dp"
+                    app:hintTextColor="@color/primary_purple"
+                    android:textColorHint="@color/primary_purple"
+                    app:boxStrokeColor="@color/primary_purple"
+                    app:boxCornerRadiusTopStart="15dp"
+                    app:boxCornerRadiusTopEnd="15dp"
+                    app:boxCornerRadiusBottomStart="15dp"
+                    app:boxCornerRadiusBottomEnd="15dp"
+                    app:startIconDrawable="@android:drawable/ic_dialog_info"
+                    app:startIconTint="@color/primary_purple"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_college_id"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="textCapCharacters"
-                        android:imeOptions="actionNext"/>
+                        android:textColor="@color/white"
+                        android:inputType="textCapCharacters" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Email -->
+                <!-- College Email -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="College Email"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    app:boxCornerRadiusTopStart="12dp"
-                    app:boxCornerRadiusTopEnd="12dp"
-                    app:boxCornerRadiusBottomStart="12dp"
-                    app:boxCornerRadiusBottomEnd="12dp"
-                    android:layout_marginBottom="16dp"
-                    app:startIconDrawable="@android:drawable/ic_dialog_email">
+                    android:layout_marginBottom="12dp"
+                    app:hintTextColor="@color/accent_cyan"
+                    android:textColorHint="@color/accent_cyan"
+                    app:boxStrokeColor="@color/accent_cyan"
+                    app:boxCornerRadiusTopStart="15dp"
+                    app:boxCornerRadiusTopEnd="15dp"
+                    app:boxCornerRadiusBottomStart="15dp"
+                    app:boxCornerRadiusBottomEnd="15dp"
+                    app:startIconDrawable="@android:drawable/ic_dialog_email"
+                    app:startIconTint="@color/accent_cyan"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_email"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="textEmailAddress"
-                        android:imeOptions="actionNext"/>
+                        android:textColor="@color/white"
+                        android:inputType="textEmailAddress" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <!-- Phone -->
@@ -108,74 +151,76 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Phone Number"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    app:boxCornerRadiusTopStart="12dp"
-                    app:boxCornerRadiusTopEnd="12dp"
-                    app:boxCornerRadiusBottomStart="12dp"
-                    app:boxCornerRadiusBottomEnd="12dp"
-                    android:layout_marginBottom="16dp"
-                    app:startIconDrawable="@android:drawable/ic_menu_call">
+                    android:layout_marginBottom="12dp"
+                    app:hintTextColor="@color/primary_purple"
+                    android:textColorHint="@color/primary_purple"
+                    app:boxStrokeColor="@color/primary_purple"
+                    app:boxCornerRadiusTopStart="15dp"
+                    app:boxCornerRadiusTopEnd="15dp"
+                    app:boxCornerRadiusBottomStart="15dp"
+                    app:boxCornerRadiusBottomEnd="15dp"
+                    app:startIconDrawable="@android:drawable/ic_menu_call"
+                    app:startIconTint="@color/primary_purple"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_phone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="phone"
-                        android:imeOptions="actionNext"/>
+                        android:textColor="@color/white"
+                        android:inputType="phone" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Department Spinner -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Department"
-                    android:textSize="12sp"
-                    android:textColor="@color/textSecondary"
-                    android:layout_marginBottom="4dp"
-                    android:layout_marginStart="4dp"/>
-
-                <Spinner
-                    android:id="@+id/spinner_department"
+                <!-- Spinners Row -->
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="52dp"
-                    android:background="@drawable/spinner_background"
-                    android:layout_marginBottom="16dp" />
-
-                <!-- Year Spinner -->
-                <TextView
-                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Year of Study"
-                    android:textSize="12sp"
-                    android:textColor="@color/textSecondary"
-                    android:layout_marginBottom="4dp"
-                    android:layout_marginStart="4dp"/>
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="12dp">
 
-                <Spinner
-                    android:id="@+id/spinner_year"
-                    android:layout_width="match_parent"
-                    android:layout_height="52dp"
-                    android:background="@drawable/spinner_background"
-                    android:layout_marginBottom="16dp" />
+                    <Spinner
+                        android:id="@+id/spinner_department"
+                        android:layout_width="0dp"
+                        android:layout_height="56dp"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/spinner_background"
+                        android:paddingStart="12dp" />
+
+                    <Spinner
+                        android:id="@+id/spinner_year"
+                        android:layout_width="0dp"
+                        android:layout_height="56dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/spinner_background"
+                        android:paddingStart="12dp" />
+                </LinearLayout>
 
                 <!-- Password -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Password"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    app:boxCornerRadiusTopStart="12dp"
-                    app:boxCornerRadiusTopEnd="12dp"
-                    app:boxCornerRadiusBottomStart="12dp"
-                    app:boxCornerRadiusBottomEnd="12dp"
                     app:endIconMode="password_toggle"
-                    android:layout_marginBottom="16dp"
-                    app:startIconDrawable="@android:drawable/ic_lock_idle_lock">
+                    app:endIconTint="@color/glass_white_60"
+                    android:layout_marginBottom="12dp"
+                    app:hintTextColor="@color/accent_cyan"
+                    android:textColorHint="@color/accent_cyan"
+                    app:boxStrokeColor="@color/accent_cyan"
+                    app:boxCornerRadiusTopStart="15dp"
+                    app:boxCornerRadiusTopEnd="15dp"
+                    app:boxCornerRadiusBottomStart="15dp"
+                    app:boxCornerRadiusBottomEnd="15dp"
+                    app:startIconDrawable="@android:drawable/ic_lock_idle_lock"
+                    app:startIconTint="@color/accent_cyan"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_password"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="textPassword"
-                        android:imeOptions="actionNext"/>
+                        android:textColor="@color/white"
+                        android:inputType="textPassword" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <!-- Confirm Password -->
@@ -183,32 +228,37 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Confirm Password"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    app:boxCornerRadiusTopStart="12dp"
-                    app:boxCornerRadiusTopEnd="12dp"
-                    app:boxCornerRadiusBottomStart="12dp"
-                    app:boxCornerRadiusBottomEnd="12dp"
                     app:endIconMode="password_toggle"
+                    app:endIconTint="@color/glass_white_60"
                     android:layout_marginBottom="24dp"
-                    app:startIconDrawable="@android:drawable/ic_lock_idle_lock">
+                    app:hintTextColor="@color/primary_purple"
+                    android:textColorHint="@color/primary_purple"
+                    app:boxStrokeColor="@color/primary_purple"
+                    app:boxCornerRadiusTopStart="15dp"
+                    app:boxCornerRadiusTopEnd="15dp"
+                    app:boxCornerRadiusBottomStart="15dp"
+                    app:boxCornerRadiusBottomEnd="15dp"
+                    app:startIconDrawable="@android:drawable/ic_lock_idle_lock"
+                    app:startIconTint="@color/primary_purple"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_confirm_password"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="textPassword"
-                        android:imeOptions="actionDone"/>
+                        android:textColor="@color/white"
+                        android:inputType="textPassword" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Register Button -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_register"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
-                    android:text="Create Account"
-                    android:textSize="16sp"
-                    android:textAllCaps="false"
-                    app:cornerRadius="12dp"
-                    android:backgroundTint="@color/colorPrimary"
+                    android:text="CREATE ACCOUNT"
+                    app:cornerRadius="20dp"
+                    android:backgroundTint="@color/primary_purple"
+                    android:fontFamily="sans-serif-black"
+                    android:textSize="14sp"
                     android:layout_marginBottom="16dp" />
 
                 <ProgressBar
@@ -217,33 +267,34 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:visibility="gone"
-                    android:layout_marginBottom="8dp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Already have an account? "
-                        android:textColor="@color/textSecondary"
-                        android:textSize="14sp" />
-                    <TextView
-                        android:id="@+id/tv_login"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Sign In"
-                        android:textColor="@color/colorPrimary"
-                        android:textStyle="bold"
-                        android:textSize="14sp" />
-                </LinearLayout>
+                    android:indeterminateTint="@color/accent_cyan" />
 
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <View android:layout_width="match_parent" android:layout_height="32dp" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Already have an account? "
+                android:textColor="@color/glass_white_80"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sign In"
+                android:textColor="@color/accent_cyan"
+                android:textStyle="bold"
+                android:textSize="14sp" />
+        </LinearLayout>
 
     </LinearLayout>
 </ScrollView>

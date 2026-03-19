@@ -42,14 +42,14 @@ public class InboxActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inbox);
 
-        currentUser       = SessionManager.getUser(this);
-        requestRepository = new BorrowRequestRepository();
+        currentUser = SessionManager.getUser(this);
 
         if (currentUser == null) {
             Toast.makeText(this, "Please login again", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
+        requestRepository = new BorrowRequestRepository(this);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -104,7 +104,6 @@ public class InboxActivity extends AppCompatActivity
                 @Override
                 public void onFailure(String error) {
                     showLoading(false);
-                    // Show the ACTUAL error from Firestore
                     Toast.makeText(InboxActivity.this, "Error: " + error, Toast.LENGTH_LONG).show();
                 }
             });
@@ -123,13 +122,10 @@ public class InboxActivity extends AppCompatActivity
                 @Override
                 public void onFailure(String error) {
                     showLoading(false);
-                    // Show the ACTUAL error from Firestore
                     Toast.makeText(InboxActivity.this, "Error: " + error, Toast.LENGTH_LONG).show();
                 }
             });
     }
-
-    // ── Actions ───────────────────────────────────────────────────────────────
 
     @Override
     public void onAccept(BorrowRequest request) {
@@ -171,7 +167,6 @@ public class InboxActivity extends AppCompatActivity
                 Toast.makeText(InboxActivity.this,
                     "Item returned! Credit scores updated.", Toast.LENGTH_LONG).show();
                 loadReceivedRequests();
-                // Launch rating screen so owner can rate the borrower
                 Intent ratingIntent = new Intent(InboxActivity.this, RatingActivity.class);
                 ratingIntent.putExtra("request", request);
                 startActivity(ratingIntent);

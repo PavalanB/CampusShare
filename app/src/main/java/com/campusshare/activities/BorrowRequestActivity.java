@@ -20,17 +20,10 @@ import com.campusshare.models.User;
 import com.campusshare.repositories.BorrowRequestRepository;
 import com.campusshare.utils.CreditManager;
 import com.campusshare.utils.SessionManager;
-import com.google.android.material.chip.Chip;
 
 /**
  * BorrowRequestActivity is launched when a student taps "Request to Borrow"
  * on the ResourceDetailActivity.
- *
- * Flow:
- *  1. Screen loads → CreditManager.checkPriority() runs silently
- *  2. If priority → show a "Priority Request" badge to the borrower
- *  3. Student taps "Send Request" → BorrowRequestRepository.sendRequest()
- *  4. Firestore creates the request document → go back
  */
 public class BorrowRequestActivity extends AppCompatActivity {
 
@@ -55,9 +48,12 @@ public class BorrowRequestActivity extends AppCompatActivity {
         resource    = (Resource) getIntent().getSerializableExtra("resource");
         currentUser = SessionManager.getUser(this);
 
-        if (resource == null || currentUser == null) { finish(); return; }
+        if (resource == null || currentUser == null) {
+            finish();
+            return;
+        }
 
-        requestRepository = new BorrowRequestRepository();
+        requestRepository = new BorrowRequestRepository(this);
         creditManager     = new CreditManager();
 
         setupToolbar();
@@ -86,7 +82,6 @@ public class BorrowRequestActivity extends AppCompatActivity {
         btnSendRequest   = findViewById(R.id.btn_send_request);
         progressBar      = findViewById(R.id.progress_bar);
 
-        // Hide priority UI until credit check completes
         tvPriorityBadge.setVisibility(View.GONE);
         tvPriorityExplain.setVisibility(View.GONE);
     }
@@ -97,17 +92,13 @@ public class BorrowRequestActivity extends AppCompatActivity {
         tvCategory.setText(resource.getCategory());
         tvCondition.setText("Condition: " + resource.getCondition());
 
-        if (!resource.getPhotoUrl().isEmpty()) {
+        if (resource.getPhotoUrl() != null && !resource.getPhotoUrl().isEmpty()) {
             Glide.with(this).load(resource.getPhotoUrl()).centerCrop().into(ivPhoto);
         } else {
             ivPhoto.setImageResource(R.drawable.ic_resource_placeholder);
         }
     }
 
-    /**
-     * Silently checks whether the current user has previously lent to the
-     * resource owner. If yes, the request will be flagged as priority.
-     */
     private void checkPriorityStatus() {
         creditManager.checkPriority(currentUser.getUserID(), resource.getOwnerID(),
             hasPriority -> {
@@ -120,7 +111,6 @@ public class BorrowRequestActivity extends AppCompatActivity {
                         "Your request has been marked as priority."
                     );
                 }
-                // Now wire the button
                 btnSendRequest.setOnClickListener(v -> sendRequest());
             });
     }
@@ -153,7 +143,7 @@ public class BorrowRequestActivity extends AppCompatActivity {
             @Override
             public void onFailure(String error) {
                 showLoading(false);
-                Toast.makeText(BorrowRequestActivity.this, error, Toast.LENGTH_LONG).show();
+                Toast.makeText(BorrowRequestActivity.this, error, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -166,7 +156,10 @@ public class BorrowRequestActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) { finish(); return true; }
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 }

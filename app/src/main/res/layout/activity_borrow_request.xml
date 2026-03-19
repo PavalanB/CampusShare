@@ -176,6 +176,7 @@
                 android:layout_height="56dp"
                 android:text="Confirm and Send Request"
                 android:textSize="16sp"
+                android:textColor="#FFFFFF"
                 android:textAllCaps="false"
                 app:cornerRadius="12dp"
                 android:backgroundTint="@color/colorPrimary"

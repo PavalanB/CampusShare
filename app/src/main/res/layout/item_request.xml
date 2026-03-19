@@ -15,12 +15,12 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- Priority banner -->
+        <!-- Priority banner (amber strip at top) -->
         <TextView
             android:id="@+id/tv_req_priority_badge"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="PRIORITY REQUEST"
+            android:text="  PRIORITY REQUEST"
             android:textColor="#E65100"
             android:textStyle="bold"
             android:textSize="11sp"
@@ -30,6 +30,7 @@
             android:gravity="center"
             android:visibility="gone" />
 
+        <!-- Content row: photo + details -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -52,6 +53,7 @@
                     android:src="@drawable/ic_resource_placeholder" />
             </com.google.android.material.card.MaterialCardView>
 
+            <!-- Text details -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -59,20 +61,42 @@
                 android:orientation="vertical"
                 android:layout_marginStart="16dp">
 
-                <TextView
-                    android:id="@+id/tv_req_resource_name"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Resource Name"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/textPrimary" />
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="4dp">
+
+                    <TextView
+                        android:id="@+id/tv_req_resource_name"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Resource Name"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/textPrimary" />
+
+                    <!-- Status badge -->
+                    <TextView
+                        android:id="@+id/tv_req_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="PENDING"
+                        android:textSize="10sp"
+                        android:textColor="#FFFFFF"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
+                        android:paddingTop="3dp"
+                        android:paddingBottom="3dp"
+                        android:background="@drawable/badge_pending" />
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/tv_req_person"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
                     android:text="From: Student Name"
                     android:textSize="14sp"
                     android:textColor="@color/textSecondary" />
@@ -85,40 +109,26 @@
                     android:text="Requested: 01 Jan 2025"
                     android:textSize="12sp"
                     android:textColor="@color/textHint" />
-            </LinearLayout>
 
-            <TextView
-                android:id="@+id/tv_req_status"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="PENDING"
-                android:textSize="10sp"
-                android:textStyle="bold"
-                android:textColor="#FFFFFF"
-                android:paddingHorizontal="8dp"
-                android:paddingVertical="4dp"
-                android:background="@drawable/badge_pending" />
+                <TextView
+                    android:id="@+id/tv_req_due_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="Due: 08 Jan 2025"
+                    android:textSize="12sp"
+                    android:textColor="#C62828"
+                    android:visibility="gone" />
+            </LinearLayout>
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/tv_req_due_date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="16dp"
-            android:paddingBottom="8dp"
-            android:text="Due: 08 Jan 2025"
-            android:textSize="13sp"
-            android:textStyle="bold"
-            android:textColor="@color/errorColor"
-            android:visibility="gone" />
-
-        <!-- Action buttons -->
+        <!-- Action buttons (Accept / Reject / Mark Returned) -->
         <LinearLayout
             android:id="@+id/ll_req_actions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingHorizontal="12dp"
+            android:paddingHorizontal="16dp"
             android:paddingBottom="12dp"
             android:gravity="end">
 
@@ -140,7 +150,8 @@
                 android:text="Accept"
                 android:textAllCaps="false"
                 app:cornerRadius="8dp"
-                android:backgroundTint="@color/successColor"
+                android:backgroundTint="#2E7D32"
+                android:textColor="#FFFFFF"
                 android:visibility="gone" />
 
             <com.google.android.material.button.MaterialButton
@@ -151,6 +162,7 @@
                 android:textAllCaps="false"
                 app:cornerRadius="8dp"
                 android:backgroundTint="@color/colorPrimary"
+                android:textColor="#FFFFFF"
                 android:visibility="gone" />
 
         </LinearLayout>

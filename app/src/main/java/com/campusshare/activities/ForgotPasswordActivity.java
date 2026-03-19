@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,7 +20,8 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
     private EditText etEmail;
     private Button btnSendReset;
-    private Button btnBackToLogin;
+    private TextView btnBackToLogin;
+    private ImageButton btnBackIcon;
     private ProgressBar progressBar;
 
     private AuthRepository authRepository;
@@ -31,11 +33,19 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
         authRepository = new AuthRepository();
 
+        initViews();
+        setClickListeners();
+    }
+
+    private void initViews() {
         etEmail = findViewById(R.id.et_email);
         btnSendReset = findViewById(R.id.btn_send_reset);
         btnBackToLogin = findViewById(R.id.btn_back_to_login);
+        btnBackIcon = findViewById(R.id.btn_back_to_login_icon);
         progressBar = findViewById(R.id.progress_bar);
+    }
 
+    private void setClickListeners() {
         btnSendReset.setOnClickListener(v -> {
             String email = etEmail.getText().toString().trim();
 
@@ -69,11 +79,17 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             });
         });
 
-        btnBackToLogin.setOnClickListener(v -> finish());
+        View.OnClickListener goBack = v -> finish();
+        btnBackToLogin.setOnClickListener(goBack);
+        btnBackIcon.setOnClickListener(goBack);
     }
 
     private void showLoading(boolean show) {
-        progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
-        btnSendReset.setEnabled(!show);
+        if (progressBar != null) {
+            progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
+        }
+        if (btnSendReset != null) {
+            btnSendReset.setEnabled(!show);
+        }
     }
 }

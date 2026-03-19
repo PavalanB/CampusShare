@@ -3,7 +3,6 @@ package com.campusshare.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,7 +19,6 @@ import com.google.android.material.chip.Chip;
 
 /**
  * ResourceDetailActivity shows the full details of a resource.
- * The "Request to Borrow" button will be wired to Phase 3 (BorrowRequestActivity).
  */
 public class ResourceDetailActivity extends AppCompatActivity {
 
@@ -92,22 +90,19 @@ public class ResourceDetailActivity extends AppCompatActivity {
                 Toast.makeText(this, "This is your own resource.", Toast.LENGTH_SHORT).show();
                 return;
             }
-            
-            // Try to launch BorrowRequestActivity if it exists
-            try {
-                Class<?> cls = Class.forName("com.campusshare.activities.BorrowRequestActivity");
-                Intent intent = new Intent(this, cls);
-                intent.putExtra("resource", resource);
-                startActivity(intent);
-            } catch (ClassNotFoundException e) {
-                Toast.makeText(this, "Borrow requests coming soon!", Toast.LENGTH_SHORT).show();
-            }
+
+            Intent intent = new Intent(this, BorrowRequestActivity.class);
+            intent.putExtra("resource", resource);
+            startActivity(intent);
         });
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) { finish(); return true; }
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 }

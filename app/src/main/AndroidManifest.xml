@@ -9,11 +9,15 @@
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
+
+    <!-- Required for Android 13+ to access images -->
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
+    <!-- Declare that the camera is not strictly required so the app can be installed on devices without one -->
     <uses-feature android:name="android.hardware.camera" android:required="false" />
+    <uses-feature android:name="android.hardware.telephony" android:required="false" />
 
     <application
         android:allowBackup="true"
@@ -21,6 +25,7 @@
         android:label="CampusShare"
         android:roundIcon="@drawable/ic_resource_placeholder"
         android:supportsRtl="true"
+        android:requestLegacyExternalStorage="true"
         android:theme="@style/Theme.CampusShare">
 
         <activity
@@ -36,19 +41,33 @@
         <activity android:name=".activities.RegisterActivity"       android:exported="false" />
         <activity android:name=".activities.ForgotPasswordActivity" android:exported="false" />
 
+        <!-- Phase 2 - Resources -->
         <activity android:name=".activities.MainActivity"           android:exported="false" />
         <activity android:name=".activities.AddResourceActivity"    android:exported="false" />
         <activity android:name=".activities.ResourceDetailActivity" android:exported="false" />
         <activity android:name=".activities.ProfileActivity"        android:exported="false" />
 
+        <!-- Phase 3 - Borrow Requests -->
         <activity android:name=".activities.BorrowRequestActivity"  android:exported="false" />
         <activity android:name=".activities.InboxActivity"          android:exported="false" />
+
+        <!-- Phase 4 - Search, Ratings, Notifications -->
         <activity android:name=".activities.SearchActivity"         android:exported="false" />
         <activity android:name=".activities.RatingActivity"         android:exported="false" />
+
+        <!-- Map Activity using OpenStreetMap -->
+        <activity android:name=".activities.MapActivity"            android:exported="false" />
+
+        <!-- Full Screen Location Picker -->
+        <activity android:name=".activities.LocationPickerActivity" android:exported="false" />
+
+        <!-- Requirement 4: Native Calculator -->
         <activity android:name=".activities.CalculatorActivity"     android:exported="false" />
         <activity android:name=".activities.GameActivity"           android:exported="false" />
         <activity android:name=".activities.ReportActivity"         android:exported="false" />
+        <activity android:name=".activities.AboutActivity"          android:exported="false" />
 
+        <!-- FCM Service -->
         <service
             android:name=".services.FCMService"
             android:exported="false">

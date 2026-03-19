@@ -4,19 +4,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/backgroundColor">
+    android:background="@drawable/bg_main_gradient">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary">
+        android:background="@android:color/transparent"
+        app:elevation="0dp">
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:titleTextColor="@color/surfaceColor"
+            app:title="Rate Experience"
+            app:titleTextColor="@color/text_primary"
             app:navigationIcon="?attr/homeAsUpIndicator"
-            app:popupTheme="@style/ThemeOverlay.MaterialComponents.Light" />
+            app:navigationIconTint="@color/text_primary" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
@@ -28,11 +30,9 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.CampusShare.GlassCard"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="24dp"
-            app:cardElevation="4dp"
-            app:strokeWidth="0dp">
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -41,12 +41,22 @@
                 android:gravity="center"
                 android:padding="32dp">
 
-                <ImageView
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="64dp"
                     android:layout_height="64dp"
-                    android:src="@android:drawable/btn_star_big_on"
-                    app:tint="@color/colorAccent"
-                    android:layout_marginBottom="24dp" />
+                    app:cardBackgroundColor="@color/glass_white_10"
+                    app:cardCornerRadius="32dp"
+                    app:cardElevation="0dp"
+                    app:strokeColor="@color/secondary_glow"
+                    app:strokeWidth="1dp"
+                    android:layout_marginBottom="24dp">
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_gravity="center"
+                        android:src="@android:drawable/btn_star_big_on"
+                        app:tint="@color/secondary_glow" />
+                </com.google.android.material.card.MaterialCardView>
 
                 <TextView
                     android:id="@+id/tv_rating_title"
@@ -54,8 +64,8 @@
                     android:layout_height="wrap_content"
                     android:text="Rate your experience"
                     android:textSize="22sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/textPrimary"
+                    android:fontFamily="sans-serif-black"
+                    android:textColor="@color/text_primary"
                     android:gravity="center"
                     android:layout_marginBottom="8dp" />
 
@@ -65,7 +75,7 @@
                     android:layout_height="wrap_content"
                     android:text="Your feedback helps us maintain a trustworthy community."
                     android:textSize="14sp"
-                    android:textColor="@color/textSecondary"
+                    android:textColor="@color/text_secondary"
                     android:gravity="center"
                     android:layout_marginBottom="24dp" />
 
@@ -73,10 +83,10 @@
                     android:id="@+id/tv_person_to_rate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="How was your interaction with Student Name?"
+                    android:text="How was your interaction?"
                     android:textSize="16sp"
-                    android:textColor="@color/colorPrimary"
-                    android:textStyle="bold"
+                    android:textColor="@color/primary_glow"
+                    android:fontFamily="sans-serif-medium"
                     android:gravity="center"
                     android:layout_marginBottom="24dp" />
 
@@ -87,37 +97,35 @@
                     android:numStars="5"
                     android:stepSize="1.0"
                     android:rating="0"
-                    android:progressTint="@color/colorAccent"
-                    android:secondaryProgressTint="@color/colorAccent"
-                    android:progressBackgroundTint="@color/textHint"
+                    android:progressTint="@color/secondary_glow"
+                    android:secondaryProgressTint="@color/secondary_glow"
+                    android:progressBackgroundTint="@color/glass_white_20"
                     android:layout_marginBottom="32dp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_submit_rating"
+                    style="@style/Widget.CampusShare.GlowButton"
                     android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:text="Submit Feedback"
-                    android:textSize="16sp"
-                    android:textAllCaps="false"
-                    app:cornerRadius="12dp"
-                    android:backgroundTint="@color/colorPrimary"
-                    android:layout_marginBottom="12dp" />
+                    android:layout_height="wrap_content"
+                    android:text="Submit Rating"
+                    android:layout_marginBottom="12dp"
+                    app:backgroundTint="@color/accent_purple" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_skip_rating"
                     style="@style/Widget.MaterialComponents.Button.TextButton"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:text="Maybe Later"
-                    android:textSize="14sp"
-                    android:textAllCaps="false"
-                    android:textColor="@color/textSecondary" />
+                    android:layout_height="wrap_content"
+                    android:text="Skip"
+                    android:textColor="@color/text_secondary"
+                    android:textAllCaps="false" />
 
                 <ProgressBar
                     android:id="@+id/progress_bar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
+                    android:indeterminateTint="@color/primary_glow"
                     android:visibility="gone" />
 
             </LinearLayout>

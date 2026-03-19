@@ -2,229 +2,226 @@ package com.campusshare.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.ProgressBar;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.campusshare.R;
-import com.campusshare.adapters.ResourceAdapter;
-import com.campusshare.models.Resource;
+import com.campusshare.fragments.InboxFragment;
+import com.campusshare.fragments.MyItemsFragment;
+import com.campusshare.fragments.ProfileFragment;
+import com.campusshare.fragments.SearchFragment;
 import com.campusshare.models.User;
 import com.campusshare.repositories.AuthRepository;
-import com.campusshare.repositories.ResourceRepository;
+import com.campusshare.utils.NotificationHelper;
 import com.campusshare.utils.SessionManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
 
-import java.util.ArrayList;
-import java.util.List;
+public class MainActivity extends AppCompatActivity implements ProfileFragment.ProfileUpdateListener {
 
-public class MainActivity extends AppCompatActivity {
-
-    private RecyclerView recyclerView;
-    private ProgressBar progressBar;
-    private TextView tvEmpty;
+    private TextView tvToolbarTitle, tvWelcomeMsg;
     private FloatingActionButton fabAdd;
     private BottomNavigationView bottomNav;
-    private Toolbar toolbar;
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
+    private ImageView ivMenu;
 
-    private ResourceAdapter adapter;
-    private List<Resource> resourceList = new ArrayList<>();
-    private ResourceRepository resourceRepository;
     private AuthRepository authRepository;
     private User currentUser;
-    private boolean isMyListingsMode = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        authRepository = new AuthRepository();
         currentUser = SessionManager.getUser(this);
+
         if (currentUser == null) {
-            // No session found, redirect to login
-            Intent i = new Intent(this, LoginActivity.class);
-            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(i);
-            finish();
-            return;
+            if (authRepository.getCurrentUser() != null) {
+                authRepository.fetchUserProfile(authRepository.getCurrentUser().getUid(),
+                    new AuthRepository.UserProfileCallback() {
+                        @Override
+                        public void onSuccess(User user) {
+                            currentUser = user;
+                            SessionManager.saveUser(MainActivity.this, user);
+                            continueInitialization();
+                        }
+                        @Override
+                        public void onFailure(String error) {
+                            redirectToLogin();
+                        }
+                    });
+                return;
+            } else {
+                redirectToLogin();
+                return;
+            }
         }
 
-        resourceRepository = new ResourceRepository();
-        authRepository = new AuthRepository();
+        continueInitialization();
+    }
 
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+    private void continueInitialization() {
+        NotificationHelper.refreshAndSaveToken();
 
-        recyclerView = findViewById(R.id.recycler_view);
-        progressBar  = findViewById(R.id.progress_bar);
-        tvEmpty      = findViewById(R.id.tv_empty);
-        fabAdd       = findViewById(R.id.fab_add);
-        bottomNav    = findViewById(R.id.bottom_nav);
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_view_right);
+        ivMenu = findViewById(R.id.iv_menu);
+        tvToolbarTitle = findViewById(R.id.tv_toolbar_title);
+        tvWelcomeMsg = findViewById(R.id.tv_welcome_msg);
+        fabAdd         = findViewById(R.id.fab_add);
+        bottomNav      = findViewById(R.id.bottom_nav);
 
-        setupRecyclerView(false);
+        setupSidebar();
         setupBottomNav();
 
-        fabAdd.hide();
+        ivMenu.setOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.END));
+
         fabAdd.setOnClickListener(v ->
             startActivity(new Intent(this, AddResourceActivity.class))
         );
 
-        loadBrowseFeed();
+        // Set default fragment
+        if (getSupportFragmentManager().findFragmentById(R.id.fragment_container) == null) {
+            loadFragment(new SearchFragment(), "BROWSE");
+            fabAdd.hide();
+        }
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        if (currentUser == null) return;
-        if (isMyListingsMode) loadMyListings();
-        else loadBrowseFeed();
+    public void onProfileUpdated(User user) {
+        this.currentUser = user;
+        updateSidebarUserInfo();
     }
 
-    private void setupRecyclerView(boolean ownerMode) {
-        adapter = new ResourceAdapter(this, resourceList, new ResourceAdapter.OnResourceClickListener() {
-            @Override
-            public void onResourceClick(Resource resource) {
-                Intent i = new Intent(MainActivity.this, ResourceDetailActivity.class);
-                i.putExtra("resource", resource);
-                startActivity(i);
+    private void setupSidebar() {
+        navigationView.setNavigationItemSelectedListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.nav_game) {
+                startActivity(new Intent(this, GameActivity.class));
+            } else if (id == R.id.nav_settings) {
+                // Open Settings
+            } else if (id == R.id.nav_theme) {
+                showThemeSelectionDialog();
+            } else if (id == R.id.nav_about) {
+                startActivity(new Intent(this, AboutActivity.class));
+            } else if (id == R.id.nav_logout) {
+                authRepository.logout();
+                SessionManager.clearSession(this);
+                redirectToLogin();
             }
-            @Override
-            public void onEditClick(Resource resource) {
-                Intent i = new Intent(MainActivity.this, AddResourceActivity.class);
-                i.putExtra("resource", resource);
-                startActivity(i);
+            drawerLayout.closeDrawer(GravityCompat.END);
+            return true;
+        });
+
+        updateSidebarUserInfo();
+    }
+
+    private void updateSidebarUserInfo() {
+        if (navigationView == null) return;
+        
+        View headerView = navigationView.getHeaderView(0);
+        if (headerView != null) {
+            TextView navName = headerView.findViewById(R.id.nav_name);
+            TextView navEmail = headerView.findViewById(R.id.nav_email);
+            TextView navInitials = headerView.findViewById(R.id.nav_initials);
+
+            if (currentUser != null) {
+                if (navName != null) navName.setText(currentUser.getName());
+                if (navEmail != null) navEmail.setText(currentUser.getEmail());
+                if (navInitials != null && currentUser.getName() != null && !currentUser.getName().isEmpty()) {
+                    String name = currentUser.getName();
+                    String[] parts = name.split(" ");
+                    String initials;
+                    if (parts.length >= 2 && !parts[0].isEmpty() && !parts[1].isEmpty()) {
+                        initials = String.valueOf(parts[0].charAt(0)) + parts[1].charAt(0);
+                    } else {
+                        initials = String.valueOf(name.charAt(0));
+                    }
+                    navInitials.setText(initials.toUpperCase());
+                }
             }
-            @Override
-            public void onDeleteClick(Resource resource) {
-                new AlertDialog.Builder(MainActivity.this)
-                    .setTitle("Delete Resource")
-                    .setMessage("Remove \"" + resource.getResourceName() + "\"?")
-                    .setPositiveButton("Delete", (d, w) ->
-                        resourceRepository.deleteResource(resource.getResourceID(),
-                            new ResourceRepository.SimpleCallback() {
-                                @Override public void onSuccess() { loadMyListings(); }
-                                @Override public void onFailure(String e) {
-                                    Toast.makeText(MainActivity.this, "Delete failed: " + e, Toast.LENGTH_SHORT).show();
-                                }
-                            }))
-                    .setNegativeButton("Cancel", null).show();
+        }
+    }
+
+    private void showThemeSelectionDialog() {
+        String[] themes = {"Light", "Dark"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Choose Theme");
+        builder.setItems(themes, (dialog, which) -> {
+            if (which == 0) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
             }
-        }, ownerMode);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(adapter);
+        });
+        builder.show();
+    }
+
+    private void redirectToLogin() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
     }
 
     private void setupBottomNav() {
         bottomNav.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
             if (id == R.id.nav_browse) {
-                isMyListingsMode = false;
-                if (getSupportActionBar() != null) getSupportActionBar().setTitle("Browse Resources");
-                setupRecyclerView(false);
+                loadFragment(new SearchFragment(), "BROWSE");
+                tvWelcomeMsg.setText("Find what you need today");
                 fabAdd.hide();
-                loadBrowseFeed();
-                return true;
-            } else if (id == R.id.nav_my_listings) {
-                isMyListingsMode = true;
-                if (getSupportActionBar() != null) getSupportActionBar().setTitle("My Listings");
-                setupRecyclerView(true);
-                fabAdd.show();
-                loadMyListings();
                 return true;
             } else if (id == R.id.nav_search) {
-                try {
-                    startActivity(new Intent(this, Class.forName("com.campusshare.activities.SearchActivity")));
-                } catch (Exception e) {
-                    Toast.makeText(this, "Search coming soon!", Toast.LENGTH_SHORT).show();
-                }
-                return false;
+                loadFragment(new SearchFragment(), "SEARCH");
+                tvWelcomeMsg.setText("Look for specific resources");
+                fabAdd.hide();
+                return true;
+            } else if (id == R.id.nav_my_listings) {
+                loadFragment(new MyItemsFragment(), "MY ITEMS");
+                tvWelcomeMsg.setText("Manage your resources");
+                fabAdd.show();
+                return true;
             } else if (id == R.id.nav_inbox) {
-                try {
-                    startActivity(new Intent(this, Class.forName("com.campusshare.activities.InboxActivity")));
-                } catch (Exception e) {
-                    Toast.makeText(this, "Inbox coming soon!", Toast.LENGTH_SHORT).show();
-                }
-                return false;
+                loadFragment(new InboxFragment(), "INBOX");
+                tvWelcomeMsg.setText("Your messages and requests");
+                fabAdd.hide();
+                return true;
             } else if (id == R.id.nav_profile) {
-                startActivity(new Intent(this, ProfileActivity.class));
-                return false; // don't highlight tab since it's a separate screen
+                loadFragment(new ProfileFragment(), "PROFILE");
+                tvWelcomeMsg.setText("Your personal dashboard");
+                fabAdd.hide();
+                return true;
             }
             return false;
         });
     }
 
-    private void loadBrowseFeed() {
-        if (currentUser == null) return;
-        showLoading(true);
-        resourceRepository.fetchAvailableResources(currentUser.getUserID(),
-            new ResourceRepository.ResourceListCallback() {
-                @Override
-                public void onSuccess(List<Resource> resources) {
-                    showLoading(false);
-                    adapter.updateList(resources);
-                    tvEmpty.setVisibility(resources.isEmpty() ? View.VISIBLE : View.GONE);
-                    if (resources.isEmpty()) tvEmpty.setText("No resources available yet.\nBe the first to share!");
-                }
-                @Override
-                public void onFailure(String error) {
-                    showLoading(false);
-                    Toast.makeText(MainActivity.this, "Could not load resources: " + error, Toast.LENGTH_LONG).show();
-                }
-            });
-    }
-
-    private void loadMyListings() {
-        if (currentUser == null) return;
-        showLoading(true);
-        resourceRepository.fetchMyResources(currentUser.getUserID(),
-            new ResourceRepository.ResourceListCallback() {
-                @Override
-                public void onSuccess(List<Resource> resources) {
-                    showLoading(false);
-                    adapter.updateList(resources);
-                    tvEmpty.setVisibility(resources.isEmpty() ? View.VISIBLE : View.GONE);
-                    if (resources.isEmpty()) tvEmpty.setText("You have no listings yet.\nTap + to add one!");
-                }
-                @Override
-                public void onFailure(String error) {
-                    showLoading(false);
-                    Toast.makeText(MainActivity.this, "Could not load your listings: " + error, Toast.LENGTH_LONG).show();
-                }
-            });
-    }
-
-    private void showLoading(boolean show) {
-        progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
-        recyclerView.setVisibility(show ? View.GONE : View.VISIBLE);
+    private void loadFragment(Fragment fragment, String title) {
+        tvToolbarTitle.setText(title);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment);
+        transaction.commit();
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_logout) {
-            authRepository.logout();
-            SessionManager.clearSession(this);
-            Intent i = new Intent(this, LoginActivity.class);
-            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(i);
-            finish();
-            return true;
+    public void onBackPressed() {
+        if (drawerLayout != null && drawerLayout.isDrawerOpen(GravityCompat.END)) {
+            drawerLayout.closeDrawer(GravityCompat.END);
+        } else {
+            super.onBackPressed();
         }
-        return super.onOptionsItemSelected(item);
     }
 }

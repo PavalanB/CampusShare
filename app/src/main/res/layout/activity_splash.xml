@@ -1,27 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/backgroundColor"
+    android:background="@drawable/bg_login_gradient"
     android:gravity="center">
 
-    <ImageView
-        android:id="@+id/iv_logo"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:src="@drawable/ic_launcher_foreground"
-        android:contentDescription="App Logo" />
+    <!-- Decorative Glows -->
+    <View
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/nfs_center_glow"
+        android:alpha="0.3" />
 
-    <TextView
-        android:id="@+id/tv_app_name"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/iv_logo"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:text="CampusShare"
-        android:textSize="28sp"
-        android:textStyle="bold"
-        android:textColor="@color/colorPrimary" />
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <!-- Logo Container -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_logo"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            app:cardBackgroundColor="@color/bg_card"
+            app:cardCornerRadius="70dp"
+            app:cardElevation="24dp"
+            app:strokeColor="@color/accent_primary"
+            app:strokeWidth="2dp">
+
+            <ImageView
+                android:id="@+id/iv_logo"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center"
+                android:src="@android:drawable/ic_menu_share"
+                app:tint="@color/accent_primary" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Main Title with Neon Effect -->
+        <TextView
+            android:id="@+id/tv_app_name_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:fontFamily="sans-serif-black"
+            android:text="CAMPUS"
+            android:textColor="@color/accent_primary"
+            android:textSize="48sp"
+            android:letterSpacing="0.1"
+            android:shadowColor="@color/accent_primary"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="20" />
+
+        <TextView
+            android:id="@+id/tv_app_name_sub"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-10dp"
+            android:fontFamily="cursive"
+            android:text="Share"
+            android:textColor="@color/white"
+            android:textSize="64sp"
+            android:textStyle="bold"
+            android:shadowColor="@color/accent_secondary"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="25" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
+            android:text="SYNCING CAMPUS HUB..."
+            android:textColor="@color/accent_primary"
+            android:textSize="12sp"
+            android:letterSpacing="0.3"
+            android:fontFamily="sans-serif-condensed" />
+
+        <ProgressBar
+            style="@style/Widget.MaterialComponents.LinearProgressIndicator"
+            android:layout_width="200dp"
+            android:layout_height="3dp"
+            android:layout_marginTop="16dp"
+            android:indeterminate="true"
+            app:indicatorColor="@color/accent_primary"
+            app:trackColor="@color/glass_white_10" />
+
+    </LinearLayout>
 
 </RelativeLayout>

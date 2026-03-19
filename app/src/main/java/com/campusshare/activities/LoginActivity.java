@@ -65,6 +65,13 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
         }
+        if (authRepository.getCurrentUser() != null) {
+            goToMain();
+            return;
+        }
+
+        initViews();
+        setClickListeners();
     }
 
     private void initViews() {
@@ -145,6 +152,8 @@ public class LoginActivity extends AppCompatActivity {
             progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
         }
         if (btnLogin != null) btnLogin.setEnabled(!show);
+        progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
+        btnLogin.setEnabled(!show);
     }
 
     private void goToMain() {

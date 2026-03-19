@@ -14,14 +14,17 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.preference.PreferenceManager;
 
 import com.bumptech.glide.Glide;
 import com.campusshare.R;
@@ -32,9 +35,15 @@ import com.campusshare.utils.SessionManager;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 
+import org.osmdroid.api.IMapController;
+import org.osmdroid.config.Configuration;
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+import org.osmdroid.util.GeoPoint;
+import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.Marker;
+
 /**
  * AddResourceActivity handles both ADD (new resource) and EDIT (existing resource).
- * Pass a Resource object via intent extra "resource" to enter edit mode.
  */
 public class AddResourceActivity extends AppCompatActivity {
 
@@ -45,12 +54,21 @@ public class AddResourceActivity extends AppCompatActivity {
     private Spinner spinnerCategory, spinnerCondition;
     private MaterialButton btnSave;
     private ProgressBar progressBar;
+    private MapView mapPreview;
+    private TextView tvLocationStatus;
+    private View mapOverlay;
 
     // State
     private Uri selectedPhotoUri = null;
     private Resource existingResource = null; // non-null = edit mode
     private ResourceRepository resourceRepository;
     private User currentUser;
+    private double selectedLat = 0, selectedLng = 0;
+    private Marker selectionMarker;
+
+    // Anna University, Chennai Coordinates
+    private static final double ANNA_UNIVERSITY_LAT = 13.0132;
+    private static final double ANNA_UNIVERSITY_LNG = 80.2354;
 
     private static final String[] CATEGORIES = {
         "Select Category", "Electronics", "Books", "Lab Equipment",
@@ -63,34 +81,43 @@ public class AddResourceActivity extends AppCompatActivity {
 
     // ─── Activity Result Launchers ────────────────────────────────────────────
 
-    // Gallery picker
+    private final ActivityResultLauncher<Intent> locationPickerLauncher =
+        registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                selectedLat = result.getData().getDoubleExtra("lat", 0);
+                selectedLng = result.getData().getDoubleExtra("lng", 0);
+                updateMapPreview(selectedLat, selectedLng);
+            }
+        });
+
     private final ActivityResultLauncher<Intent> galleryLauncher =
         registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                 selectedPhotoUri = result.getData().getData();
                 ivPhoto.setImageURI(selectedPhotoUri);
+                ivPhoto.setImageAlpha(255);
                 btnAddPhoto.setText("Change Photo");
             }
         });
 
-    // Permission launcher
     private final ActivityResultLauncher<String> permissionLauncher =
         registerForActivityResult(new ActivityResultContracts.RequestPermission(), granted -> {
-            if (granted) openGallery();
-            else Toast.makeText(this, "Permission needed to pick a photo", Toast.LENGTH_SHORT).show();
+            if (granted) {
+                openGallery();
+            } else {
+                Toast.makeText(this, "Permission required to access photos", Toast.LENGTH_SHORT).show();
+            }
         });
-
-    // ─── onCreate ─────────────────────────────────────────────────────────────
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Configuration.getInstance().load(this, PreferenceManager.getDefaultSharedPreferences(this));
         setContentView(R.layout.activity_add_resource);
 
-        resourceRepository = new ResourceRepository();
+        resourceRepository = new ResourceRepository(this);
         currentUser = SessionManager.getUser(this);
 
-        // Check if we are in edit mode
         if (getIntent().hasExtra("resource")) {
             existingResource = (Resource) getIntent().getSerializableExtra("resource");
         }
@@ -98,6 +125,7 @@ public class AddResourceActivity extends AppCompatActivity {
         setupToolbar();
         initViews();
         setupSpinners();
+        setupMapPreview();
         setClickListeners();
 
         if (existingResource != null) populateEditMode();
@@ -113,48 +141,72 @@ public class AddResourceActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        ivPhoto         = findViewById(R.id.iv_photo);
-        btnAddPhoto     = findViewById(R.id.btn_add_photo);
-        etName          = findViewById(R.id.et_resource_name);
-        etDescription   = findViewById(R.id.et_description);
+        ivPhoto          = findViewById(R.id.iv_photo);
+        btnAddPhoto      = findViewById(R.id.btn_add_photo);
+        etName           = findViewById(R.id.et_resource_name);
+        etDescription    = findViewById(R.id.et_description);
         spinnerCategory  = findViewById(R.id.spinner_category);
         spinnerCondition = findViewById(R.id.spinner_condition);
-        btnSave         = findViewById(R.id.btn_save);
-        progressBar     = findViewById(R.id.progress_bar);
+        btnSave          = findViewById(R.id.btn_save);
+        progressBar      = findViewById(R.id.progress_bar);
+        mapPreview       = findViewById(R.id.map_picker);
+        tvLocationStatus = findViewById(R.id.tv_location_status);
+        mapOverlay       = findViewById(R.id.map_overlay_click);
     }
 
     private void setupSpinners() {
-        ArrayAdapter<String> catAdapter = new ArrayAdapter<>(
-            this, android.R.layout.simple_spinner_item, CATEGORIES);
-        catAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Using custom layout for dropdown items to match the dark NFS Heat theme
+        ArrayAdapter<String> catAdapter = new ArrayAdapter<>(this, R.layout.list_item_dropdown, CATEGORIES);
+        catAdapter.setDropDownViewResource(R.layout.list_item_dropdown);
         spinnerCategory.setAdapter(catAdapter);
 
-        ArrayAdapter<String> condAdapter = new ArrayAdapter<>(
-            this, android.R.layout.simple_spinner_item, CONDITIONS);
-        condAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> condAdapter = new ArrayAdapter<>(this, R.layout.list_item_dropdown, CONDITIONS);
+        condAdapter.setDropDownViewResource(R.layout.list_item_dropdown);
         spinnerCondition.setAdapter(condAdapter);
     }
 
-    // Populate fields when editing an existing resource
+    private void setupMapPreview() {
+        mapPreview.setTileSource(TileSourceFactory.MAPNIK);
+        mapPreview.setMultiTouchControls(false);
+        IMapController mapController = mapPreview.getController();
+        mapController.setZoom(19.0);
+
+        GeoPoint startPoint = new GeoPoint(ANNA_UNIVERSITY_LAT, ANNA_UNIVERSITY_LNG);
+        mapController.setCenter(startPoint);
+
+        selectionMarker = new Marker(mapPreview);
+        selectionMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+    }
+
+    private void updateMapPreview(double lat, double lng) {
+        GeoPoint point = new GeoPoint(lat, lng);
+        selectionMarker.setPosition(point);
+        if (!mapPreview.getOverlays().contains(selectionMarker)) {
+            mapPreview.getOverlays().add(selectionMarker);
+        }
+        mapPreview.getController().setCenter(point);
+        mapPreview.invalidate();
+        tvLocationStatus.setText(String.format("Location pinned at: %.4f, %.4f", lat, lng));
+        tvLocationStatus.setTextColor(ContextCompat.getColor(this, R.color.success_green));
+    }
+
     private void populateEditMode() {
-        if (existingResource == null) return;
+        etName.setText(existingResource.getResourceName());
+        etDescription.setText(existingResource.getDescription());
 
-        if (existingResource.getResourceName() != null) {
-            etName.setText(existingResource.getResourceName());
-        }
-        if (existingResource.getDescription() != null) {
-            etDescription.setText(existingResource.getDescription());
-        }
-
-        // Set spinner selections
         setSpinnerValue(spinnerCategory, CATEGORIES, existingResource.getCategory());
         setSpinnerValue(spinnerCondition, CONDITIONS, existingResource.getCondition());
 
-        // Load existing photo
-        String photoUrl = existingResource.getPhotoUrl();
-        if (photoUrl != null && !photoUrl.isEmpty()) {
-            Glide.with(this).load(photoUrl).centerCrop().into(ivPhoto);
+        if (existingResource.getPhotoUrl() != null && !existingResource.getPhotoUrl().isEmpty()) {
+            Glide.with(this).load(existingResource.getPhotoUrl()).centerCrop().into(ivPhoto);
+            ivPhoto.setImageAlpha(255);
             btnAddPhoto.setText("Change Photo");
+        }
+
+        if (existingResource.getLatitude() != 0 && existingResource.getLongitude() != 0) {
+            selectedLat = existingResource.getLatitude();
+            selectedLng = existingResource.getLongitude();
+            updateMapPreview(selectedLat, selectedLng);
         }
     }
 
@@ -169,70 +221,69 @@ public class AddResourceActivity extends AppCompatActivity {
     }
 
     private void setClickListeners() {
-        // Photo picker - Both image and button trigger the picker
         ivPhoto.setOnClickListener(v -> showPhotoPickerDialog());
         btnAddPhoto.setOnClickListener(v -> showPhotoPickerDialog());
+
+        mapOverlay.setOnClickListener(v -> {
+            Intent intent = new Intent(this, LocationPickerActivity.class);
+            intent.putExtra("lat", selectedLat);
+            intent.putExtra("lng", selectedLng);
+            locationPickerLauncher.launch(intent);
+        });
 
         btnSave.setOnClickListener(v -> {
             String name        = etName.getText() != null ? etName.getText().toString().trim() : "";
             String description = etDescription.getText() != null ? etDescription.getText().toString().trim() : "";
-            String category    = spinnerCategory.getSelectedItem() != null ? spinnerCategory.getSelectedItem().toString() : "Select Category";
-            String condition   = spinnerCondition.getSelectedItem() != null ? spinnerCondition.getSelectedItem().toString() : "Select Condition";
+            String category    = spinnerCategory.getSelectedItem() != null ? spinnerCategory.getSelectedItem().toString() : CATEGORIES[0];
+            String condition   = spinnerCondition.getSelectedItem() != null ? spinnerCondition.getSelectedItem().toString() : CONDITIONS[0];
 
             if (!validateInputs(name, description, category, condition)) return;
 
             showLoading(true);
 
             if (existingResource == null) {
-                // ADD mode
-                Resource newResource = new Resource(
-                    currentUser.getUserID(), currentUser.getName(),
-                    currentUser.getDepartment(), name, category, description, condition
-                );
-                resourceRepository.addResource(newResource, selectedPhotoUri,
-                    new ResourceRepository.ResourceCallback() {
-                        @Override
-                        public void onSuccess(Resource resource) {
-                            showLoading(false);
-                            Toast.makeText(AddResourceActivity.this,
-                                "Resource added successfully!", Toast.LENGTH_SHORT).show();
-                            finish();
-                        }
-                        @Override
-                        public void onFailure(String error) {
-                            showLoading(false);
-                            Toast.makeText(AddResourceActivity.this, error, Toast.LENGTH_LONG).show();
-                        }
-                    });
+                Resource newResource = new Resource(currentUser.getUserID(), currentUser.getName(),
+                    currentUser.getDepartment(), name, category, description, condition, selectedLat, selectedLng);
+                resourceRepository.addResource(newResource, selectedPhotoUri, new ResourceRepository.ResourceCallback() {
+                    @Override
+                    public void onSuccess(Resource resource) {
+                        showLoading(false);
+                        Toast.makeText(AddResourceActivity.this, "Resource listed successfully!", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+                    @Override
+                    public void onFailure(String error) {
+                        showLoading(false);
+                        Toast.makeText(AddResourceActivity.this, error, Toast.LENGTH_LONG).show();
+                    }
+                });
             } else {
-                // EDIT mode
                 existingResource.setResourceName(name);
                 existingResource.setDescription(description);
                 existingResource.setCategory(category);
                 existingResource.setCondition(condition);
-
-                resourceRepository.updateResource(existingResource, selectedPhotoUri,
-                    new ResourceRepository.ResourceCallback() {
-                        @Override
-                        public void onSuccess(Resource resource) {
-                            showLoading(false);
-                            Toast.makeText(AddResourceActivity.this,
-                                "Resource updated!", Toast.LENGTH_SHORT).show();
-                            finish();
-                        }
-                        @Override
-                        public void onFailure(String error) {
-                            showLoading(false);
-                            Toast.makeText(AddResourceActivity.this, error, Toast.LENGTH_LONG).show();
-                        }
-                    });
+                existingResource.setLatitude(selectedLat);
+                existingResource.setLongitude(selectedLng);
+                resourceRepository.updateResource(existingResource, selectedPhotoUri, new ResourceRepository.ResourceCallback() {
+                    @Override
+                    public void onSuccess(Resource resource) {
+                        showLoading(false);
+                        Toast.makeText(AddResourceActivity.this, "Resource updated successfully!", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+                    @Override
+                    public void onFailure(String error) {
+                        showLoading(false);
+                        Toast.makeText(AddResourceActivity.this, error, Toast.LENGTH_LONG).show();
+                    }
+                });
             }
         });
     }
 
     private void showPhotoPickerDialog() {
         new AlertDialog.Builder(this)
-            .setTitle("Choose Photo")
+            .setTitle("Choose Photo Source")
             .setItems(new String[]{"Gallery", "Cancel"}, (dialog, which) -> {
                 if (which == 0) checkPermissionAndOpenGallery();
             })
@@ -240,13 +291,9 @@ public class AddResourceActivity extends AppCompatActivity {
     }
 
     private void checkPermissionAndOpenGallery() {
-        String permission;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            permission = Manifest.permission.READ_MEDIA_IMAGES;
-        } else {
-            permission = Manifest.permission.READ_EXTERNAL_STORAGE;
-        }
-
+        String permission = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU ? 
+            Manifest.permission.READ_MEDIA_IMAGES : Manifest.permission.READ_EXTERNAL_STORAGE;
+            
         if (ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED) {
             openGallery();
         } else {
@@ -255,23 +302,26 @@ public class AddResourceActivity extends AppCompatActivity {
     }
 
     private void openGallery() {
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        intent.setType("image/*");
         galleryLauncher.launch(intent);
     }
 
     private boolean validateInputs(String name, String description, String category, String condition) {
         if (TextUtils.isEmpty(name)) {
-            etName.setError("Resource name is required"); etName.requestFocus(); return false;
+            etName.setError("Name is required"); etName.requestFocus(); return false;
         }
         if (TextUtils.isEmpty(description)) {
             etDescription.setError("Description is required"); etDescription.requestFocus(); return false;
         }
-        if (category.equals("Select Category")) {
+        if (category.equals(CATEGORIES[0])) {
             Toast.makeText(this, "Please select a category", Toast.LENGTH_SHORT).show(); return false;
         }
-        if (condition.equals("Select Condition")) {
-            Toast.makeText(this, "Please select the condition", Toast.LENGTH_SHORT).show(); return false;
+        if (condition.equals(CONDITIONS[0])) {
+            Toast.makeText(this, "Please select item condition", Toast.LENGTH_SHORT).show(); return false;
+        }
+        if (selectedLat == 0 && selectedLng == 0) {
+            Toast.makeText(this, "Please pin a location on the map", Toast.LENGTH_SHORT).show(); return false;
         }
         return true;
     }
@@ -282,8 +332,23 @@ public class AddResourceActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) { finish(); return true; }
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mapPreview.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mapPreview.onPause();
     }
 }
