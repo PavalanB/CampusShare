@@ -20,7 +20,7 @@
             android:layout_height="20dp"
             android:layout_centerVertical="true"
             android:src="@android:drawable/ic_menu_search"
-            app:tint="@color/glass_white_60" />
+            app:tint="@color/text_secondary" />
 
         <EditText
             android:id="@+id/et_search"
@@ -29,8 +29,8 @@
             android:layout_toEndOf="@id/iv_search"
             android:background="@android:color/transparent"
             android:hint="Search resources..."
-            android:textColorHint="@color/glass_white_60"
-            android:textColor="@color/white"
+            android:textColorHint="@color/text_hint"
+            android:textColor="@color/text_primary"
             android:textSize="14sp"
             android:fontFamily="serif"
             android:paddingStart="12dp"
@@ -69,7 +69,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:indeterminateTint="@color/accent_cyan"
+                android:indeterminateTint="@color/accent_primary"
                 android:visibility="gone" />
 
             <TextView
@@ -79,7 +79,7 @@
                 android:layout_gravity="center"
                 android:text="No resources found"
                 android:textAlignment="center"
-                android:textColor="@color/glass_white_60"
+                android:textColor="@color/text_secondary"
                 android:visibility="gone" />
         </FrameLayout>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

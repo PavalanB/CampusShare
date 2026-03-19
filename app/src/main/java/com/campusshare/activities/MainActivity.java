@@ -2,13 +2,15 @@ package com.campusshare.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -23,13 +25,16 @@ import com.campusshare.utils.NotificationHelper;
 import com.campusshare.utils.SessionManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ProfileFragment.ProfileUpdateListener {
 
-    private TextView tvToolbarTitle;
+    private TextView tvToolbarTitle, tvWelcomeMsg;
     private FloatingActionButton fabAdd;
     private BottomNavigationView bottomNav;
-    private Toolbar toolbar;
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
+    private ImageView ivMenu;
 
     private AuthRepository authRepository;
     private User currentUser;
@@ -70,14 +75,18 @@ public class MainActivity extends AppCompatActivity {
     private void continueInitialization() {
         NotificationHelper.refreshAndSaveToken();
 
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_view_right);
+        ivMenu = findViewById(R.id.iv_menu);
         tvToolbarTitle = findViewById(R.id.tv_toolbar_title);
+        tvWelcomeMsg = findViewById(R.id.tv_welcome_msg);
         fabAdd         = findViewById(R.id.fab_add);
         bottomNav      = findViewById(R.id.bottom_nav);
 
+        setupSidebar();
         setupBottomNav();
+
+        ivMenu.setOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.END));
 
         fabAdd.setOnClickListener(v ->
             startActivity(new Intent(this, AddResourceActivity.class))
@@ -86,7 +95,78 @@ public class MainActivity extends AppCompatActivity {
         // Set default fragment
         if (getSupportFragmentManager().findFragmentById(R.id.fragment_container) == null) {
             loadFragment(new SearchFragment(), "BROWSE");
+            fabAdd.hide();
         }
+    }
+
+    @Override
+    public void onProfileUpdated(User user) {
+        this.currentUser = user;
+        updateSidebarUserInfo();
+    }
+
+    private void setupSidebar() {
+        navigationView.setNavigationItemSelectedListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.nav_game) {
+                startActivity(new Intent(this, GameActivity.class));
+            } else if (id == R.id.nav_settings) {
+                // Open Settings
+            } else if (id == R.id.nav_theme) {
+                showThemeSelectionDialog();
+            } else if (id == R.id.nav_about) {
+                startActivity(new Intent(this, AboutActivity.class));
+            } else if (id == R.id.nav_logout) {
+                authRepository.logout();
+                SessionManager.clearSession(this);
+                redirectToLogin();
+            }
+            drawerLayout.closeDrawer(GravityCompat.END);
+            return true;
+        });
+
+        updateSidebarUserInfo();
+    }
+
+    private void updateSidebarUserInfo() {
+        if (navigationView == null) return;
+        
+        View headerView = navigationView.getHeaderView(0);
+        if (headerView != null) {
+            TextView navName = headerView.findViewById(R.id.nav_name);
+            TextView navEmail = headerView.findViewById(R.id.nav_email);
+            TextView navInitials = headerView.findViewById(R.id.nav_initials);
+
+            if (currentUser != null) {
+                if (navName != null) navName.setText(currentUser.getName());
+                if (navEmail != null) navEmail.setText(currentUser.getEmail());
+                if (navInitials != null && currentUser.getName() != null && !currentUser.getName().isEmpty()) {
+                    String name = currentUser.getName();
+                    String[] parts = name.split(" ");
+                    String initials;
+                    if (parts.length >= 2 && !parts[0].isEmpty() && !parts[1].isEmpty()) {
+                        initials = String.valueOf(parts[0].charAt(0)) + parts[1].charAt(0);
+                    } else {
+                        initials = String.valueOf(name.charAt(0));
+                    }
+                    navInitials.setText(initials.toUpperCase());
+                }
+            }
+        }
+    }
+
+    private void showThemeSelectionDialog() {
+        String[] themes = {"Light", "Dark"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Choose Theme");
+        builder.setItems(themes, (dialog, which) -> {
+            if (which == 0) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            }
+        });
+        builder.show();
     }
 
     private void redirectToLogin() {
@@ -101,24 +181,27 @@ public class MainActivity extends AppCompatActivity {
             int id = item.getItemId();
             if (id == R.id.nav_browse) {
                 loadFragment(new SearchFragment(), "BROWSE");
+                tvWelcomeMsg.setText("Find what you need today");
                 fabAdd.hide();
                 return true;
             } else if (id == R.id.nav_search) {
-                // Since Browse and Search are essentially the same in the current design,
-                // we'll keep SearchFragment for both or you can differentiate if needed.
                 loadFragment(new SearchFragment(), "SEARCH");
+                tvWelcomeMsg.setText("Look for specific resources");
                 fabAdd.hide();
                 return true;
             } else if (id == R.id.nav_my_listings) {
                 loadFragment(new MyItemsFragment(), "MY ITEMS");
+                tvWelcomeMsg.setText("Manage your resources");
                 fabAdd.show();
                 return true;
             } else if (id == R.id.nav_inbox) {
                 loadFragment(new InboxFragment(), "INBOX");
+                tvWelcomeMsg.setText("Your messages and requests");
                 fabAdd.hide();
                 return true;
             } else if (id == R.id.nav_profile) {
                 loadFragment(new ProfileFragment(), "PROFILE");
+                tvWelcomeMsg.setText("Your personal dashboard");
                 fabAdd.hide();
                 return true;
             }
@@ -134,26 +217,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_logout) {
-            authRepository.logout();
-            SessionManager.clearSession(this);
-            redirectToLogin();
-            return true;
-        } else if (id == R.id.action_map) {
-            startActivity(new Intent(this, MapActivity.class));
-            return true;
-        } else if (id == R.id.action_game) {
-            startActivity(new Intent(this, GameActivity.class));
-            return true;
+    public void onBackPressed() {
+        if (drawerLayout != null && drawerLayout.isDrawerOpen(GravityCompat.END)) {
+            drawerLayout.closeDrawer(GravityCompat.END);
+        } else {
+            super.onBackPressed();
         }
-        return super.onOptionsItemSelected(item);
     }
 }

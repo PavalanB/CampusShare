@@ -1,9 +1,13 @@
 package com.campusshare.repositories;
 
 import com.campusshare.models.User;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * AuthRepository handles all Firebase Authentication and Firestore
@@ -61,6 +65,17 @@ public class AuthRepository {
                 }
             })
             .addOnFailureListener(e -> callback.onFailure(getFriendlyError(e.getMessage())));
+    }
+
+    public void updateUserName(String uid, String newName, UserProfileCallback callback) {
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("name", newName);
+
+        db.collection("users")
+            .document(uid)
+            .update(updates)
+            .addOnSuccessListener(unused -> fetchUserProfile(uid, callback))
+            .addOnFailureListener(e -> callback.onFailure("Failed to update name: " + e.getMessage()));
     }
 
     public void sendPasswordReset(String email, AuthCallback callback) {

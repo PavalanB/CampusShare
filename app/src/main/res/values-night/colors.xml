@@ -1,10 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Dynamic Theme Colors - NIGHT -->
-    <color name="nfs_bg">#050112</color>
-    <color name="nfs_card_bg">#CC1A1A1A</color>
-    <color name="nfs_text_primary">#FFFFFF</color>
-    <color name="nfs_text_secondary">#B0FFFFFF</color>
-    <color name="nfs_divider">#40FFFFFF</color>
-    <color name="nfs_blue_accent">#3F51B5</color>
+    <!-- Dark Mode Theme Tokens -->
+    <color name="dynamic_bg_start">#0B0E11</color>
+    <color name="dynamic_bg_end">#05070A</color>
+    <color name="dynamic_text">#FFFFFF</color>
+    <color name="dynamic_card">#1A1D21</color>
+
+    <color name="bg_main">#0B0E11</color>
+    <color name="bg_card">#1A1D21</color>
+    <color name="text_primary">#FFFFFF</color>
+    <color name="text_secondary">#94A3B8</color>
+    <color name="text_hint">#64748B</color>
+    <color name="nav_bg">#121417</color>
+    <color name="input_bg">#1F2228</color>
+    <color name="divider">#2A2D34</color>
+    <color name="error_red">#FF5252</color>
+
+    <!-- Glass Effects for Dark Mode -->
+    <color name="glass_white_5">#0DFFFFFF</color>
+    <color name="glass_white_10">#1AFFFFFF</color>
+    <color name="glass_white_20">#33FFFFFF</color>
+
+    <!-- Missing colors to fix build error -->
+    <color name="accent_dark">#0077B6</color>
+    <color name="accent_primary">#00B4D8</color>
+    <color name="bg_dark_gradient_start">#0B0E11</color>
+
+    <!-- Compatibility aliases -->
+    <color name="textPrimary">@color/text_primary</color>
+    <color name="textSecondary">@color/text_secondary</color>
+    <color name="textHint">@color/text_hint</color>
+    <color name="errorColor">@color/error_red</color>
+    <color name="colorPrimary">@color/accent_primary</color>
 </resources>

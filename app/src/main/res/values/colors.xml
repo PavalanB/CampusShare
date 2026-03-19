@@ -1,54 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Elegant Sky Blue & Pink Palette (NFS Heat Inspired) -->
-    <color name="bg_light_start">#A2D2FF</color> <!-- Soft Sky Blue -->
-    <color name="bg_light_end">#FFAFCC</color>   <!-- Soft Pink -->
+    <!-- Modern Dynamic Palette -->
+    <color name="bg_main">#F8F9FA</color>
+    <color name="bg_card">#FFFFFF</color>
+    <color name="dynamic_bg_start">#F8F9FA</color>
+    <color name="dynamic_bg_end">#E9ECEF</color>
+    <color name="dynamic_text">#1A1D23</color>
 
-    <color name="bg_dark_splash">#050B18</color> <!-- Very Dark Blue for Splash -->
+    <color name="text_primary">#1A1D23</color>
+    <color name="text_secondary">#64748B</color>
+    <color name="text_hint">#94A3B8</color>
 
-    <color name="primary_purple">#A020F0</color> <!-- Vibrant Purple for Buttons/Highlights -->
-    <color name="accent_cyan">#00FFFF</color>    <!-- Cyan Glow -->
-    <color name="accent_pink">#FF0080</color>    <!-- Neon Pink -->
+    <color name="accent_primary">#00B4D8</color>
+    <color name="accent_dark">#0077B6</color>
+    <color name="accent_secondary">#7209B7</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
 
-    <!-- Glassmorphism -->
-    <color name="glass_white_5">#0DFFFFFF</color>
-    <color name="glass_white_10">#1AFFFFFF</color>
-    <color name="glass_white_20">#33FFFFFF</color>
+    <!-- Corrected Glass Effects for Light Mode -->
+    <color name="glass_white_5">#0D00B4D8</color> <!-- Light blue tint -->
+    <color name="glass_white_10">#1A00B4D8</color>
+    <color name="glass_white_20">#3300B4D8</color>
     <color name="glass_white_60">#99FFFFFF</color>
     <color name="glass_white_80">#CCFFFFFF</color>
 
-    <color name="text_primary">#1A1C2C</color> <!-- Dark Navy for Light Theme -->
-    <color name="text_secondary">#4A4E69</color>
-    <color name="text_white">#FFFFFF</color>
+    <color name="nav_bg">#FFFFFF</color>
+    <color name="input_bg">#F1F3F5</color>
+    <color name="error_red">#FF5252</color>
+    <color name="success_green">#4CAF50</color>
 
-    <color name="card_bg_light">#FDFCFD</color>
+    <color name="bg_dark_gradient_start">#F8F9FA</color>
 
-    <color name="error_red">#D63031</color>
-    <color name="success_green">#27AE60</color>
+    <!-- Legacy Mappings and Compatibility -->
+    <color name="nfs_card_bg">@color/bg_card</color>
+    <color name="nfs_blue_accent">@color/accent_primary</color>
+    <color name="nfs_text_primary">@color/text_primary</color>
+    <color name="nfs_text_secondary">@color/text_secondary</color>
+    <color name="accent_cyan">@color/accent_primary</color>
+    <color name="accent_purple">@color/accent_secondary</color>
+    <color name="primary_purple">@color/accent_secondary</color>
+    <color name="primary_glow">@color/accent_primary</color>
+    <color name="secondary_glow">@color/accent_secondary</color>
 
-    <!-- Compatibility Aliases to fix linking errors -->
-    <color name="bg_dark_gradient_start">@color/bg_light_start</color>
-    <color name="bg_dark_gradient_end">@color/bg_light_end</color>
-    <color name="primary_glow">@color/accent_pink</color>
-    <color name="secondary_glow">@color/accent_cyan</color>
-    <color name="accent_purple">#9D00FF</color>
-
-    <!-- Compatibility/Legacy -->
-    <color name="colorPrimary">@color/primary_purple</color>
-    <color name="colorPrimaryDark">#81D4FA</color>
-    <color name="colorAccent">@color/primary_purple</color>
-    <color name="backgroundColor">@color/bg_light_start</color>
-    <color name="surfaceColor">#FFFFFF</color>
+    <!-- Required by activity_borrow_request.xml and item_request.xml -->
+    <color name="backgroundColor">@color/bg_main</color>
+    <color name="colorPrimary">@color/accent_primary</color>
+    <color name="surfaceColor">@color/white</color>
     <color name="textPrimary">@color/text_primary</color>
     <color name="textSecondary">@color/text_secondary</color>
-    <color name="textHint">#99AAB5</color>
-    <color name="errorColor">#D63031</color>
-    <color name="successColor">#27AE60</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
-
-    <!-- Nav Colors -->
-    <color name="nav_bg">#050B18</color>
-    <color name="nav_active">@color/accent_pink</color>
-    <color name="nav_inactive">#B0B0C3</color>
+    <color name="textHint">@color/text_hint</color>
+    <color name="errorColor">@color/error_red</color>
 </resources>
