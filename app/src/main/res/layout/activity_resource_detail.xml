@@ -132,21 +132,42 @@
                     android:layout_alignParentBottom="true"
                     android:background="@drawable/gradient_overlay" />
 
-                <TextView
-                    android:id="@+id/tv_detail_availability"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:layout_marginStart="24dp"
                     android:layout_marginBottom="24dp"
-                    android:paddingHorizontal="16dp"
-                    android:paddingVertical="6dp"
-                    android:text="AVAILABLE"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/white"
-                    android:background="@drawable/badge_available"
-                    android:letterSpacing="0.1" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_detail_availability"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="6dp"
+                        android:text="AVAILABLE"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/white"
+                        android:background="@drawable/badge_available"
+                        android:letterSpacing="0.1" />
+
+                    <TextView
+                        android:id="@+id/tv_detail_quantity_badge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="6dp"
+                        android:text="QTY: 5"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/white"
+                        android:background="@drawable/badge_available"
+                        android:backgroundTint="@color/nfs_blue_accent"
+                        android:letterSpacing="0.1" />
+                </LinearLayout>
 
             </RelativeLayout>
 
@@ -281,6 +302,104 @@
                             android:textColor="@color/nfs_text_secondary"
                             android:lineSpacingMultiplier="1.4" />
 
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!-- Booking / Quantity Request Section -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cv_request_quantity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="24dp"
+                    app:cardElevation="5dp"
+                    app:cardBackgroundColor="@color/nfs_card_bg"
+                    android:layout_marginBottom="20dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="BORROW PERIOD"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/nfs_blue_accent"
+                            android:letterSpacing="0.2"
+                            android:layout_marginBottom="12dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="16dp">
+
+                            <Button
+                                android:id="@+id/btn_start_date"
+                                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Start Date"
+                                android:textSize="12sp"
+                                app:strokeColor="@color/nfs_blue_accent" />
+
+                            <View android:layout_width="12dp" android:layout_height="1dp" />
+
+                            <Button
+                                android:id="@+id/btn_end_date"
+                                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="End Date"
+                                android:textSize="12sp"
+                                app:strokeColor="@color/nfs_purple_glow" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Quantity:"
+                                android:textColor="@color/nfs_text_primary"
+                                android:textStyle="bold" />
+
+                            <ImageButton
+                                android:id="@+id/btn_minus"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:src="@drawable/ic_minus"
+                                android:background="?attr/selectableItemBackgroundBorderless"
+                                app:tint="@color/nfs_purple_glow" />
+
+                            <TextView
+                                android:id="@+id/tv_request_quantity"
+                                android:layout_width="40dp"
+                                android:layout_height="wrap_content"
+                                android:text="1"
+                                android:gravity="center"
+                                android:textSize="18sp"
+                                android:textColor="@color/nfs_text_primary"
+                                android:textStyle="bold" />
+
+                            <ImageButton
+                                android:id="@+id/btn_plus"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:src="@android:drawable/ic_input_add"
+                                android:background="?attr/selectableItemBackgroundBorderless"
+                                app:tint="@color/nfs_purple_glow" />
+                        </LinearLayout>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 

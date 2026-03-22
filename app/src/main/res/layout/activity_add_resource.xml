@@ -120,6 +120,23 @@
                         android:background="@drawable/spinner_background"
                         android:layout_marginBottom="16dp" />
 
+                    <!-- Quantity Input -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Quantity Available"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_marginBottom="16dp"
+                        app:startIconDrawable="@android:drawable/ic_input_add">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_quantity"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="number"
+                            android:text="1"
+                            android:imeOptions="actionNext" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
                     <!-- Description -->
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"

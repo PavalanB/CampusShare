@@ -41,7 +41,7 @@ public class AddResourceActivity extends AppCompatActivity {
     // UI
     private ImageView ivPhoto;
     private TextView tvAddPhoto;
-    private TextInputEditText etName, etDescription;
+    private TextInputEditText etName, etDescription, etQuantity;
     private Spinner spinnerCategory, spinnerCondition;
     private Button btnSave;
     private ProgressBar progressBar;
@@ -117,6 +117,7 @@ public class AddResourceActivity extends AppCompatActivity {
         tvAddPhoto     = findViewById(R.id.tv_add_photo);
         etName         = findViewById(R.id.et_resource_name);
         etDescription  = findViewById(R.id.et_description);
+        etQuantity     = findViewById(R.id.et_quantity);
         spinnerCategory = findViewById(R.id.spinner_category);
         spinnerCondition = findViewById(R.id.spinner_condition);
         btnSave        = findViewById(R.id.btn_save);
@@ -139,6 +140,7 @@ public class AddResourceActivity extends AppCompatActivity {
     private void populateEditMode() {
         etName.setText(existingResource.getResourceName());
         etDescription.setText(existingResource.getDescription());
+        etQuantity.setText(String.valueOf(existingResource.getAvailableQuantity()));
 
         // Set spinner selections
         setSpinnerValue(spinnerCategory, CATEGORIES, existingResource.getCategory());
@@ -170,16 +172,18 @@ public class AddResourceActivity extends AppCompatActivity {
             String description = etDescription.getText().toString().trim();
             String category    = spinnerCategory.getSelectedItem().toString();
             String condition   = spinnerCondition.getSelectedItem().toString();
+            String quantityStr = etQuantity.getText().toString().trim();
 
-            if (!validateInputs(name, description, category, condition)) return;
+            if (!validateInputs(name, description, category, condition, quantityStr)) return;
 
+            int quantity = Integer.parseInt(quantityStr);
             showLoading(true);
 
             if (existingResource == null) {
                 // ADD mode
                 Resource newResource = new Resource(
                     currentUser.getUserID(), currentUser.getName(),
-                    currentUser.getDepartment(), name, category, description, condition
+                    currentUser.getDepartment(), name, category, description, condition, quantity
                 );
                 resourceRepository.addResource(newResource, selectedPhotoUri,
                     new ResourceRepository.ResourceCallback() {
@@ -202,6 +206,8 @@ public class AddResourceActivity extends AppCompatActivity {
                 existingResource.setDescription(description);
                 existingResource.setCategory(category);
                 existingResource.setCondition(condition);
+                existingResource.setAvailableQuantity(quantity);
+                existingResource.setTotalQuantity(quantity); // Assuming re-listing reset
 
                 resourceRepository.updateResource(existingResource, selectedPhotoUri,
                     new ResourceRepository.ResourceCallback() {
@@ -259,7 +265,7 @@ public class AddResourceActivity extends AppCompatActivity {
 
     // ─── Validation ───────────────────────────────────────────────────────────
 
-    private boolean validateInputs(String name, String description, String category, String condition) {
+    private boolean validateInputs(String name, String description, String category, String condition, String quantityStr) {
         if (TextUtils.isEmpty(name)) {
             etName.setError("Resource name is required"); etName.requestFocus(); return false;
         }
@@ -271,6 +277,17 @@ public class AddResourceActivity extends AppCompatActivity {
         }
         if (condition.equals("Select Condition")) {
             Toast.makeText(this, "Please select the condition", Toast.LENGTH_SHORT).show(); return false;
+        }
+        if (TextUtils.isEmpty(quantityStr)) {
+            etQuantity.setError("Quantity is required"); etQuantity.requestFocus(); return false;
+        }
+        try {
+            int q = Integer.parseInt(quantityStr);
+            if (q <= 0) {
+                etQuantity.setError("Quantity must be greater than 0"); etQuantity.requestFocus(); return false;
+            }
+        } catch (NumberFormatException e) {
+            etQuantity.setError("Invalid number"); etQuantity.requestFocus(); return false;
         }
         return true;
     }

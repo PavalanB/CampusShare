@@ -3,7 +3,11 @@ package com.campusshare.repositories;
 import com.campusshare.models.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * AuthRepository handles all Firebase Authentication and Firestore
@@ -23,6 +27,11 @@ public class AuthRepository {
 
     public interface UserProfileCallback {
         void onSuccess(User user);
+        void onFailure(String errorMessage);
+    }
+
+    public interface SimpleCallback {
+        void onSuccess();
         void onFailure(String errorMessage);
     }
 
@@ -63,6 +72,7 @@ public class AuthRepository {
 
                 // Build the user model
                 User newUser = new User(uid, name, email, phone, department, year, collegeID);
+                newUser.setCreditScore(100.0); // Starting credits
 
                 // Save to Firestore /users/{uid}
                 db.collection("users")
@@ -103,6 +113,38 @@ public class AuthRepository {
                 }
             })
             .addOnFailureListener(e -> callback.onFailure(e.getMessage()));
+    }
+
+    // ─── Credit Operations ───────────────────────────────────────────────────
+
+    public void updateCreditScore(String uid, double delta, SimpleCallback callback) {
+        db.collection("users")
+            .document(uid)
+            .update("creditScore", FieldValue.increment(delta))
+            .addOnSuccessListener(unused -> callback.onSuccess())
+            .addOnFailureListener(e -> callback.onFailure(e.getMessage()));
+    }
+
+    // ─── Rating Operations ───────────────────────────────────────────────────
+
+    public void submitUserRating(String userID, float newRating, SimpleCallback callback) {
+        db.collection("users").document(userID).get().addOnSuccessListener(snapshot -> {
+            if (snapshot.exists()) {
+                double currentAvg = snapshot.getDouble("avgRating") != null ? snapshot.getDouble("avgRating") : 0.0;
+                long totalRatings = snapshot.contains("totalRatings") ? snapshot.getLong("totalRatings") : 0;
+
+                double newAvg = ((currentAvg * totalRatings) + newRating) / (totalRatings + 1);
+
+                Map<String, Object> updates = new HashMap<>();
+                updates.put("avgRating", newAvg);
+                updates.put("totalRatings", totalRatings + 1);
+
+                db.collection("users").document(userID)
+                    .update(updates)
+                    .addOnSuccessListener(unused -> callback.onSuccess())
+                    .addOnFailureListener(e -> callback.onFailure(e.getMessage()));
+            }
+        });
     }
 
     // ─── Session Helpers ──────────────────────────────────────────────────────

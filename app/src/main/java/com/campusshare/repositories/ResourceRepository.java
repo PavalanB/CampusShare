@@ -3,6 +3,7 @@ package com.campusshare.repositories;
 import android.net.Uri;
 
 import com.campusshare.models.Resource;
+import com.campusshare.models.BorrowRequest;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -10,6 +11,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,6 +25,7 @@ public class ResourceRepository {
     private final StorageReference storageRef;
 
     private static final String COLLECTION = "resources";
+    private static final String REQUESTS_COLLECTION = "borrow_requests";
 
     public interface ResourceCallback {
         void onSuccess(Resource resource);
@@ -41,6 +44,11 @@ public class ResourceRepository {
 
     public interface PhotoUploadCallback {
         void onSuccess(String downloadUrl);
+        void onFailure(String error);
+    }
+
+    public interface BorrowRequestListCallback {
+        void onSuccess(List<BorrowRequest> requests);
         void onFailure(String error);
     }
 
@@ -157,5 +165,84 @@ public class ResourceRepository {
             .delete()
             .addOnSuccessListener(unused -> callback.onSuccess())
             .addOnFailureListener(e -> callback.onFailure("Delete failed: " + e.getMessage()));
+    }
+
+    // --- Borrow Request Methods ---
+
+    public void addBorrowRequest(BorrowRequest request, SimpleCallback callback) {
+        db.collection(REQUESTS_COLLECTION)
+            .add(request)
+            .addOnSuccessListener(docRef -> {
+                request.setRequestID(docRef.getId());
+                docRef.update("requestID", docRef.getId())
+                    .addOnSuccessListener(unused -> callback.onSuccess())
+                    .addOnFailureListener(e -> callback.onSuccess());
+            })
+            .addOnFailureListener(e -> callback.onFailure(e.getMessage()));
+    }
+
+    public void checkAvailability(String resourceID, Date start, Date end, int requestedQty, int totalAvailable, BorrowRequestListCallback callback) {
+        db.collection(REQUESTS_COLLECTION)
+            .whereEqualTo("resourceID", resourceID)
+            .whereIn("status", List.of("APPROVED", "ONGOING", "PENDING"))
+            .get()
+            .addOnSuccessListener(snapshots -> {
+                List<BorrowRequest> activeRequests = new ArrayList<>();
+                for (QueryDocumentSnapshot doc : snapshots) {
+                    BorrowRequest br = doc.toObject(BorrowRequest.class);
+                    // Check for overlap: (start1 <= end2) and (end1 >= start2)
+                    if (start.before(br.getEndDate()) && end.after(br.getStartDate())) {
+                        activeRequests.add(br);
+                    }
+                }
+                callback.onSuccess(activeRequests);
+            })
+            .addOnFailureListener(e -> callback.onFailure(e.getMessage()));
+    }
+
+    public void fetchMyBorrowRequests(String userID, BorrowRequestListCallback callback) {
+        db.collection(REQUESTS_COLLECTION)
+            .whereEqualTo("borrowerID", userID)
+            .orderBy("createdAt", Query.Direction.DESCENDING)
+            .get()
+            .addOnSuccessListener(snapshots -> {
+                List<BorrowRequest> list = new ArrayList<>();
+                for (QueryDocumentSnapshot doc : snapshots) {
+                    list.add(doc.toObject(BorrowRequest.class));
+                }
+                callback.onSuccess(list);
+            })
+            .addOnFailureListener(e -> callback.onFailure(e.getMessage()));
+    }
+
+    public void fetchReceivedBorrowRequests(String userID, BorrowRequestListCallback callback) {
+        db.collection(REQUESTS_COLLECTION)
+            .whereEqualTo("ownerID", userID)
+            .orderBy("createdAt", Query.Direction.DESCENDING)
+            .get()
+            .addOnSuccessListener(snapshots -> {
+                List<BorrowRequest> list = new ArrayList<>();
+                for (QueryDocumentSnapshot doc : snapshots) {
+                    list.add(doc.toObject(BorrowRequest.class));
+                }
+                callback.onSuccess(list);
+            })
+            .addOnFailureListener(e -> callback.onFailure(e.getMessage()));
+    }
+
+    public void updateBorrowRequestStatus(String requestID, String newStatus, SimpleCallback callback) {
+        db.collection(REQUESTS_COLLECTION)
+            .document(requestID)
+            .update("status", newStatus)
+            .addOnSuccessListener(unused -> callback.onSuccess())
+            .addOnFailureListener(e -> callback.onFailure(e.getMessage()));
+    }
+
+    public void extendBorrowRequest(String requestID, Date newEndDate, SimpleCallback callback) {
+        db.collection(REQUESTS_COLLECTION)
+            .document(requestID)
+            .update("endDate", newEndDate)
+            .addOnSuccessListener(unused -> callback.onSuccess())
+            .addOnFailureListener(e -> callback.onFailure(e.getMessage()));
     }
 }

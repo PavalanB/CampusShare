@@ -78,7 +78,7 @@ public class ProfileActivity extends AppCompatActivity {
         View rlBorrowHistory = findViewById(R.id.rl_borrow_history);
         if (rlBorrowHistory != null) {
             rlBorrowHistory.setOnClickListener(v -> {
-                Toast.makeText(this, "Borrowing History coming in Phase 3!", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(this, RequestsManagementActivity.class));
             });
         }
 

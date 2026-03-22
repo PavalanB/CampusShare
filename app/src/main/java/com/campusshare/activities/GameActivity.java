@@ -7,26 +7,34 @@ import android.view.animation.RotateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.campusshare.R;
+import com.campusshare.repositories.AuthRepository;
+import com.campusshare.utils.SessionManager;
+
 import java.util.Random;
 
 public class GameActivity extends AppCompatActivity {
 
     private ImageView ivWheel;
-    private Button btnSpin;
     private TextView tvResult;
-    private Random random = new Random();
+    private final Random random = new Random();
     private int lastDegree = 0;
     private boolean isSpinning = false;
+    private AuthRepository authRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
+        authRepository = new AuthRepository();
+
         ivWheel = findViewById(R.id.iv_wheel);
-        btnSpin = findViewById(R.id.btn_spin);
+        Button btnSpin = findViewById(R.id.btn_spin);
         tvResult = findViewById(R.id.tv_game_result);
 
         btnSpin.setOnClickListener(v -> {
@@ -56,10 +64,24 @@ public class GameActivity extends AppCompatActivity {
                 isSpinning = false;
                 lastDegree = degree % 360;
                 
-                // Mock result based on degree
+                // Result based on degree
                 int creditsWon = (lastDegree / 60) * 5 + 5;
-                tvResult.setText("You won " + creditsWon + " Credits!");
+                tvResult.setText(getString(R.string.you_won_credits, creditsWon));
                 tvResult.setVisibility(View.VISIBLE);
+
+                // Add credits to user profile
+                String uid = SessionManager.getUserID(GameActivity.this);
+                authRepository.updateCreditScore(uid, creditsWon, new AuthRepository.SimpleCallback() {
+                    @Override
+                    public void onSuccess() {
+                        Toast.makeText(GameActivity.this, getString(R.string.credits_added), Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFailure(String errorMessage) {
+                        Toast.makeText(GameActivity.this, getString(R.string.failed_to_sync_credits, errorMessage), Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
 
             @Override

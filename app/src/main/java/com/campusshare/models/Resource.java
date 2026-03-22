@@ -15,6 +15,8 @@ public class Resource implements Serializable {
     private String condition;      // "New", "Good", "Fair", "Worn"
     private String photoUrl;       // Firebase Storage download URL
     private boolean available;
+    private int totalQuantity;     // Total number of items listed
+    private int availableQuantity; // Number of items still available
     private Date createdAt;        // Using java.util.Date because it is Serializable
 
     // Required empty constructor for Firestore deserialization
@@ -22,7 +24,7 @@ public class Resource implements Serializable {
 
     public Resource(String ownerID, String ownerName, String ownerDepartment,
                     String resourceName, String category, String description,
-                    String condition) {
+                    String condition, int quantity) {
         this.ownerID = ownerID;
         this.ownerName = ownerName;
         this.ownerDepartment = ownerDepartment;
@@ -30,7 +32,9 @@ public class Resource implements Serializable {
         this.category = category;
         this.description = description;
         this.condition = condition;
-        this.available = true;
+        this.totalQuantity = quantity;
+        this.availableQuantity = quantity;
+        this.available = quantity > 0;
         this.photoUrl = "";
         this.createdAt = new Date(); // Current time
     }
@@ -46,6 +50,8 @@ public class Resource implements Serializable {
     public String getCondition()       { return condition; }
     public String getPhotoUrl()        { return photoUrl; }
     public boolean isAvailable()       { return available; }
+    public int getTotalQuantity()      { return totalQuantity; }
+    public int getAvailableQuantity()  { return availableQuantity; }
     public Date getCreatedAt()         { return createdAt; }
 
     // Setters
@@ -59,5 +65,10 @@ public class Resource implements Serializable {
     public void setCondition(String condition)             { this.condition = condition; }
     public void setPhotoUrl(String photoUrl)               { this.photoUrl = photoUrl; }
     public void setAvailable(boolean available)            { this.available = available; }
+    public void setTotalQuantity(int totalQuantity)        { this.totalQuantity = totalQuantity; }
+    public void setAvailableQuantity(int availableQuantity) { 
+        this.availableQuantity = availableQuantity; 
+        this.available = availableQuantity > 0;
+    }
     public void setCreatedAt(Date createdAt)               { this.createdAt = createdAt; }
 }
