@@ -271,9 +271,9 @@ MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\PA
 	android:label
 		ADDED from D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\main\AndroidManifest.xml:25:9-36
 	android:roundIcon
-		ADDED from D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\main\AndroidManifest.xml:26:9-62
+		ADDED from D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\main\AndroidManifest.xml:26:9-54
 	android:icon
-		ADDED from D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\main\AndroidManifest.xml:24:9-57
+		ADDED from D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\main\AndroidManifest.xml:24:9-43
 	android:allowBackup
 		ADDED from D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\main\AndroidManifest.xml:23:9-35
 	android:theme

@@ -23,7 +23,7 @@ public class BorrowRequestRepository {
     private final FirebaseFirestore db;
     private final ResourceRepository resourceRepository;
     private final CreditManager creditManager;
-    private static final String COLLECTION = "requests";
+    private static final String COLLECTION = "borrow_requests";
 
     public interface RequestCallback {
         void onSuccess(BorrowRequest request);

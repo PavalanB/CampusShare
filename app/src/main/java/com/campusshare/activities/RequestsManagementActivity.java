@@ -18,8 +18,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.campusshare.R;
 import com.campusshare.adapters.BorrowRequestAdapter;
 import com.campusshare.models.BorrowRequest;
+import com.campusshare.models.Resource;
 import com.campusshare.repositories.AuthRepository;
 import com.campusshare.repositories.ResourceRepository;
+import com.campusshare.utils.NotificationHelper;
 import com.campusshare.utils.SessionManager;
 import com.google.android.material.tabs.TabLayout;
 
@@ -151,7 +153,16 @@ public class RequestsManagementActivity extends AppCompatActivity {
         resourceRepository.updateBorrowRequestStatus(request.getRequestID(), newStatus, new ResourceRepository.SimpleCallback() {
             @Override
             public void onSuccess() {
-                loadReceivedRequests(); // Refresh
+                if ("APPROVED".equals(newStatus)) {
+                    NotificationHelper.notifyRequestAccepted(request);
+                    // Reduce available quantity
+                    updateResourceQuantity(request.getResourceID(), -request.getQuantity());
+                } else if ("REJECTED".equals(newStatus)) {
+                    NotificationHelper.notifyRequestRejected(request);
+                    loadReceivedRequests();
+                } else {
+                    loadReceivedRequests(); // Refresh
+                }
                 Toast.makeText(RequestsManagementActivity.this, "Request " + newStatus, Toast.LENGTH_SHORT).show();
             }
 
@@ -159,6 +170,30 @@ public class RequestsManagementActivity extends AppCompatActivity {
             public void onFailure(String error) {
                 showLoading(false);
                 Toast.makeText(RequestsManagementActivity.this, "Failed: " + error, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void updateResourceQuantity(String resourceID, int delta) {
+        resourceRepository.fetchResource(resourceID, new ResourceRepository.ResourceCallback() {
+            @Override
+            public void onSuccess(Resource resource) {
+                int newQty = resource.getAvailableQuantity() + delta;
+                resource.setAvailableQuantity(Math.max(0, newQty));
+                resourceRepository.updateResource(resource, null, new ResourceRepository.ResourceCallback() {
+                    @Override
+                    public void onSuccess(Resource r) {
+                        loadReceivedRequests();
+                    }
+                    @Override
+                    public void onFailure(String error) {
+                        loadReceivedRequests();
+                    }
+                });
+            }
+            @Override
+            public void onFailure(String error) {
+                loadReceivedRequests();
             }
         });
     }
@@ -205,6 +240,10 @@ public class RequestsManagementActivity extends AppCompatActivity {
         resourceRepository.updateBorrowRequestStatus(request.getRequestID(), status, new ResourceRepository.SimpleCallback() {
             @Override
             public void onSuccess() {
+                NotificationHelper.notifyItemReturned(request);
+                // Return item to pool
+                updateResourceQuantity(request.getResourceID(), request.getQuantity());
+
                 // 1. Update credits
                 authRepository.updateCreditScore(request.getBorrowerID(), finalReward, new AuthRepository.SimpleCallback() {
                     @Override
@@ -237,9 +276,9 @@ public class RequestsManagementActivity extends AppCompatActivity {
     private void finishProcess() {
         authRepository.updateCreditScore(currentUserID, 5.0, new AuthRepository.SimpleCallback() {
             @Override
-            public void onSuccess() { loadReceivedRequests(); }
+            public void onSuccess( ) { /* Refreshed in updateResourceQuantity */ }
             @Override
-            public void onFailure(String e) { loadReceivedRequests(); }
+            public void onFailure(String e) { /* Refreshed in updateResourceQuantity */ }
         });
     }
 
