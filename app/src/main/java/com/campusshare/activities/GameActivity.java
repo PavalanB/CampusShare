@@ -1,37 +1,93 @@
 package com.campusshare.activities;
 
 import android.os.Bundle;
-import android.view.MenuItem;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+
 import com.campusshare.R;
-import com.campusshare.utils.CampusDeliveryDashView;
+import com.campusshare.repositories.AuthRepository;
+import com.campusshare.utils.SessionManager;
+
+import java.util.Random;
 
 public class GameActivity extends AppCompatActivity {
 
-    private CampusDeliveryDashView gameView;
+    private ImageView ivWheel;
+    private TextView tvResult;
+    private final Random random = new Random();
+    private int lastDegree = 0;
+    private boolean isSpinning = false;
+    private AuthRepository authRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle("Campus Delivery Dash");
-        }
+        authRepository = new AuthRepository();
 
-        gameView = findViewById(R.id.game_view);
+        ivWheel = findViewById(R.id.iv_wheel);
+        Button btnSpin = findViewById(R.id.btn_spin);
+        tvResult = findViewById(R.id.tv_game_result);
+
+        btnSpin.setOnClickListener(v -> {
+            if (!isSpinning) {
+                spinWheel();
+            }
+        });
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+    private void spinWheel() {
+        isSpinning = true;
+        tvResult.setVisibility(View.GONE);
+
+        int degree = random.nextInt(3600) + 720; // At least 2 full rotations
+
+        RotateAnimation rotate = new RotateAnimation(lastDegree, degree,
+                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+
+        rotate.setDuration(3000);
+        rotate.setFillAfter(true);
+        rotate.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {}
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                isSpinning = false;
+                lastDegree = degree % 360;
+                
+                // Result based on degree
+                int creditsWon = (lastDegree / 60) * 5 + 5;
+                tvResult.setText(getString(R.string.you_won_credits, creditsWon));
+                tvResult.setVisibility(View.VISIBLE);
+
+                // Add credits to user profile
+                String uid = SessionManager.getUserID(GameActivity.this);
+                authRepository.updateCreditScore(uid, creditsWon, new AuthRepository.SimpleCallback() {
+                    @Override
+                    public void onSuccess() {
+                        Toast.makeText(GameActivity.this, getString(R.string.credits_added), Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFailure(String errorMessage) {
+                        Toast.makeText(GameActivity.this, getString(R.string.failed_to_sync_credits, errorMessage), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {}
+        });
+
+        ivWheel.startAnimation(rotate);
     }
 }

@@ -1,23 +1,72 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">CampusShare</string>
+
+    <!-- App Branding -->
+    <string name="campus">CAMPUS</string>
+    <string name="share">Share</string>
+    <string name="app_tagline">Your Campus Resource Hub</string>
+
+    <!-- Auth -->
     <string name="login">Login</string>
-    <string name="register">Register</string>
-    <string name="forgot_password">Forgot Password?</string>
-    <string name="submit">Submit</string>
-    <string name="email">Email</string>
+    <string name="email_address">Email Address</string>
     <string name="password">Password</string>
-    <string name="confirm_password">Confirm Password</string>
-    <string name="full_name">Full Name</string>
-    <string name="college_id">College ID</string>
-    <string name="department">Department</string>
-    <string name="year">Year</string>
-    <string name="save">Save</string>
-    <string name="cancel">Cancel</string>
-    <string name="add_resource">Add Resource</string>
-    <string name="edit_resource">Edit Resource</string>
-    <string name="resource_name">Resource Name</string>
-    <string name="description">Description</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="captcha_question">%1$d + %2$d =</string>
+    <string name="captcha_hint">?</string>
+    <string name="login_button">LOGIN</string>
+    <string name="new_to_campusshare">New to CampusShare? </string>
+    <string name="create_account">Create Account</string>
+    <string name="error_captcha_required">Please solve the captcha</string>
+    <string name="error_captcha_wrong">Incorrect captcha answer</string>
+    <string name="error_invalid_number">Invalid number</string>
+    <string name="email_required">Email is required</string>
+    <string name="enter_valid_email">Enter a valid email</string>
+    <string name="password_required">Password is required</string>
+    <string name="password_min_length">Password must be at least 6 characters</string>
+
+    <!-- Requests Management -->
+    <string name="requests">REQUESTS</string>
+    <string name="received">Received</string>
+    <string name="sent">Sent</string>
+    <string name="no_requests_found">NO REQUESTS FOUND</string>
+    <string name="rate_borrower">Rate Borrower</string>
+    <string name="rate_title">Rate %1$s</string>
+    <string name="you_won_credits">You won %1$d Credits!</string>
+    <string name="credits_added">Credits added to your account!</string>
+    <string name="failed_to_sync_credits">Failed to sync credits: %1$s</string>
+    <string name="qty_label">Qty: %1$d</string>
+    <string name="from_label">From: %1$s</string>
+    <string name="owner_id_label">Owner ID: %1$s</string>
+    <string name="resource_id_label">Resource ID: %1$s</string>
+    <string name="request_successful_remaining">Request successful! Remaining: %1$d</string>
+
+    <!-- Resource Detail -->
+    <string name="details_title">DETAILS</string>
+    <string name="available">AVAILABLE</string>
+    <string name="qty_badge">QTY: %1$d</string>
+    <string name="owner_label">Owner: %1$s</string>
+    <string name="dept_label">Dept: %1$s</string>
+    <string name="condition_label">Condition: %1$s</string>
+    <string name="description_label">DESCRIPTION</string>
+    <string name="borrow_period">BORROW PERIOD</string>
+    <string name="start_date">Start Date</string>
+    <string name="end_date">End Date</string>
+    <string name="quantity_label">Quantity:</string>
+    <string name="request_to_borrow">REQUEST TO BORROW</string>
+
+    <!-- Profile -->
+    <string name="my_profile">My Profile</string>
+    <string name="credit_score">CREDIT SCORE</string>
+    <string name="user_rating">USER RATING</string>
+    <string name="info_label">INFO</string>
+    <string name="college_id_label">ID: %1$s</string>
+    <string name="my_listings">MY LISTINGS</string>
+    <string name="borrow_history">BORROW HISTORY</string>
+    <string name="logout">LOGOUT</string>
+
+    <!-- Add Resource -->
+    <string name="tap_to_add_photo">Tap to add photo</string>
+    <string name="resource_name_hint">Resource Name (e.g. Soldering Kit)</string>
     <string name="category">Category</string>
     <string name="availability">Availability</string>
     <string name="my_listings">My Listings</string>
@@ -89,4 +138,20 @@
     <string name="tap_to_change_location">Tap map to change location</string>
 
     <string name="nav_game">Game</string>
+    <string name="condition">Condition</string>
+    <string name="quantity_available">Quantity Available</string>
+    <string name="description">Description</string>
+    <string name="save_resource">Save Resource</string>
+
+    <!-- Rating Dialog -->
+    <string name="rating_experience_question">How was your experience with this borrower?</string>
+    <string name="submit">Submit</string>
+    <string name="skip">Skip</string>
+
+    <!-- General -->
+    <string name="pending">PENDING</string>
+    <string name="approve">APPROVE</string>
+    <string name="reject">REJECT</string>
+    <string name="returned">RETURNED</string>
+
 </resources>

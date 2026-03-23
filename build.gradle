@@ -7,14 +7,12 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.13.2'
-        classpath 'com.google.gms:google-services:4.4.2'
-        classpath 'com.android.tools.build:gradle:8.2.2'
+        classpath 'com.android.tools.build:gradle:9.1.0'
         classpath 'com.google.gms:google-services:4.4.1'
     }
 }
 
-// Repositories are managed in settings.gradle via dependencyResolutionManagement
+// Repositories are now managed in settings.gradle via dependencyResolutionManagement
 
 task clean(type: Delete) {
     delete rootProject.buildDir

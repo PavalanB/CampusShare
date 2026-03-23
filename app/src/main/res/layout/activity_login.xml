@@ -20,6 +20,9 @@
             android:layout_marginTop="20dp"
             android:alpha="0.2"
             android:rotation="-20"
+            android:src="@android:drawable/ic_menu_agenda"
+            app:tint="@color/nfs_purple_glow"
+            android:contentDescription="@null" />
             android:src="@drawable/ic_resource_placeholder"
             app:tint="@color/accent_purple" />
 
@@ -32,6 +35,9 @@
             android:rotation="15"
             android:src="@android:drawable/ic_media_play"
             app:tint="@color/accent_cyan" />
+            android:src="@android:drawable/ic_menu_slideshow"
+            app:tint="@color/nfs_blue_accent"
+            android:contentDescription="@null" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -52,6 +58,15 @@
                 app:strokeWidth="1dp">
 
                 <ImageView
+                    android:id="@+id/iv_profile_top"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="20dp"
+                    android:src="@drawable/ic_login_symbol"
+                    android:scaleType="centerInside"
+                    app:tint="@color/white"
+                    android:contentDescription="@null" />
+            </androidx.cardview.widget.CardView>
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:layout_gravity="center"
@@ -73,6 +88,29 @@
                 android:shadowDx="0"
                 android:shadowDy="0"
                 android:shadowRadius="15" />
+            <!-- NFS Heat Inspired App Name -->
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:clipChildren="false"
+                android:clipToPadding="false">
+
+                <TextView
+                    android:id="@+id/tv_app_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/campus"
+                    android:textSize="50sp"
+                    android:fontFamily="sans-serif-black"
+                    android:textStyle="bold|italic"
+                    android:textColor="@color/nfs_text_primary"
+                    android:letterSpacing="-0.05"
+                    android:paddingEnd="10dp"
+                    android:shadowColor="@color/nfs_blue_accent"
+                    android:shadowDx="5"
+                    android:shadowDy="5"
+                    android:shadowRadius="12" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -87,6 +125,27 @@
                 android:shadowDx="0"
                 android:shadowDy="0"
                 android:shadowRadius="20" />
+                <TextView
+                    android:id="@+id/tv_app_name_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_app_name"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="-30dp"
+                    android:rotation="-5"
+                    android:text="@string/share"
+                    android:textSize="60sp"
+                    android:fontFamily="cursive"
+                    android:textStyle="bold|italic"
+                    android:textColor="@color/nfs_text_primary"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:paddingBottom="8dp"
+                    android:shadowColor="@color/nfs_purple_glow"
+                    android:shadowDx="5"
+                    android:shadowDy="5"
+                    android:shadowRadius="18" />
+            </RelativeLayout>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -96,6 +155,10 @@
                 android:textColor="@color/glass_white_80"
                 android:textSize="14sp"
                 android:fontFamily="serif" />
+                android:text="@string/app_tagline"
+                android:textSize="12sp"
+                android:textColor="@color/nfs_text_secondary"
+                android:layout_marginBottom="25dp" />
 
             <!-- Login Card -->
             <com.google.android.material.card.MaterialCardView
@@ -117,7 +180,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Login"
+                        android:text="@string/login"
                         android:textColor="@color/white"
                         android:textSize="28sp"
                         android:fontFamily="cursive"
@@ -128,7 +191,7 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Email Address"
+                        android:hint="@string/email_address"
                         android:layout_marginBottom="20dp"
                         app:hintTextColor="@color/accent_cyan"
                         android:textColorHint="@color/accent_cyan"
@@ -153,7 +216,7 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Password"
+                        android:hint="@string/password"
                         app:endIconMode="password_toggle"
                         app:endIconTint="@color/glass_white_60"
                         app:hintTextColor="@color/glass_white_80"
@@ -181,17 +244,67 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
-                        android:text="Forgot Password?"
+                        android:text="@string/forgot_password"
                         android:textColor="@color/accent_cyan"
                         android:textSize="13sp"
                         android:padding="8dp"
                         android:layout_marginBottom="24dp" />
+                        android:layout_marginBottom="16dp" />
+
+                    <!-- Captcha Section -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="24dp">
+
+                        <TextView
+                            android:id="@+id/tv_captcha_question"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="12 + 5 ="
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/nfs_text_primary" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/captcha_hint"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            app:boxStrokeColor="@color/nfs_blue_accent"
+                            app:hintTextColor="@color/nfs_blue_accent"
+                            app:boxCornerRadiusTopStart="10dp"
+                            app:boxCornerRadiusTopEnd="10dp"
+                            app:boxCornerRadiusBottomStart="10dp"
+                            app:boxCornerRadiusBottomEnd="10dp">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_captcha_answer"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="number"
+                                android:textColor="@color/nfs_text_primary" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <ImageButton
+                            android:id="@+id/btn_refresh_captcha"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginStart="8dp"
+                            android:src="@android:drawable/ic_menu_rotate"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            app:tint="@color/nfs_blue_accent"
+                            android:contentDescription="@null" />
+                    </LinearLayout>
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_login"
                         android:layout_width="match_parent"
                         android:layout_height="56dp"
-                        android:text="LOGIN"
+                        android:text="@string/login_button"
                         app:cornerRadius="20dp"
                         android:backgroundTint="@color/primary_purple"
                         android:fontFamily="sans-serif-black"
@@ -219,15 +332,14 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="New to CampusShare? "
+                    android:text="@string/new_to_campusshare"
                     android:textColor="@color/glass_white_80"
                     android:textSize="14sp" />
-
                 <TextView
                     android:id="@+id/tv_register"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Create Account"
+                    android:text="@string/create_account"
                     android:textColor="@color/accent_cyan"
                     android:textStyle="bold"
                     android:textSize="14sp" />

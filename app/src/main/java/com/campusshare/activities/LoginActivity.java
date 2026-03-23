@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,13 +19,20 @@ import com.campusshare.repositories.AuthRepository;
 import com.campusshare.utils.SessionManager;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.Random;
+
 public class LoginActivity extends AppCompatActivity {
 
     // UI elements
-    private EditText etEmail, etPassword;
+    private EditText etEmail, etPassword, etCaptchaAnswer;
     private Button btnLogin;
-    private TextView tvRegister, tvForgotPassword;
+    private TextView tvRegister, tvForgotPassword, tvCaptchaQuestion;
+    private ImageButton btnRefreshCaptcha;
     private ProgressBar progressBar;
+
+    // Captcha Logic
+    private int captchaResult;
+    private final Random random = new Random();
 
     // Repository handles all Firebase calls
     private AuthRepository authRepository;
@@ -36,6 +44,7 @@ public class LoginActivity extends AppCompatActivity {
 
         initViews();
         setClickListeners();
+        generateCaptcha();
 
         authRepository = new AuthRepository();
 
@@ -77,9 +86,12 @@ public class LoginActivity extends AppCompatActivity {
     private void initViews() {
         etEmail = findViewById(R.id.et_email);
         etPassword = findViewById(R.id.et_password);
+        etCaptchaAnswer = findViewById(R.id.et_captcha_answer);
         btnLogin = findViewById(R.id.btn_login);
         tvRegister = findViewById(R.id.tv_register);
         tvForgotPassword = findViewById(R.id.tv_forgot_password);
+        tvCaptchaQuestion = findViewById(R.id.tv_captcha_question);
+        btnRefreshCaptcha = findViewById(R.id.btn_refresh_captcha);
         progressBar = findViewById(R.id.progress_bar);
     }
 
@@ -88,8 +100,9 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(v -> {
             String email = etEmail.getText().toString().trim();
             String password = etPassword.getText().toString().trim();
+                String captchaInput = etCaptchaAnswer.getText().toString().trim();
 
-            if (!validateInputs(email, password)) return;
+            if (!validateInputs(email, password, captchaInput)) return;
 
             showLoading(true);
 
@@ -109,6 +122,20 @@ public class LoginActivity extends AppCompatActivity {
                 }
             });
         });
+                    @Override
+                    public void onFailure(String errorMessage) {
+                        showLoading(false);
+                        Toast.makeText(LoginActivity.this, errorMessage, Toast.LENGTH_LONG).show();
+                        generateCaptcha(); // Refresh captcha on failure
+                        etCaptchaAnswer.setText("");
+                    }
+                });
+            });
+        }
+
+        if (btnRefreshCaptcha != null) {
+            btnRefreshCaptcha.setOnClickListener(v -> generateCaptcha());
+        }
 
         tvRegister.setOnClickListener(v ->
             startActivity(new Intent(this, RegisterActivity.class))
@@ -119,9 +146,18 @@ public class LoginActivity extends AppCompatActivity {
         );
     }
 
+    private void generateCaptcha() {
+        int num1 = random.nextInt(20) + 1;
+        int num2 = random.nextInt(20) + 1;
+        captchaResult = num1 + num2;
+        if (tvCaptchaQuestion != null) {
+            tvCaptchaQuestion.setText(getString(R.string.captcha_question, num1, num2));
+        }
+    }
+
     // ─── Validation ───────────────────────────────────────────────────────────
 
-    private boolean validateInputs(String email, String password) {
+    private boolean validateInputs(String email, String password, String captchaInput) {
         if (TextUtils.isEmpty(email)) {
             etEmail.setError("Email is required");
             etEmail.requestFocus();
@@ -142,6 +178,27 @@ public class LoginActivity extends AppCompatActivity {
             etPassword.requestFocus();
             return false;
         }
+
+        if (TextUtils.isEmpty(captchaInput)) {
+            etCaptchaAnswer.setError(getString(R.string.error_captcha_required));
+            etCaptchaAnswer.requestFocus();
+            return false;
+        }
+
+        try {
+            int userVal = Integer.parseInt(captchaInput);
+            if (userVal != captchaResult) {
+                etCaptchaAnswer.setError(getString(R.string.error_captcha_wrong));
+                etCaptchaAnswer.requestFocus();
+                generateCaptcha();
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            etCaptchaAnswer.setError(getString(R.string.error_invalid_number));
+            etCaptchaAnswer.requestFocus();
+            return false;
+        }
+
         return true;
     }
 

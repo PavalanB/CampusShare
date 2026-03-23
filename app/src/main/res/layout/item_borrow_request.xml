@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="12dp"
     android:layout_marginHorizontal="4dp"
+    android:layout_margin="8dp"
     app:cardCornerRadius="16dp"
     app:cardElevation="4dp">
+    app:cardElevation="4dp"
+    app:cardBackgroundColor="@color/nfs_card_bg">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,6 +19,8 @@
         android:orientation="horizontal"
         android:padding="12dp"
         android:background="@color/nfs_card_bg">
+        android:orientation="vertical"
+        android:padding="16dp">
 
         <androidx.cardview.widget.CardView
             android:layout_width="60dp"
@@ -34,11 +40,17 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:layout_marginStart="16dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/tv_request_resource_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="Scientific Calculator"
+                android:textSize="18sp"
+                android:fontFamily="sans-serif-black"
                 android:text="Resource Name"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -46,20 +58,57 @@
 
             <TextView
                 android:id="@+id/tv_request_owner"
+                android:id="@+id/tv_request_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Owner: Name"
                 android:textSize="13sp"
                 android:textColor="@color/nfs_text_secondary" />
+                android:layout_alignParentEnd="true"
+                android:background="@drawable/badge_available"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="4dp"
+                android:text="PENDING"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:textColor="@color/white" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_request_person"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="From: Jane Doe"
+            android:textSize="14sp"
+            android:textColor="@color/nfs_text_secondary" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@android:drawable/ic_menu_myplaces"
+                app:tint="@color/nfs_blue_accent" />
 
             <TextView
                 android:id="@+id/tv_request_date"
+                android:id="@+id/tv_request_dates"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Requested on: Date"
+                android:layout_marginStart="8dp"
+                android:text="10/04/2026 - 15/04/2026"
                 android:textSize="12sp"
                 android:textColor="@color/nfs_text_secondary" />
         </LinearLayout>
+                android:textColor="@color/nfs_text_primary" />
+
+            <View android:layout_width="0dp" android:layout_height="1dp" android:layout_weight="1" />
 
         <TextView
             android:id="@+id/tv_request_status"
@@ -73,6 +122,54 @@
             android:textStyle="bold"
             android:textColor="@color/white"
             android:background="@drawable/badge_available" />
+            <TextView
+                android:id="@+id/tv_request_quantity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Qty: 1"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:textColor="@color/nfs_purple_glow" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_actions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp"
+            android:visibility="gone">
+
+            <Button
+                android:id="@+id/btn_reject"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="REJECT"
+                android:textColor="@color/error_red" />
+
+            <Button
+                android:id="@+id/btn_approve"
+                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="APPROVE"
+                android:backgroundTint="@color/nfs_purple_glow"
+                app:cornerRadius="8dp" />
+
+            <Button
+                android:id="@+id/btn_return"
+                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="RETURNED"
+                android:backgroundTint="@color/success_green"
+                app:cornerRadius="8dp"
+                android:visibility="gone" />
+        </LinearLayout>
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>
