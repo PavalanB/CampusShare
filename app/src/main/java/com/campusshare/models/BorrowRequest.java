@@ -31,26 +31,20 @@ public class BorrowRequest implements Serializable {
     private String ownerName;
     private Date startDate;
     private Date endDate;
-    private Date returnDate; // Actual date the item was returned
+    private Date returnedDate; // Actual date the item was returned
     private int quantity;
     private String status; // PENDING, APPROVED, REJECTED, ONGOING, COMPLETED, CANCELLED, OVERDUE
-    private Date createdAt;
     private boolean priority;
-
-    private String status;
-    private boolean isPriority;
-
     private Date requestDate;
     private Date acceptedDate;
     private Date dueDate;
-    private Date returnedDate;
-
     private float borrowerRating;
     private float ownerRating;
     private boolean creditApplied;
 
     public BorrowRequest() {}
 
+    // Constructor used in ResourceDetailActivity
     public BorrowRequest(String resourceID, String resourceName, String borrowerID, String borrowerName, String ownerID,
                          Date startDate, Date endDate, int quantity) {
         this.resourceID = resourceID;
@@ -62,10 +56,11 @@ public class BorrowRequest implements Serializable {
         this.endDate = endDate;
         this.quantity = quantity;
         this.status = STATUS_PENDING;
-        this.createdAt = new Date();
+        this.requestDate = new Date();
         this.priority = false;
     }
 
+    // Constructor used in other places (e.g. manual request creation)
     public BorrowRequest(String resourceID, String resourceName, String resourcePhoto, String borrowerID, String borrowerName, String borrowerDept, String ownerID, String ownerName, boolean priority) {
         this.resourceID = resourceID;
         this.resourceName = resourceName;
@@ -77,19 +72,11 @@ public class BorrowRequest implements Serializable {
         this.ownerName = ownerName;
         this.priority = priority;
         this.status = STATUS_PENDING;
-        this.createdAt = new Date();
+        this.requestDate = new Date();
         this.quantity = 1;
-        this.borrowerID    = borrowerID;
-        this.borrowerName  = borrowerName;
-        this.borrowerDept  = borrowerDept;
-        this.ownerID       = ownerID;
-        this.ownerName     = ownerName;
-        this.isPriority    = isPriority;
-        this.status        = STATUS_PENDING;
-        this.requestDate   = new Date();
         this.creditApplied = false;
         this.borrowerRating = 0f;
-        this.ownerRating    = 0f;
+        this.ownerRating = 0f;
     }
 
     // Getters and Setters
@@ -126,8 +113,8 @@ public class BorrowRequest implements Serializable {
     public Date getEndDate() { return endDate; }
     public void setEndDate(Date endDate) { this.endDate = endDate; }
 
-    public Date getReturnDate() { return returnDate; }
-    public void setReturnDate(Date returnDate) { this.returnDate = returnDate; }
+    public Date getReturnedDate() { return returnedDate; }
+    public void setReturnedDate(Date returnedDate) { this.returnedDate = returnedDate; }
 
     public int getQuantity() { return quantity; }
     public void setQuantity(int quantity) { this.quantity = quantity; }
@@ -135,61 +122,51 @@ public class BorrowRequest implements Serializable {
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
 
-    public Date getCreatedAt() { return createdAt; }
-    public void setCreatedAt(Date createdAt) { this.createdAt = createdAt; }
-    public String getRequestID()      { return requestID; }
-    public String getResourceID()     { return resourceID; }
-    public String getResourceName()   { return resourceName; }
-    public String getResourcePhoto()  { return resourcePhoto; }
-    public String getBorrowerID()     { return borrowerID; }
-    public String getBorrowerName()   { return borrowerName; }
-    public String getBorrowerDept()   { return borrowerDept; }
-    public String getOwnerID()        { return ownerID; }
-    public String getOwnerName()      { return ownerName; }
-    public String getStatus()         { return status; }
-    public boolean isPriority()       { return isPriority; }
-    public Date getRequestDate()      { return requestDate; }
-    public Date getAcceptedDate()     { return acceptedDate; }
-    public Date getDueDate()          { return dueDate; }
-    public Date getReturnedDate()     { return returnedDate; }
-    public float getBorrowerRating()  { return borrowerRating; }
-    public float getOwnerRating()     { return ownerRating; }
-    public boolean isCreditApplied()  { return creditApplied; }
-
-    public void setRequestID(String v)       { this.requestID = v; }
-    public void setResourceID(String v)      { this.resourceID = v; }
-    public void setResourceName(String v)    { this.resourceName = v; }
-    public void setResourcePhoto(String v)   { this.resourcePhoto = v; }
-    public void setBorrowerID(String v)      { this.borrowerID = v; }
-    public void setBorrowerName(String v)    { this.borrowerName = v; }
-    public void setBorrowerDept(String v)    { this.borrowerDept = v; }
-    public void setOwnerID(String v)         { this.ownerID = v; }
-    public void setOwnerName(String v)       { this.ownerName = v; }
-    public void setStatus(String v)          { this.status = v; }
-    public void setPriority(boolean v)       { this.isPriority = v; }
-    public void setRequestDate(Date v)       { this.requestDate = v; }
-    public void setAcceptedDate(Date v)      { this.acceptedDate = v; }
-    public void setDueDate(Date v)           { this.dueDate = v; }
-    public void setReturnedDate(Date v)      { this.returnedDate = v; }
-    public void setBorrowerRating(float v)   { this.borrowerRating = v; }
-    public void setOwnerRating(float v)      { this.ownerRating = v; }
-    public void setCreditApplied(boolean v)  { this.creditApplied = v; }
     public boolean isPriority() { return priority; }
     public void setPriority(boolean priority) { this.priority = priority; }
 
+    public Date getRequestDate() { return requestDate; }
+    public void setRequestDate(Date requestDate) { this.requestDate = requestDate; }
+
+    public Date getAcceptedDate() { return acceptedDate; }
+    public void setAcceptedDate(Date acceptedDate) { this.acceptedDate = acceptedDate; }
+
+    public Date getDueDate() { return dueDate; }
+    public void setDueDate(Date dueDate) { this.dueDate = dueDate; }
+
+    public float getBorrowerRating() { return borrowerRating; }
+    public void setBorrowerRating(float borrowerRating) { this.borrowerRating = borrowerRating; }
+
+    public float getOwnerRating() { return ownerRating; }
+    public void setOwnerRating(float ownerRating) { this.ownerRating = ownerRating; }
+
+    public boolean isCreditApplied() { return creditApplied; }
+    public void setCreditApplied(boolean creditApplied) { this.creditApplied = creditApplied; }
+
+    // Compatibility Getters/Setters for older code
     @Exclude
-    public Timestamp getRequestDate() {
-        return createdAt != null ? new Timestamp(createdAt) : null;
+    public Date getCreatedAt() { return requestDate; }
+    @Exclude
+    public void setCreatedAt(Date d) { this.requestDate = d; }
+    @Exclude
+    public Date getReturnDate() { return returnedDate; }
+    @Exclude
+    public void setReturnDate(Date d) { this.returnedDate = d; }
+
+    @Exclude
+    public Timestamp getFirebaseRequestDate() {
+        return requestDate != null ? new Timestamp(requestDate) : null;
     }
 
     @Exclude
-    public Timestamp getDueDate() {
-        return endDate != null ? new Timestamp(endDate) : null;
+    public Timestamp getFirebaseDueDate() {
+        return dueDate != null ? new Timestamp(dueDate) : null;
     }
 
     @Exclude
     public boolean isPending() { return STATUS_PENDING.equals(status); }
     @Exclude
-    public boolean isPending()  { return STATUS_PENDING.equals(status); }
     public boolean isAccepted() { return STATUS_ACCEPTED.equals(status); }
+    @Exclude
+    public boolean isReturned() { return STATUS_RETURNED.equals(status); }
 }

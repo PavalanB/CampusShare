@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.MenuItem;
@@ -14,6 +15,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -32,6 +34,13 @@ import com.campusshare.utils.SessionManager;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 
+import org.osmdroid.api.IMapController;
+import org.osmdroid.config.Configuration;
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+import org.osmdroid.util.GeoPoint;
+import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.Marker;
+
 /**
  * AddResourceActivity handles both ADD (new resource) and EDIT (existing resource).
  * Pass a Resource object via intent extra "resource" to enter edit mode.
@@ -45,12 +54,19 @@ public class AddResourceActivity extends AppCompatActivity {
     private Spinner spinnerCategory, spinnerCondition;
     private Button btnSave;
     private ProgressBar progressBar;
+    
+    // Map UI
+    private MapView mapPicker;
+    private View mapOverlay;
+    private TextView tvLocationStatus;
 
     // State
     private Uri selectedPhotoUri = null;
     private Resource existingResource = null; // non-null = edit mode
     private ResourceRepository resourceRepository;
     private User currentUser;
+    
+    private double selectedLat = 0, selectedLng = 0;
 
     private static final String[] CATEGORIES = {
         "Select Category", "Electronics", "Books", "Lab Equipment",
@@ -80,11 +96,27 @@ public class AddResourceActivity extends AppCompatActivity {
             else Toast.makeText(this, "Permission needed to pick a photo", Toast.LENGTH_SHORT).show();
         });
 
+    // Location Picker Launcher
+    private final ActivityResultLauncher<Intent> locationPickerLauncher =
+        registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                selectedLat = result.getData().getDoubleExtra("lat", 0);
+                selectedLng = result.getData().getDoubleExtra("lng", 0);
+                updateMapPreview(selectedLat, selectedLng);
+                tvLocationStatus.setText("Location pinned!");
+                tvLocationStatus.setTextColor(getColor(R.color.primary_glow));
+            }
+        });
+
     // ─── onCreate ─────────────────────────────────────────────────────────────
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        // Load OSM configuration
+        Configuration.getInstance().load(this, PreferenceManager.getDefaultSharedPreferences(this));
+        
         setContentView(R.layout.activity_add_resource);
 
         resourceRepository = new ResourceRepository(this);
@@ -98,6 +130,7 @@ public class AddResourceActivity extends AppCompatActivity {
         setupToolbar();
         initViews();
         setupSpinners();
+        setupMiniMap();
         setClickListeners();
 
         if (existingResource != null) populateEditMode();
@@ -122,6 +155,10 @@ public class AddResourceActivity extends AppCompatActivity {
         spinnerCondition = findViewById(R.id.spinner_condition);
         btnSave        = findViewById(R.id.btn_save);
         progressBar    = findViewById(R.id.progress_bar);
+        
+        mapPicker      = findViewById(R.id.map_picker);
+        mapOverlay     = findViewById(R.id.map_overlay_click);
+        tvLocationStatus = findViewById(R.id.tv_location_status);
     }
 
     private void setupSpinners() {
@@ -134,6 +171,31 @@ public class AddResourceActivity extends AppCompatActivity {
             this, android.R.layout.simple_spinner_item, CONDITIONS);
         condAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerCondition.setAdapter(condAdapter);
+    }
+
+    private void setupMiniMap() {
+        mapPicker.setTileSource(TileSourceFactory.MAPNIK);
+        mapPicker.setMultiTouchControls(false); // Static preview
+        IMapController mapController = mapPicker.getController();
+        mapController.setZoom(15.0);
+        
+        // Default center to Anna University
+        GeoPoint annaUni = new GeoPoint(13.0132, 80.2354);
+        mapController.setCenter(annaUni);
+    }
+
+    private void updateMapPreview(double lat, double lng) {
+        GeoPoint point = new GeoPoint(lat, lng);
+        mapPicker.getController().animateTo(point);
+        mapPicker.getController().setZoom(17.0);
+        
+        mapPicker.getOverlays().clear();
+        Marker marker = new Marker(mapPicker);
+        marker.setPosition(point);
+        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+        marker.setIcon(ContextCompat.getDrawable(this, R.drawable.ic_location_pin));
+        mapPicker.getOverlays().add(marker);
+        mapPicker.invalidate();
     }
 
     // Populate fields when editing an existing resource
@@ -153,6 +215,14 @@ public class AddResourceActivity extends AppCompatActivity {
             Glide.with(this).load(existingResource.getPhotoUrl()).centerCrop().into(ivPhoto);
             btnAddPhoto.setText("Change photo");
         }
+        
+        // Load existing location
+        if (existingResource.getLatitude() != 0 && existingResource.getLongitude() != 0) {
+            selectedLat = existingResource.getLatitude();
+            selectedLng = existingResource.getLongitude();
+            updateMapPreview(selectedLat, selectedLng);
+            tvLocationStatus.setText("Location pinned!");
+        }
     }
 
     private void setSpinnerValue(Spinner spinner, String[] values, String target) {
@@ -168,6 +238,16 @@ public class AddResourceActivity extends AppCompatActivity {
         // Photo picker — show camera/gallery dialog
         ivPhoto.setOnClickListener(v -> showPhotoPickerDialog());
         btnAddPhoto.setOnClickListener(v -> showPhotoPickerDialog());
+        
+        // Map click
+        mapOverlay.setOnClickListener(v -> {
+            Intent intent = new Intent(this, LocationPickerActivity.class);
+            if (selectedLat != 0) {
+                intent.putExtra("lat", selectedLat);
+                intent.putExtra("lng", selectedLng);
+            }
+            locationPickerLauncher.launch(intent);
+        });
 
         btnSave.setOnClickListener(v -> {
             if (etName.getText() == null || etDescription.getText() == null || etQuantity.getText() == null) return;
@@ -189,6 +269,9 @@ public class AddResourceActivity extends AppCompatActivity {
                     currentUser.getUserID(), currentUser.getName(),
                     currentUser.getDepartment(), name, category, description, condition, quantity
                 );
+                newResource.setLatitude(selectedLat);
+                newResource.setLongitude(selectedLng);
+                
                 resourceRepository.addResource(newResource, selectedPhotoUri,
                     new ResourceRepository.ResourceCallback() {
                         @Override
@@ -212,6 +295,8 @@ public class AddResourceActivity extends AppCompatActivity {
                 existingResource.setCondition(condition);
                 existingResource.setAvailableQuantity(quantity);
                 existingResource.setTotalQuantity(quantity); // Assuming re-listing reset
+                existingResource.setLatitude(selectedLat);
+                existingResource.setLongitude(selectedLng);
 
                 resourceRepository.updateResource(existingResource, selectedPhotoUri,
                     new ResourceRepository.ResourceCallback() {
@@ -293,6 +378,12 @@ public class AddResourceActivity extends AppCompatActivity {
         } catch (NumberFormatException e) {
             etQuantity.setError("Invalid quantity"); etQuantity.requestFocus(); return false;
         }
+        
+        if (selectedLat == 0 || selectedLng == 0) {
+            Toast.makeText(this, "Please pin the resource location on the map", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        
         return true;
     }
 
@@ -308,5 +399,17 @@ public class AddResourceActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+    
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mapPicker.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mapPicker.onPause();
     }
 }
