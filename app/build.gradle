@@ -20,6 +20,21 @@ android {
         targetSdk 34
         versionCode 4
         versionName "4.0"
+
+        // Load properties from local.properties
+        Properties properties = new Properties()
+        if (project.rootProject.file('local.properties').exists()) {
+            properties.load(project.rootProject.file('local.properties').newDataInputStream())
+        }
+
+        buildConfigField "String", "CLOUDINARY_CLOUD_NAME", "\"${properties.getProperty('CLOUDINARY_CLOUD_NAME') ?: ''}\""
+        buildConfigField "String", "CLOUDINARY_API_KEY", "\"${properties.getProperty('CLOUDINARY_API_KEY') ?: ''}\""
+        buildConfigField "String", "CLOUDINARY_API_SECRET", "\"${properties.getProperty('CLOUDINARY_API_SECRET') ?: ''}\""
+        buildConfigField "String", "CLOUDINARY_UPLOAD_PRESET", "\"${properties.getProperty('CLOUDINARY_UPLOAD_PRESET') ?: ''}\""
+    }
+
+    buildFeatures {
+        buildConfig true
     }
 
     buildTypes {

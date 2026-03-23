@@ -46,6 +46,7 @@
         <activity android:name=".activities.AddResourceActivity"    android:exported="false" />
         <activity android:name=".activities.ResourceDetailActivity" android:exported="false" />
         <activity android:name=".activities.ProfileActivity"        android:exported="false" />
+        <activity android:name=".activities.RequestsManagementActivity" android:exported="false" />
 
         <!-- Phase 3 - Borrow Requests -->
         <activity android:name=".activities.BorrowRequestActivity"  android:exported="false" />

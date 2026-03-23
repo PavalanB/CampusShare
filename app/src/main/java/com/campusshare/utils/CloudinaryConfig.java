@@ -1,30 +1,18 @@
 package com.campusshare.utils;
 
+import com.campusshare.BuildConfig;
+
 /**
  * CloudinaryConfig holds your Cloudinary credentials.
- *
- * HOW TO GET THESE VALUES:
- * 1. Go to https://cloudinary.com → Sign Up (free, no credit card)
- * 2. After signup → Dashboard page shows all three values below
- * 3. Replace the placeholder strings with your actual values
- *
- * FREE TIER:
- *   25 GB storage
- *   25 GB bandwidth/month
- *   Automatic image compression and resizing
- *   No credit card required — ever
+ * Values are now loaded from BuildConfig (which gets them from local.properties)
+ * to keep them secure and out of version control.
  */
 public class CloudinaryConfig {
 
-    // Found on your Cloudinary Dashboard → Product Environment Credentials
-    public static final String CLOUD_NAME  = "dndbhzp9q";   // e.g. "dxyz123abc"
-    public static final String API_KEY     = "266153253722785";       // e.g. "123456789012345"
-    public static final String API_SECRET  = "qFCto99arGkb3tk6WA27MfvIlvk";    // e.g. "abcDEFghiJKLmnoPQR"
-
-    // Upload preset — create this in Cloudinary Dashboard:
-    // Settings → Upload → Upload presets → Add upload preset
-    // Set signing mode to "Unsigned" and save the preset name here
-    public static final String UPLOAD_PRESET = "campusshare_preset";
+    public static final String CLOUD_NAME  = BuildConfig.CLOUDINARY_CLOUD_NAME;
+    public static final String API_KEY     = BuildConfig.CLOUDINARY_API_KEY;
+    public static final String API_SECRET  = BuildConfig.CLOUDINARY_API_SECRET;
+    public static final String UPLOAD_PRESET = BuildConfig.CLOUDINARY_UPLOAD_PRESET;
 
     // Cloudinary upload endpoint (uses CLOUD_NAME)
     public static String getUploadUrl() {

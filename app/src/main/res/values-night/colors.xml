@@ -16,6 +16,9 @@
     <color name="divider">#2A2D34</color>
     <color name="error_red">#FF5252</color>
 
+    <color name="accent_primary">#00B4D8</color>
+    <color name="accent_secondary">#7209B7</color>
+
     <!-- Glass Effects for Dark Mode -->
     <color name="glass_white_5">#0DFFFFFF</color>
     <color name="glass_white_10">#1AFFFFFF</color>
@@ -23,8 +26,10 @@
 
     <!-- Missing colors to fix build error -->
     <color name="accent_dark">#0077B6</color>
-    <color name="accent_primary">#00B4D8</color>
     <color name="bg_dark_gradient_start">#0B0E11</color>
+    <color name="accent_glow">@color/accent_primary</color>
+    <color name="primary_glow">@color/accent_primary</color>
+    <color name="secondary_glow">@color/accent_secondary</color>
 
     <!-- Compatibility aliases -->
     <color name="textPrimary">@color/text_primary</color>

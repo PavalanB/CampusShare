@@ -32,15 +32,19 @@
     <color name="bg_dark_gradient_start">#F8F9FA</color>
 
     <!-- Legacy Mappings and Compatibility -->
+    <color name="nfs_bg">@color/bg_main</color>
     <color name="nfs_card_bg">@color/bg_card</color>
     <color name="nfs_blue_accent">@color/accent_primary</color>
+    <color name="nfs_purple_glow">@color/accent_secondary</color>
     <color name="nfs_text_primary">@color/text_primary</color>
     <color name="nfs_text_secondary">@color/text_secondary</color>
+    <color name="nfs_bg_dark_fixed">#1A1D23</color>
     <color name="accent_cyan">@color/accent_primary</color>
     <color name="accent_purple">@color/accent_secondary</color>
     <color name="primary_purple">@color/accent_secondary</color>
     <color name="primary_glow">@color/accent_primary</color>
     <color name="secondary_glow">@color/accent_secondary</color>
+    <color name="accent_glow">@color/accent_primary</color>
 
     <!-- Required by activity_borrow_request.xml and item_request.xml -->
     <color name="backgroundColor">@color/bg_main</color>
