@@ -1,17 +1,13 @@
 package com.campusshare.models;
 
-import com.google.firebase.Timestamp;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * BorrowRequest represents one borrow transaction between two students.
  *
- * Status flow:
- *   PENDING → ACCEPTED → RETURNED
- *           ↘ REJECTED
- *
- * isPriority = true when the borrower previously lent to the owner
- * (the owner owes them a favour — credit engine sets this automatically).
+ * Note: Uses java.util.Date instead of Firebase Timestamp because Date is Serializable,
+ * which prevents the app from crashing when passing a BorrowRequest via Intent.
  */
 public class BorrowRequest implements Serializable {
 
@@ -22,7 +18,7 @@ public class BorrowRequest implements Serializable {
 
     private String requestID;
     private String resourceID;
-    private String resourceName;   // stored here so list screens don't need extra reads
+    private String resourceName;
     private String resourcePhoto;
 
     private String borrowerID;
@@ -33,18 +29,17 @@ public class BorrowRequest implements Serializable {
     private String ownerName;
 
     private String status;
-    private boolean isPriority;    // true = borrower is owed a favour by owner
+    private boolean isPriority;
 
-    private Timestamp requestDate;
-    private Timestamp acceptedDate;
-    private Timestamp dueDate;
-    private Timestamp returnedDate;
+    private Date requestDate;
+    private Date acceptedDate;
+    private Date dueDate;
+    private Date returnedDate;
 
-    private float borrowerRating;  // owner rates borrower after return (1–5)
-    private float ownerRating;     // borrower rates owner after return (1–5)
-    private boolean creditApplied; // prevents double-crediting
+    private float borrowerRating;
+    private float ownerRating;
+    private boolean creditApplied;
 
-    // Required empty constructor for Firestore
     public BorrowRequest() {}
 
     public BorrowRequest(String resourceID, String resourceName, String resourcePhoto,
@@ -60,13 +55,12 @@ public class BorrowRequest implements Serializable {
         this.ownerName     = ownerName;
         this.isPriority    = isPriority;
         this.status        = STATUS_PENDING;
-        this.requestDate   = Timestamp.now();
+        this.requestDate   = new Date();
         this.creditApplied = false;
         this.borrowerRating = 0f;
         this.ownerRating    = 0f;
     }
 
-    // ── Getters ──────────────────────────────────────────────────────────────
     public String getRequestID()      { return requestID; }
     public String getResourceID()     { return resourceID; }
     public String getResourceName()   { return resourceName; }
@@ -78,15 +72,14 @@ public class BorrowRequest implements Serializable {
     public String getOwnerName()      { return ownerName; }
     public String getStatus()         { return status; }
     public boolean isPriority()       { return isPriority; }
-    public Timestamp getRequestDate()  { return requestDate; }
-    public Timestamp getAcceptedDate() { return acceptedDate; }
-    public Timestamp getDueDate()      { return dueDate; }
-    public Timestamp getReturnedDate() { return returnedDate; }
+    public Date getRequestDate()      { return requestDate; }
+    public Date getAcceptedDate()     { return acceptedDate; }
+    public Date getDueDate()          { return dueDate; }
+    public Date getReturnedDate()     { return returnedDate; }
     public float getBorrowerRating()  { return borrowerRating; }
     public float getOwnerRating()     { return ownerRating; }
     public boolean isCreditApplied()  { return creditApplied; }
 
-    // ── Setters ──────────────────────────────────────────────────────────────
     public void setRequestID(String v)       { this.requestID = v; }
     public void setResourceID(String v)      { this.resourceID = v; }
     public void setResourceName(String v)    { this.resourceName = v; }
@@ -98,15 +91,14 @@ public class BorrowRequest implements Serializable {
     public void setOwnerName(String v)       { this.ownerName = v; }
     public void setStatus(String v)          { this.status = v; }
     public void setPriority(boolean v)       { this.isPriority = v; }
-    public void setRequestDate(Timestamp v)  { this.requestDate = v; }
-    public void setAcceptedDate(Timestamp v) { this.acceptedDate = v; }
-    public void setDueDate(Timestamp v)      { this.dueDate = v; }
-    public void setReturnedDate(Timestamp v) { this.returnedDate = v; }
+    public void setRequestDate(Date v)       { this.requestDate = v; }
+    public void setAcceptedDate(Date v)      { this.acceptedDate = v; }
+    public void setDueDate(Date v)           { this.dueDate = v; }
+    public void setReturnedDate(Date v)      { this.returnedDate = v; }
     public void setBorrowerRating(float v)   { this.borrowerRating = v; }
     public void setOwnerRating(float v)      { this.ownerRating = v; }
     public void setCreditApplied(boolean v)  { this.creditApplied = v; }
 
-    // ── Convenience helpers ──────────────────────────────────────────────────
     public boolean isPending()  { return STATUS_PENDING.equals(status); }
     public boolean isAccepted() { return STATUS_ACCEPTED.equals(status); }
     public boolean isReturned() { return STATUS_RETURNED.equals(status); }

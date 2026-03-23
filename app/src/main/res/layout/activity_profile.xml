@@ -227,6 +227,16 @@
                     </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_view_history"
+                style="@style/Widget.CampusShare.GlassCard"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:text="View My Borrowing History"
+                android:textSize="15sp"
+                android:textColor="@color/primary_glow"
+                android:textAllCaps="false"
+                android:layout_marginBottom="12dp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_logout"

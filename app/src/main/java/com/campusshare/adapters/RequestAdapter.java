@@ -90,8 +90,8 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.RequestV
 
         // ── Date ──────────────────────────────────────────────────────────────
         if (req.getRequestDate() != null) {
-            Date d = req.getRequestDate().toDate();
-            h.tvDate.setText("Requested: " + DATE_FMT.format(d));
+            // BorrowRequest fields are now java.util.Date, no need for .toDate()
+            h.tvDate.setText("Requested: " + DATE_FMT.format(req.getRequestDate()));
         }
 
         // ── Priority badge ────────────────────────────────────────────────────
@@ -113,7 +113,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.RequestV
         // ── Due date (only when accepted) ─────────────────────────────────────
         if (req.isAccepted() && req.getDueDate() != null) {
             h.tvDueDate.setVisibility(View.VISIBLE);
-            h.tvDueDate.setText("Due: " + DATE_FMT.format(req.getDueDate().toDate()));
+            h.tvDueDate.setText("Due: " + DATE_FMT.format(req.getDueDate()));
         } else {
             h.tvDueDate.setVisibility(View.GONE);
         }

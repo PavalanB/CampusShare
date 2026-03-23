@@ -67,6 +67,7 @@
         <activity android:name=".activities.ReportActivity"         android:exported="false" />
         <activity android:name=".activities.AboutActivity"          android:exported="false" />
 
+        <activity android:name=".activities.HistoryActivity" android:exported="false" />
         <!-- FCM Service -->
         <service
             android:name=".services.FCMService"

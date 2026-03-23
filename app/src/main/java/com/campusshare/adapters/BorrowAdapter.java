@@ -43,7 +43,8 @@ public class BorrowAdapter extends RecyclerView.Adapter<BorrowAdapter.BorrowView
 
         holder.tvResourceName.setText(request.getResourceName());
         holder.tvOwner.setText("Owner: " + request.getOwnerName());
-        holder.tvDate.setText("Requested: " + (request.getRequestDate() != null ? dateFormat.format(request.getRequestDate().toDate()) : "N/A"));
+        // Fixed: Use the Date object directly, no need for .toDate()
+        holder.tvDate.setText("Requested: " + (request.getRequestDate() != null ? dateFormat.format(request.getRequestDate()) : "N/A"));
         holder.tvStatus.setText(request.getStatus());
 
         // Status styling

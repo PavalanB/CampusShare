@@ -1,6 +1,7 @@
 package com.campusshare.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import com.campusshare.R;
+import com.campusshare.activities.HistoryActivity;
 import com.campusshare.activities.MainActivity;
 import com.campusshare.models.User;
 import com.campusshare.repositories.AuthRepository;
@@ -65,6 +67,15 @@ public class ProfileFragment extends Fragment {
         );
 
         view.findViewById(R.id.fab_edit_profile).setOnClickListener(v -> showEditNameDialog());
+
+        // Handle View My History button click
+        View btnHistory = view.findViewById(R.id.btn_view_history);
+        if (btnHistory != null) {
+            btnHistory.setOnClickListener(v -> {
+                Intent intent = new Intent(getActivity(), HistoryActivity.class);
+                startActivity(intent);
+            });
+        }
 
         view.findViewById(R.id.btn_logout).setOnClickListener(v -> {
             authRepository.logout();
