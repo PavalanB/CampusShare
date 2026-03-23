@@ -115,6 +115,17 @@ public class AuthRepository {
             .addOnFailureListener(e -> callback.onFailure(e.getMessage()));
     }
 
+    /**
+     * Updates the user's name in Firestore and returns the updated User object.
+     */
+    public void updateUserName(String uid, String newName, UserProfileCallback callback) {
+        db.collection("users")
+                .document(uid)
+                .update("name", newName)
+                .addOnSuccessListener(unused -> fetchUserProfile(uid, callback))
+                .addOnFailureListener(e -> callback.onFailure(e.getMessage()));
+    }
+
     // ─── Credit Operations ───────────────────────────────────────────────────
 
     public void updateCreditScore(String uid, double delta, SimpleCallback callback) {

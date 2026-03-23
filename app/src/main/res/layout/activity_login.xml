@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <!-- Faded Background Decorations (Optional, adding simple ones) -->
+        <!-- Faded Background Decorations -->
         <ImageView
             android:layout_width="60dp"
             android:layout_height="60dp"
@@ -23,8 +23,6 @@
             android:src="@android:drawable/ic_menu_agenda"
             app:tint="@color/nfs_purple_glow"
             android:contentDescription="@null" />
-            android:src="@drawable/ic_resource_placeholder"
-            app:tint="@color/accent_purple" />
 
         <ImageView
             android:layout_width="80dp"
@@ -34,9 +32,7 @@
             android:alpha="0.2"
             android:rotation="15"
             android:src="@android:drawable/ic_media_play"
-            app:tint="@color/accent_cyan" />
-            android:src="@android:drawable/ic_menu_slideshow"
-            app:tint="@color/nfs_blue_accent"
+            app:tint="@color/accent_cyan"
             android:contentDescription="@null" />
 
         <LinearLayout
@@ -66,33 +62,13 @@
                     android:scaleType="centerInside"
                     app:tint="@color/white"
                     android:contentDescription="@null" />
-            </androidx.cardview.widget.CardView>
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_resource_placeholder"
-                    app:tint="@color/white" />
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- App Title -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:fontFamily="sans-serif-black"
-                android:text="CAMPUS"
-                android:textColor="@color/accent_cyan"
-                android:textSize="42sp"
-                android:letterSpacing="0.1"
-                android:shadowColor="@color/accent_cyan"
-                android:shadowDx="0"
-                android:shadowDy="0"
-                android:shadowRadius="15" />
             <!-- NFS Heat Inspired App Name -->
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="30dp"
                 android:clipChildren="false"
                 android:clipToPadding="false">
 
@@ -112,19 +88,6 @@
                     android:shadowDy="5"
                     android:shadowRadius="12" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="-10dp"
-                android:fontFamily="cursive"
-                android:text="Share"
-                android:textColor="@color/white"
-                android:textSize="56sp"
-                android:textStyle="bold"
-                android:shadowColor="@color/primary_purple"
-                android:shadowDx="0"
-                android:shadowDy="0"
-                android:shadowRadius="20" />
                 <TextView
                     android:id="@+id/tv_app_name_2"
                     android:layout_width="wrap_content"
@@ -151,20 +114,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="Your Campus Resource Hub"
-                android:textColor="@color/glass_white_80"
-                android:textSize="14sp"
-                android:fontFamily="serif" />
+                android:layout_marginBottom="25dp"
                 android:text="@string/app_tagline"
-                android:textSize="12sp"
                 android:textColor="@color/nfs_text_secondary"
-                android:layout_marginBottom="25dp" />
+                android:textSize="12sp"
+                android:fontFamily="serif" />
 
             <!-- Login Card -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="10dp"
                 app:cardBackgroundColor="#CC1A1C2C"
                 app:cardCornerRadius="32dp"
                 app:cardElevation="0dp"
@@ -248,7 +208,6 @@
                         android:textColor="@color/accent_cyan"
                         android:textSize="13sp"
                         android:padding="8dp"
-                        android:layout_marginBottom="24dp" />
                         android:layout_marginBottom="16dp" />
 
                     <!-- Captcha Section -->

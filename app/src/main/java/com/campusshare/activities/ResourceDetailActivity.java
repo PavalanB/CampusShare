@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -96,7 +97,7 @@ public class ResourceDetailActivity extends AppCompatActivity {
 
         updateAvailabilityUI();
 
-        if (!resource.getPhotoUrl().isEmpty()) {
+        if (resource.getPhotoUrl() != null && !resource.getPhotoUrl().isEmpty()) {
             Glide.with(this).load(resource.getPhotoUrl()).centerCrop().into(ivPhoto);
         } else {
             ivPhoto.setImageResource(R.drawable.ic_resource_placeholder);
@@ -123,11 +124,6 @@ public class ResourceDetailActivity extends AppCompatActivity {
         }
     }
 
-        if (resource.getPhotoUrl() != null && !resource.getPhotoUrl().isEmpty()) {
-            Glide.with(this).load(resource.getPhotoUrl()).centerCrop().into(ivPhoto);
-        } else {
-            ivPhoto.setImageResource(R.drawable.ic_resource_placeholder);
-        }
     private void setupQuantityControls() {
         btnMinus.setOnClickListener(v -> {
             if (requestedQuantity > 1) {
@@ -163,11 +159,6 @@ public class ResourceDetailActivity extends AppCompatActivity {
         }, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH)).show());
     }
 
-        btnBorrow.setOnClickListener(v -> {
-            String currentUserID = SessionManager.getUserID(this);
-            if (currentUserID != null && currentUserID.equals(resource.getOwnerID())) {
-                Toast.makeText(this, "This is your own resource.", Toast.LENGTH_SHORT).show();
-                return;
     private void handleBorrowRequest() {
         if (startDate == null || endDate == null) {
             Toast.makeText(this, "Please select start and end dates", Toast.LENGTH_SHORT).show();
@@ -179,7 +170,7 @@ public class ResourceDetailActivity extends AppCompatActivity {
         }
 
         String currentUserID = SessionManager.getUserID(this);
-        if (currentUserID.equals(resource.getOwnerID())) {
+        if (currentUserID != null && currentUserID.equals(resource.getOwnerID())) {
             Toast.makeText(this, "This is your own resource.", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -187,7 +178,7 @@ public class ResourceDetailActivity extends AppCompatActivity {
         btnBorrow.setEnabled(false);
         btnBorrow.setText("Checking Availability...");
 
-        ResourceRepository repo = new ResourceRepository();
+        ResourceRepository repo = new ResourceRepository(this);
         repo.checkAvailability(resource.getResourceID(), startDate, endDate, requestedQuantity, resource.getTotalQuantity(), new ResourceRepository.BorrowRequestListCallback() {
             @Override
             public void onSuccess(List<BorrowRequest> requests) {
@@ -207,10 +198,6 @@ public class ResourceDetailActivity extends AppCompatActivity {
                     submitRequest();
                 }
             }
-
-            Intent intent = new Intent(this, BorrowRequestActivity.class);
-            intent.putExtra("resource", resource);
-            startActivity(intent);
 
             @Override
             public void onFailure(String error) {
@@ -236,7 +223,7 @@ public class ResourceDetailActivity extends AppCompatActivity {
                 requestedQuantity
         );
 
-        new ResourceRepository().addBorrowRequest(req, new ResourceRepository.SimpleCallback() {
+        new ResourceRepository(this).addBorrowRequest(req, new ResourceRepository.SimpleCallback() {
             @Override
             public void onSuccess() {
                 Toast.makeText(ResourceDetailActivity.this, "Pre-booking request sent!", Toast.LENGTH_LONG).show();

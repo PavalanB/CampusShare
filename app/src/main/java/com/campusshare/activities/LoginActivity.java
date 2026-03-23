@@ -51,13 +51,10 @@ public class LoginActivity extends AppCompatActivity {
         // If already logged in, skip straight to MainActivity
         FirebaseUser fbUser = authRepository.getCurrentUser();
         if (fbUser != null) {
-            // Check if we have the user profile in SessionManager
             if (SessionManager.getUser(this) != null) {
                 goToMain();
                 return;
             } else {
-                // Firebase is logged in but SessionManager is empty (e.g. data cleared)
-                // Re-fetch profile to restore session
                 showLoading(true);
                 authRepository.fetchUserProfile(fbUser.getUid(), new AuthRepository.UserProfileCallback() {
                     @Override
@@ -71,16 +68,8 @@ public class LoginActivity extends AppCompatActivity {
                         showLoading(false);
                     }
                 });
-                return;
             }
         }
-        if (authRepository.getCurrentUser() != null) {
-            goToMain();
-            return;
-        }
-
-        initViews();
-        setClickListeners();
     }
 
     private void initViews() {
@@ -96,11 +85,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void setClickListeners() {
-
         btnLogin.setOnClickListener(v -> {
             String email = etEmail.getText().toString().trim();
             String password = etPassword.getText().toString().trim();
-                String captchaInput = etCaptchaAnswer.getText().toString().trim();
+            String captchaInput = etCaptchaAnswer.getText().toString().trim();
 
             if (!validateInputs(email, password, captchaInput)) return;
 
@@ -110,7 +98,6 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(User user) {
                     showLoading(false);
-                    // Save user session locally
                     SessionManager.saveUser(LoginActivity.this, user);
                     goToMain();
                 }
@@ -119,19 +106,11 @@ public class LoginActivity extends AppCompatActivity {
                 public void onFailure(String errorMessage) {
                     showLoading(false);
                     Toast.makeText(LoginActivity.this, errorMessage, Toast.LENGTH_LONG).show();
+                    generateCaptcha();
+                    etCaptchaAnswer.setText("");
                 }
             });
         });
-                    @Override
-                    public void onFailure(String errorMessage) {
-                        showLoading(false);
-                        Toast.makeText(LoginActivity.this, errorMessage, Toast.LENGTH_LONG).show();
-                        generateCaptcha(); // Refresh captcha on failure
-                        etCaptchaAnswer.setText("");
-                    }
-                });
-            });
-        }
 
         if (btnRefreshCaptcha != null) {
             btnRefreshCaptcha.setOnClickListener(v -> generateCaptcha());
@@ -154,8 +133,6 @@ public class LoginActivity extends AppCompatActivity {
             tvCaptchaQuestion.setText(getString(R.string.captcha_question, num1, num2));
         }
     }
-
-    // ─── Validation ───────────────────────────────────────────────────────────
 
     private boolean validateInputs(String email, String password, String captchaInput) {
         if (TextUtils.isEmpty(email)) {
@@ -202,20 +179,15 @@ public class LoginActivity extends AppCompatActivity {
         return true;
     }
 
-    // ─── UI Helpers ───────────────────────────────────────────────────────────
-
     private void showLoading(boolean show) {
         if (progressBar != null) {
             progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
         }
         if (btnLogin != null) btnLogin.setEnabled(!show);
-        progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
-        btnLogin.setEnabled(!show);
     }
 
     private void goToMain() {
         Intent intent = new Intent(this, MainActivity.class);
-        // Clear back stack so pressing back doesn't return to login
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();

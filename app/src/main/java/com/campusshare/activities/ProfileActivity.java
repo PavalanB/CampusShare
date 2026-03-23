@@ -3,6 +3,8 @@ package com.campusshare.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,15 +13,18 @@ import androidx.appcompat.widget.Toolbar;
 import com.campusshare.R;
 import com.campusshare.models.User;
 import com.campusshare.repositories.AuthRepository;
-import com.campusshare.repositories.ResourceRepository;
 import com.campusshare.utils.SessionManager;
 
 public class ProfileActivity extends AppCompatActivity {
+
+    private AuthRepository authRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
+        authRepository = new AuthRepository();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -33,11 +38,14 @@ public class ProfileActivity extends AppCompatActivity {
 
         // Initials avatar
         TextView tvInitials = findViewById(R.id.tv_initials);
-        String[] parts = user.getName().split(" ");
-        String initials = parts.length >= 2
-            ? String.valueOf(parts[0].charAt(0)) + parts[1].charAt(0)
-            : String.valueOf(parts[0].charAt(0));
-        tvInitials.setText(initials.toUpperCase());
+        String name = user.getName();
+        if (name != null && !name.isEmpty()) {
+            String[] parts = name.split(" ");
+            String initials = parts.length >= 2
+                    ? String.valueOf(parts[0].charAt(0)) + parts[1].charAt(0)
+                    : String.valueOf(name.charAt(0));
+            tvInitials.setText(initials.toUpperCase());
+        }
 
         ((TextView) findViewById(R.id.tv_profile_name)).setText(user.getName());
         ((TextView) findViewById(R.id.tv_profile_college_id)).setText("ID: " + user.getCollegeID());
@@ -48,6 +56,8 @@ public class ProfileActivity extends AppCompatActivity {
         ((TextView) findViewById(R.id.tv_avg_rating)).setText(
             user.getAvgRating() == 0 ? "No ratings yet" : user.getAvgRating() + " / 5.0"
         );
+
+        setClickListeners();
     }
 
     private void setClickListeners() {

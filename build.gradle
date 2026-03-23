@@ -1,18 +1,16 @@
 // Top-level build.gradle
-// This file is required at the root of the project
-
 buildscript {
     repositories {
         google()
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:9.1.0'
-        classpath 'com.google.gms:google-services:4.4.1'
+        classpath 'com.android.tools.build:gradle:8.5.2'
+        classpath 'com.google.gms:google-services:4.4.2'
     }
 }
 
-// Repositories are now managed in settings.gradle via dependencyResolutionManagement
+// Repositories are managed in settings.gradle via dependencyResolutionManagement
 
 task clean(type: Delete) {
     delete rootProject.buildDir

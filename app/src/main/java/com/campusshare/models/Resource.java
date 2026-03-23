@@ -49,8 +49,14 @@ public class Resource implements Serializable {
 
     public Resource(String ownerID, String ownerName, String ownerDepartment,
                     String resourceName, String category, String description,
+                    String condition) {
+        this(ownerID, ownerName, ownerDepartment, resourceName, category, description, condition, 1);
+    }
+
+    public Resource(String ownerID, String ownerName, String ownerDepartment,
+                    String resourceName, String category, String description,
                     String condition, double latitude, double longitude) {
-        this(ownerID, ownerName, ownerDepartment, resourceName, category, description, condition);
+        this(ownerID, ownerName, ownerDepartment, resourceName, category, description, condition, 1);
         this.latitude = latitude;
         this.longitude = longitude;
         this.createdAt = new Date();

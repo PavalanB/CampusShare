@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -30,6 +29,7 @@ import com.campusshare.models.Resource;
 import com.campusshare.models.User;
 import com.campusshare.repositories.ResourceRepository;
 import com.campusshare.utils.SessionManager;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 
 /**
@@ -40,7 +40,7 @@ public class AddResourceActivity extends AppCompatActivity {
 
     // UI
     private ImageView ivPhoto;
-    private TextView tvAddPhoto;
+    private MaterialButton btnAddPhoto;
     private TextInputEditText etName, etDescription, etQuantity;
     private Spinner spinnerCategory, spinnerCondition;
     private Button btnSave;
@@ -69,7 +69,7 @@ public class AddResourceActivity extends AppCompatActivity {
             if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                 selectedPhotoUri = result.getData().getData();
                 ivPhoto.setImageURI(selectedPhotoUri);
-                tvAddPhoto.setText("Change photo");
+                btnAddPhoto.setText("Change photo");
             }
         });
 
@@ -87,7 +87,7 @@ public class AddResourceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_resource);
 
-        resourceRepository = new ResourceRepository();
+        resourceRepository = new ResourceRepository(this);
         currentUser = SessionManager.getUser(this);
 
         // Check if we are in edit mode
@@ -114,7 +114,7 @@ public class AddResourceActivity extends AppCompatActivity {
 
     private void initViews() {
         ivPhoto        = findViewById(R.id.iv_photo);
-        tvAddPhoto     = findViewById(R.id.tv_add_photo);
+        btnAddPhoto    = findViewById(R.id.btn_add_photo);
         etName         = findViewById(R.id.et_resource_name);
         etDescription  = findViewById(R.id.et_description);
         etQuantity     = findViewById(R.id.et_quantity);
@@ -138,6 +138,8 @@ public class AddResourceActivity extends AppCompatActivity {
 
     // Populate fields when editing an existing resource
     private void populateEditMode() {
+        if (existingResource == null) return;
+
         etName.setText(existingResource.getResourceName());
         etDescription.setText(existingResource.getDescription());
         etQuantity.setText(String.valueOf(existingResource.getAvailableQuantity()));
@@ -147,9 +149,9 @@ public class AddResourceActivity extends AppCompatActivity {
         setSpinnerValue(spinnerCondition, CONDITIONS, existingResource.getCondition());
 
         // Load existing photo
-        if (!existingResource.getPhotoUrl().isEmpty()) {
+        if (existingResource.getPhotoUrl() != null && !existingResource.getPhotoUrl().isEmpty()) {
             Glide.with(this).load(existingResource.getPhotoUrl()).centerCrop().into(ivPhoto);
-            tvAddPhoto.setText("Change photo");
+            btnAddPhoto.setText("Change photo");
         }
     }
 
@@ -165,9 +167,11 @@ public class AddResourceActivity extends AppCompatActivity {
     private void setClickListeners() {
         // Photo picker — show camera/gallery dialog
         ivPhoto.setOnClickListener(v -> showPhotoPickerDialog());
-        tvAddPhoto.setOnClickListener(v -> showPhotoPickerDialog());
+        btnAddPhoto.setOnClickListener(v -> showPhotoPickerDialog());
 
         btnSave.setOnClickListener(v -> {
+            if (etName.getText() == null || etDescription.getText() == null || etQuantity.getText() == null) return;
+
             String name        = etName.getText().toString().trim();
             String description = etDescription.getText().toString().trim();
             String category    = spinnerCategory.getSelectedItem().toString();
@@ -284,10 +288,10 @@ public class AddResourceActivity extends AppCompatActivity {
         try {
             int q = Integer.parseInt(quantityStr);
             if (q <= 0) {
-                etQuantity.setError("Quantity must be greater than 0"); etQuantity.requestFocus(); return false;
+                etQuantity.setError("Quantity must be at least 1"); etQuantity.requestFocus(); return false;
             }
         } catch (NumberFormatException e) {
-            etQuantity.setError("Invalid number"); etQuantity.requestFocus(); return false;
+            etQuantity.setError("Invalid quantity"); etQuantity.requestFocus(); return false;
         }
         return true;
     }
@@ -299,7 +303,10 @@ public class AddResourceActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) { finish(); return true; }
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 }

@@ -44,7 +44,7 @@ public class RequestsManagementActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_requests_management);
 
-        resourceRepository = new ResourceRepository();
+        resourceRepository = new ResourceRepository(this);
         authRepository = new AuthRepository();
         currentUserID = SessionManager.getUserID(this);
 
