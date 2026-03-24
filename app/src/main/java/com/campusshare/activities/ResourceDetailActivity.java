@@ -20,6 +20,7 @@ import com.campusshare.models.BorrowRequest;
 import com.campusshare.models.Resource;
 import com.campusshare.models.User;
 import com.campusshare.repositories.ResourceRepository;
+import com.campusshare.utils.NotificationHelper;
 import com.campusshare.utils.SessionManager;
 import com.google.android.material.chip.Chip;
 
@@ -110,16 +111,17 @@ public class ResourceDetailActivity extends AppCompatActivity {
         int availableQty = resource.getAvailableQuantity();
         tvQuantityBadge.setText(getString(R.string.qty_badge, availableQty));
 
-        if (resource.isAvailable() && availableQty > 0) {
+        if (availableQty > 0) {
             tvAvailability.setText(getString(R.string.available));
             tvAvailability.setBackgroundResource(R.drawable.badge_available);
             btnBorrow.setEnabled(true);
+            btnBorrow.setText(getString(R.string.request_to_borrow));
             cvRequestQuantity.setVisibility(View.VISIBLE);
         } else {
-            tvAvailability.setText(getString(R.string.returned));
+            tvAvailability.setText("UNAVAILABLE");
             tvAvailability.setBackgroundResource(R.drawable.badge_unavailable);
             btnBorrow.setEnabled(false);
-            btnBorrow.setText(getString(R.string.returned));
+            btnBorrow.setText("OUT OF STOCK");
             cvRequestQuantity.setVisibility(View.GONE);
         }
     }
@@ -226,6 +228,7 @@ public class ResourceDetailActivity extends AppCompatActivity {
         new ResourceRepository(this).addBorrowRequest(req, new ResourceRepository.SimpleCallback() {
             @Override
             public void onSuccess() {
+                NotificationHelper.notifyRequestReceived(req); // Trigger notification logic
                 Toast.makeText(ResourceDetailActivity.this, "Pre-booking request sent!", Toast.LENGTH_LONG).show();
                 finish();
             }

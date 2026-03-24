@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,6 +27,9 @@ import com.campusshare.utils.SessionManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ListenerRegistration;
 
 public class MainActivity extends AppCompatActivity implements ProfileFragment.ProfileUpdateListener {
 
@@ -38,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements ProfileFragment.P
 
     private AuthRepository authRepository;
     private User currentUser;
+    private ListenerRegistration notificationListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements ProfileFragment.P
 
     private void continueInitialization() {
         NotificationHelper.refreshAndSaveToken();
+        startNotificationListener();
 
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view_right);
@@ -96,6 +102,46 @@ public class MainActivity extends AppCompatActivity implements ProfileFragment.P
         if (getSupportFragmentManager().findFragmentById(R.id.fragment_container) == null) {
             loadFragment(new SearchFragment(), "BROWSE");
             fabAdd.hide();
+        }
+    }
+
+    private void startNotificationListener() {
+        if (currentUser == null) return;
+
+        // Listen for new notifications assigned to THIS user in real-time
+        notificationListener = FirebaseFirestore.getInstance()
+                .collection("notifications")
+                .whereEqualTo("recipientUID", currentUser.getUserID())
+                .whereEqualTo("delivered", false)
+                .addSnapshotListener((snapshots, e) -> {
+                    if (e != null || snapshots == null) return;
+
+                    for (DocumentChange dc : snapshots.getDocumentChanges()) {
+                        if (dc.getType() == DocumentChange.Type.ADDED) {
+                            String title = dc.getDocument().getString("title");
+                            String body = dc.getDocument().getString("body");
+                            
+                            // Show a Toast or an Alert inside the app
+                            if (title != null && body != null) {
+                                showInAppNotification(title, body);
+                                // Mark as delivered so it doesn't pop up again
+                                dc.getDocument().getReference().update("delivered", true);
+                            }
+                        }
+                    }
+                });
+    }
+
+    private void showInAppNotification(String title, String body) {
+        // High-visibility toast for real-time updates
+        Toast.makeText(this, "🔔 " + title + "\n" + body, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (notificationListener != null) {
+            notificationListener.remove();
         }
     }
 
