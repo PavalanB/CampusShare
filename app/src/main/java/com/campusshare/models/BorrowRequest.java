@@ -21,7 +21,10 @@ public class BorrowRequest implements Serializable {
     private String requestID;
     private String resourceID;
     private String resourceName;
+    
+    @PropertyName("resourcePhoto")
     private String resourcePhoto;
+    
     private String borrowerID;
     private String borrowerName;
     private String borrowerDept;
@@ -106,6 +109,21 @@ public class BorrowRequest implements Serializable {
     public String getResourcePhoto() { return resourcePhoto; }
     @PropertyName("resourcePhoto")
     public void setResourcePhoto(String resourcePhoto) { this.resourcePhoto = resourcePhoto; }
+
+    // Alias for photoUrl to handle potential database field name mismatches
+    @PropertyName("photoUrl")
+    public String getPhotoUrl() { return resourcePhoto; }
+    @PropertyName("photoUrl")
+    public void setPhotoUrl(String photoUrl) { 
+        if (this.resourcePhoto == null || this.resourcePhoto.isEmpty()) {
+            this.resourcePhoto = photoUrl; 
+        }
+    }
+
+    @Exclude
+    public String getEffectivePhotoUrl() {
+        return (resourcePhoto != null && !resourcePhoto.isEmpty()) ? resourcePhoto : "";
+    }
 
     @PropertyName("borrowerID")
     public String getBorrowerID() { return borrowerID; }
