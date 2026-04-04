@@ -214,12 +214,16 @@ public class ResourceDetailActivity extends AppCompatActivity {
         User user = SessionManager.getUser(this);
         if (user == null) return;
 
+        // Corrected: Pass all required fields to constructor to avoid nulls in UI
         BorrowRequest req = new BorrowRequest(
                 resource.getResourceID(),
                 resource.getResourceName(),
+                resource.getPhotoUrl(),
                 SessionManager.getUserID(this),
                 user.getName(),
+                user.getDepartment(),
                 resource.getOwnerID(),
+                resource.getOwnerName(),
                 startDate,
                 endDate,
                 requestedQuantity

@@ -2,14 +2,12 @@ package com.campusshare.models;
 
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.Exclude;
+import com.google.firebase.firestore.PropertyName;
 import java.io.Serializable;
 import java.util.Date;
 
 /**
  * BorrowRequest represents one borrow transaction between two students.
- *
- * Note: Uses java.util.Date instead of Firebase Timestamp because Date is Serializable,
- * which prevents the app from crashing when passing a BorrowRequest via Intent.
  */
 public class BorrowRequest implements Serializable {
     public static final String STATUS_PENDING = "PENDING";
@@ -31,9 +29,9 @@ public class BorrowRequest implements Serializable {
     private String ownerName;
     private Date startDate;
     private Date endDate;
-    private Date returnedDate; // Actual date the item was returned
+    private Date returnedDate; 
     private int quantity;
-    private String status; // PENDING, APPROVED, REJECTED, ONGOING, COMPLETED, CANCELLED, OVERDUE
+    private String status; 
     private boolean priority;
     private Date requestDate;
     private Date acceptedDate;
@@ -44,24 +42,10 @@ public class BorrowRequest implements Serializable {
 
     public BorrowRequest() {}
 
-    // Constructor used in ResourceDetailActivity
-    public BorrowRequest(String resourceID, String resourceName, String borrowerID, String borrowerName, String ownerID,
-                         Date startDate, Date endDate, int quantity) {
-        this.resourceID = resourceID;
-        this.resourceName = resourceName;
-        this.borrowerID = borrowerID;
-        this.borrowerName = borrowerName;
-        this.ownerID = ownerID;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.quantity = quantity;
-        this.status = STATUS_PENDING;
-        this.requestDate = new Date();
-        this.priority = false;
-    }
-
-    // Constructor used in other places (e.g. manual request creation)
-    public BorrowRequest(String resourceID, String resourceName, String resourcePhoto, String borrowerID, String borrowerName, String borrowerDept, String ownerID, String ownerName, boolean priority) {
+    // Constructor used by BorrowRequestActivity
+    public BorrowRequest(String resourceID, String resourceName, String resourcePhoto,
+                         String borrowerID, String borrowerName, String borrowerDept,
+                         String ownerID, String ownerName, boolean priority) {
         this.resourceID = resourceID;
         this.resourceName = resourceName;
         this.resourcePhoto = resourcePhoto;
@@ -74,76 +58,140 @@ public class BorrowRequest implements Serializable {
         this.status = STATUS_PENDING;
         this.requestDate = new Date();
         this.quantity = 1;
-        this.creditApplied = false;
         this.borrowerRating = 0f;
         this.ownerRating = 0f;
+        this.creditApplied = false;
     }
 
-    // Getters and Setters
+    // Fully-featured constructor for new requests
+    public BorrowRequest(String resourceID, String resourceName, String resourcePhoto, 
+                         String borrowerID, String borrowerName, String borrowerDept,
+                         String ownerID, String ownerName,
+                         Date startDate, Date endDate, int quantity) {
+        this.resourceID = resourceID;
+        this.resourceName = resourceName;
+        this.resourcePhoto = resourcePhoto;
+        this.borrowerID = borrowerID;
+        this.borrowerName = borrowerName;
+        this.borrowerDept = borrowerDept;
+        this.ownerID = ownerID;
+        this.ownerName = ownerName;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.quantity = quantity;
+        this.status = STATUS_PENDING;
+        this.requestDate = new Date();
+        this.priority = false;
+        this.borrowerRating = 0f;
+        this.ownerRating = 0f;
+        this.creditApplied = false;
+    }
+
+    @PropertyName("requestID")
     public String getRequestID() { return requestID; }
+    @PropertyName("requestID")
     public void setRequestID(String requestID) { this.requestID = requestID; }
 
+    @PropertyName("resourceID")
     public String getResourceID() { return resourceID; }
+    @PropertyName("resourceID")
     public void setResourceID(String resourceID) { this.resourceID = resourceID; }
 
+    @PropertyName("resourceName")
     public String getResourceName() { return resourceName; }
+    @PropertyName("resourceName")
     public void setResourceName(String resourceName) { this.resourceName = resourceName; }
 
+    @PropertyName("resourcePhoto")
     public String getResourcePhoto() { return resourcePhoto; }
+    @PropertyName("resourcePhoto")
     public void setResourcePhoto(String resourcePhoto) { this.resourcePhoto = resourcePhoto; }
 
+    @PropertyName("borrowerID")
     public String getBorrowerID() { return borrowerID; }
+    @PropertyName("borrowerID")
     public void setBorrowerID(String borrowerID) { this.borrowerID = borrowerID; }
 
+    @PropertyName("borrowerName")
     public String getBorrowerName() { return borrowerName; }
+    @PropertyName("borrowerName")
     public void setBorrowerName(String borrowerName) { this.borrowerName = borrowerName; }
 
+    @PropertyName("borrowerDept")
     public String getBorrowerDept() { return borrowerDept; }
+    @PropertyName("borrowerDept")
     public void setBorrowerDept(String borrowerDept) { this.borrowerDept = borrowerDept; }
 
+    @PropertyName("ownerID")
     public String getOwnerID() { return ownerID; }
+    @PropertyName("ownerID")
     public void setOwnerID(String ownerID) { this.ownerID = ownerID; }
 
+    @PropertyName("ownerName")
     public String getOwnerName() { return ownerName; }
+    @PropertyName("ownerName")
     public void setOwnerName(String ownerName) { this.ownerName = ownerName; }
 
+    @PropertyName("startDate")
     public Date getStartDate() { return startDate; }
+    @PropertyName("startDate")
     public void setStartDate(Date startDate) { this.startDate = startDate; }
 
+    @PropertyName("endDate")
     public Date getEndDate() { return endDate; }
+    @PropertyName("endDate")
     public void setEndDate(Date endDate) { this.endDate = endDate; }
 
+    @PropertyName("returnedDate")
     public Date getReturnedDate() { return returnedDate; }
+    @PropertyName("returnedDate")
     public void setReturnedDate(Date returnedDate) { this.returnedDate = returnedDate; }
 
+    @PropertyName("quantity")
     public int getQuantity() { return quantity; }
+    @PropertyName("quantity")
     public void setQuantity(int quantity) { this.quantity = quantity; }
 
+    @PropertyName("status")
     public String getStatus() { return status; }
+    @PropertyName("status")
     public void setStatus(String status) { this.status = status; }
 
+    @PropertyName("priority")
     public boolean isPriority() { return priority; }
+    @PropertyName("priority")
     public void setPriority(boolean priority) { this.priority = priority; }
 
+    @PropertyName("requestDate")
     public Date getRequestDate() { return requestDate; }
+    @PropertyName("requestDate")
     public void setRequestDate(Date requestDate) { this.requestDate = requestDate; }
 
+    @PropertyName("acceptedDate")
     public Date getAcceptedDate() { return acceptedDate; }
+    @PropertyName("acceptedDate")
     public void setAcceptedDate(Date acceptedDate) { this.acceptedDate = acceptedDate; }
 
+    @PropertyName("dueDate")
     public Date getDueDate() { return dueDate; }
+    @PropertyName("dueDate")
     public void setDueDate(Date dueDate) { this.dueDate = dueDate; }
 
+    @PropertyName("borrowerRating")
     public float getBorrowerRating() { return borrowerRating; }
+    @PropertyName("borrowerRating")
     public void setBorrowerRating(float borrowerRating) { this.borrowerRating = borrowerRating; }
 
+    @PropertyName("ownerRating")
     public float getOwnerRating() { return ownerRating; }
+    @PropertyName("ownerRating")
     public void setOwnerRating(float ownerRating) { this.ownerRating = ownerRating; }
 
+    @PropertyName("creditApplied")
     public boolean isCreditApplied() { return creditApplied; }
+    @PropertyName("creditApplied")
     public void setCreditApplied(boolean creditApplied) { this.creditApplied = creditApplied; }
 
-    // Compatibility Getters/Setters for older code
     @Exclude
     public Date getCreatedAt() { return requestDate; }
     @Exclude

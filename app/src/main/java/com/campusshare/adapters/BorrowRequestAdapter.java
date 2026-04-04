@@ -6,11 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.campusshare.R;
 import com.campusshare.models.BorrowRequest;
 
@@ -24,7 +26,7 @@ public class BorrowRequestAdapter extends RecyclerView.Adapter<BorrowRequestAdap
     private List<BorrowRequest> requestList;
     private final boolean isReceived; // true if I am the owner, false if I am the borrower
     private final OnRequestActionListener listener;
-    private final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+    private final SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
 
     public interface OnRequestActionListener {
         void onApprove(BorrowRequest request);
@@ -56,7 +58,7 @@ public class BorrowRequestAdapter extends RecyclerView.Adapter<BorrowRequestAdap
         setStatusColor(holder.tvStatus, request.getStatus());
 
         if (isReceived) {
-            holder.tvPerson.setText("From: " + request.getBorrowerName());
+            holder.tvPerson.setText("From: " + request.getBorrowerName() + " · " + request.getBorrowerDept());
             if ("PENDING".equals(request.getStatus())) {
                 holder.layoutActions.setVisibility(View.VISIBLE);
                 holder.btnApprove.setVisibility(View.VISIBLE);
@@ -72,13 +74,29 @@ public class BorrowRequestAdapter extends RecyclerView.Adapter<BorrowRequestAdap
                 holder.layoutActions.setVisibility(View.GONE);
             }
         } else {
-            holder.tvPerson.setText("Owner ID: " + request.getOwnerID());
+            holder.tvPerson.setText("To: " + request.getOwnerName());
             holder.layoutActions.setVisibility(View.GONE);
         }
 
-        String dateRange = sdf.format(request.getStartDate()) + " - " + sdf.format(request.getEndDate());
-        holder.tvDates.setText(dateRange);
+        if (request.getRequestDate() != null) {
+            holder.tvDates.setText("Requested: " + sdf.format(request.getRequestDate()));
+        } else if (request.getStartDate() != null) {
+            String dateRange = sdf.format(request.getStartDate()) + " - " + sdf.format(request.getEndDate());
+            holder.tvDates.setText(dateRange);
+        }
+
         holder.tvQuantity.setText("Qty: " + request.getQuantity());
+
+        // Load image
+        if (request.getResourcePhoto() != null && !request.getResourcePhoto().isEmpty()) {
+            Glide.with(context)
+                    .load(request.getResourcePhoto())
+                    .placeholder(R.drawable.ic_resource_placeholder)
+                    .centerCrop()
+                    .into(holder.ivPhoto);
+        } else {
+            holder.ivPhoto.setImageResource(R.drawable.ic_resource_placeholder);
+        }
 
         holder.btnApprove.setOnClickListener(v -> listener.onApprove(request));
         holder.btnReject.setOnClickListener(v -> listener.onReject(request));
@@ -88,12 +106,12 @@ public class BorrowRequestAdapter extends RecyclerView.Adapter<BorrowRequestAdap
     private void setStatusColor(TextView tv, String status) {
         tv.setTextColor(Color.WHITE);
         switch (status) {
-            case "PENDING": tv.setBackgroundColor(Color.GRAY); break;
-            case "APPROVED": tv.setBackgroundColor(Color.parseColor("#4CAF50")); break;
-            case "REJECTED": tv.setBackgroundColor(Color.parseColor("#F44336")); break;
-            case "ONGOING": tv.setBackgroundColor(Color.parseColor("#2196F3")); break;
-            case "COMPLETED": tv.setBackgroundColor(Color.parseColor("#2E7D32")); break;
-            case "OVERDUE_RETURNED": tv.setBackgroundColor(Color.parseColor("#EF6C00")); break;
+            case "PENDING": tv.setBackgroundResource(R.drawable.badge_pending); break;
+            case "APPROVED": 
+            case "ONGOING": tv.setBackgroundResource(R.drawable.badge_available); break;
+            case "REJECTED": tv.setBackgroundResource(R.drawable.badge_rejected); break;
+            case "COMPLETED": tv.setBackgroundResource(R.drawable.badge_completed); break;
+            default: tv.setBackgroundColor(Color.GRAY); break;
         }
     }
 
@@ -108,20 +126,25 @@ public class BorrowRequestAdapter extends RecyclerView.Adapter<BorrowRequestAdap
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
+        ImageView ivPhoto;
         TextView tvResourceName, tvStatus, tvPerson, tvDates, tvQuantity;
         Button btnApprove, btnReject, btnReturn;
         View layoutActions;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            ivPhoto = itemView.findViewById(R.id.iv_request_photo);
             tvResourceName = itemView.findViewById(R.id.tv_request_resource_name);
             tvStatus = itemView.findViewById(R.id.tv_request_status);
             tvPerson = itemView.findViewById(R.id.tv_request_person);
             tvDates = itemView.findViewById(R.id.tv_request_dates);
+            if (tvDates == null) {
+                tvDates = itemView.findViewById(R.id.tv_request_date);
+            }
             tvQuantity = itemView.findViewById(R.id.tv_request_quantity);
             btnApprove = itemView.findViewById(R.id.btn_approve);
             btnReject = itemView.findViewById(R.id.btn_reject);
-            btnReturn = itemView.findViewById(R.id.btn_return); // We need to add this in XML
+            btnReturn = itemView.findViewById(R.id.btn_return);
             layoutActions = itemView.findViewById(R.id.layout_actions);
         }
     }
