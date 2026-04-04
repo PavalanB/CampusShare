@@ -87,11 +87,15 @@ public class BorrowRequestAdapter extends RecyclerView.Adapter<BorrowRequestAdap
 
         holder.tvQuantity.setText("Qty: " + request.getQuantity());
 
-        // Load image
-        if (request.getResourcePhoto() != null && !request.getResourcePhoto().isEmpty()) {
+        // Load image - ensure no color tint is interfering
+        holder.ivPhoto.setColorFilter(null);
+        String imageUrl = request.getEffectivePhotoUrl();
+        
+        if (imageUrl != null && !imageUrl.isEmpty()) {
             Glide.with(context)
-                    .load(request.getResourcePhoto())
+                    .load(imageUrl)
                     .placeholder(R.drawable.ic_resource_placeholder)
+                    .error(R.drawable.ic_resource_placeholder)
                     .centerCrop()
                     .into(holder.ivPhoto);
         } else {
@@ -105,12 +109,17 @@ public class BorrowRequestAdapter extends RecyclerView.Adapter<BorrowRequestAdap
 
     private void setStatusColor(TextView tv, String status) {
         tv.setTextColor(Color.WHITE);
-        switch (status) {
+        if (status == null) {
+            tv.setBackgroundColor(Color.GRAY);        return;
+        }
+        // Case-insensitive check or matching your specific DB values
+        switch (status.toUpperCase()) {
             case "PENDING": tv.setBackgroundResource(R.drawable.badge_pending); break;
-            case "APPROVED": 
+            case "APPROVED":
             case "ONGOING": tv.setBackgroundResource(R.drawable.badge_available); break;
             case "REJECTED": tv.setBackgroundResource(R.drawable.badge_rejected); break;
-            case "COMPLETED": tv.setBackgroundResource(R.drawable.badge_completed); break;
+            case "COMPLETED":
+            case "RETURNED": tv.setBackgroundResource(R.drawable.badge_completed); break;
             default: tv.setBackgroundColor(Color.GRAY); break;
         }
     }

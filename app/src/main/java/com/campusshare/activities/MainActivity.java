@@ -108,7 +108,6 @@ public class MainActivity extends AppCompatActivity implements ProfileFragment.P
     private void startNotificationListener() {
         if (currentUser == null) return;
 
-        // Listen for new notifications assigned to THIS user in real-time
         notificationListener = FirebaseFirestore.getInstance()
                 .collection("notifications")
                 .whereEqualTo("recipientUID", currentUser.getUserID())
@@ -121,10 +120,8 @@ public class MainActivity extends AppCompatActivity implements ProfileFragment.P
                             String title = dc.getDocument().getString("title");
                             String body = dc.getDocument().getString("body");
                             
-                            // Show a Toast or an Alert inside the app
                             if (title != null && body != null) {
                                 showInAppNotification(title, body);
-                                // Mark as delivered so it doesn't pop up again
                                 dc.getDocument().getReference().update("delivered", true);
                             }
                         }
@@ -133,7 +130,6 @@ public class MainActivity extends AppCompatActivity implements ProfileFragment.P
     }
 
     private void showInAppNotification(String title, String body) {
-        // High-visibility toast for real-time updates
         Toast.makeText(this, "🔔 " + title + "\n" + body, Toast.LENGTH_LONG).show();
     }
 
@@ -154,12 +150,13 @@ public class MainActivity extends AppCompatActivity implements ProfileFragment.P
     private void setupSidebar() {
         navigationView.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
-            if (id == R.id.nav_game) {
-                startActivity(new Intent(this, GameActivity.class));
+            if (id == R.id.nav_daily_spin) {
+                startActivity(new Intent(this, DailySpinActivity.class));
+            } else if (id == R.id.nav_game) {
+                // Launch Bike Game (to be implemented)
+                startActivity(new Intent(this, BikeGameActivity.class));
             } else if (id == R.id.nav_settings) {
-                // Open Settings
-            } else if (id == R.id.nav_theme) {
-                showThemeSelectionDialog();
+                startActivity(new Intent(this, SettingsActivity.class));
             } else if (id == R.id.nav_about) {
                 startActivity(new Intent(this, AboutActivity.class));
             } else if (id == R.id.nav_logout) {
@@ -199,20 +196,6 @@ public class MainActivity extends AppCompatActivity implements ProfileFragment.P
                 }
             }
         }
-    }
-
-    private void showThemeSelectionDialog() {
-        String[] themes = {"Light", "Dark"};
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Choose Theme");
-        builder.setItems(themes, (dialog, which) -> {
-            if (which == 0) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            }
-        });
-        builder.show();
     }
 
     private void redirectToLogin() {

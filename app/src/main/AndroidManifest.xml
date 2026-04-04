@@ -65,6 +65,9 @@
         <!-- Requirement 4: Native Calculator -->
         <activity android:name=".activities.CalculatorActivity"     android:exported="false" />
         <activity android:name=".activities.GameActivity"           android:exported="false" />
+        <activity android:name=".activities.BikeGameActivity"       android:exported="false" />
+        <activity android:name=".activities.DailySpinActivity"      android:exported="false" />
+        <activity android:name=".activities.SettingsActivity"       android:exported="false" />
         <activity android:name=".activities.ReportActivity"         android:exported="false" />
         <activity android:name=".activities.AboutActivity"          android:exported="false" />
 

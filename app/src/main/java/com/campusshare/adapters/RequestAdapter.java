@@ -70,9 +70,14 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.RequestV
         BorrowRequest req = requests.get(position);
 
         // ── Resource photo ────────────────────────────────────────────────────
+        h.ivPhoto.setColorFilter(null);
         if (req.getResourcePhoto() != null && !req.getResourcePhoto().isEmpty()) {
-            Glide.with(context).load(req.getResourcePhoto())
-                .centerCrop().placeholder(R.drawable.ic_resource_placeholder).into(h.ivPhoto);
+            Glide.with(context)
+                .load(req.getResourcePhoto())
+                .centerCrop()
+                .placeholder(R.drawable.ic_resource_placeholder)
+                .error(R.drawable.ic_resource_placeholder)
+                .into(h.ivPhoto);
         } else {
             h.ivPhoto.setImageResource(R.drawable.ic_resource_placeholder);
         }

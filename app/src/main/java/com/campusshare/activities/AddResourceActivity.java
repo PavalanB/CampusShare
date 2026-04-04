@@ -84,7 +84,8 @@ public class AddResourceActivity extends AppCompatActivity {
         registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                 selectedPhotoUri = result.getData().getData();
-                ivPhoto.setImageURI(selectedPhotoUri);
+                // Use Glide for a reliable local preview without URI permission issues
+                Glide.with(this).load(selectedPhotoUri).centerCrop().into(ivPhoto);
                 btnAddPhoto.setText("Change photo");
             }
         });
