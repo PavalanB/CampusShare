@@ -15,7 +15,7 @@
     <uses-permission android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
-    <!-- Declare that the camera is not strictly required so the app can be installed on devices without one -->
+    <!-- Declare that the camera is not strictly required -->
     <uses-feature android:name="android.hardware.camera" android:required="false" />
     <uses-feature android:name="android.hardware.telephony" android:required="false" />
 
@@ -27,6 +27,16 @@
         android:supportsRtl="true"
         android:requestLegacyExternalStorage="true"
         android:theme="@style/Theme.CampusShare">
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.campusshare.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
 
         <activity
             android:name=".activities.SplashActivity"
@@ -72,6 +82,7 @@
         <activity android:name=".activities.AboutActivity"          android:exported="false" />
 
         <activity android:name=".activities.HistoryActivity" android:exported="false" />
+
         <!-- FCM Service -->
         <service
             android:name=".services.FCMService"

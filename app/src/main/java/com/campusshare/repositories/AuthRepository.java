@@ -126,6 +126,17 @@ public class AuthRepository {
                 .addOnFailureListener(e -> callback.onFailure(e.getMessage()));
     }
 
+    /**
+     * Updates the user's profile photo in Firestore and returns the updated User object.
+     */
+    public void updateProfilePhoto(String uid, String photoUrl, UserProfileCallback callback) {
+        db.collection("users")
+                .document(uid)
+                .update("profilePhoto", photoUrl)
+                .addOnSuccessListener(unused -> fetchUserProfile(uid, callback))
+                .addOnFailureListener(e -> callback.onFailure(e.getMessage()));
+    }
+
     // ─── Credit Operations ───────────────────────────────────────────────────
 
     public void updateCreditScore(String uid, double delta, SimpleCallback callback) {

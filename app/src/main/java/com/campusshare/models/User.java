@@ -1,6 +1,8 @@
 package com.campusshare.models;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
 
     private String userID;
     private String name;
@@ -12,8 +14,10 @@ public class User {
     private String profilePhoto;
     private double creditScore;
     private double avgRating;
+    private int totalRatings;
     private int totalBorrows;
     private int totalLends;
+    private String fcmToken;
 
     // Required empty constructor for Firestore deserialization
     public User() {}
@@ -29,9 +33,11 @@ public class User {
         this.collegeID = collegeID;
         this.creditScore = 0.0;
         this.avgRating = 0.0;
+        this.totalRatings = 0;
         this.totalBorrows = 0;
         this.totalLends = 0;
         this.profilePhoto = "";
+        this.fcmToken = "";
     }
 
     // Getters
@@ -45,8 +51,10 @@ public class User {
     public String getProfilePhoto() { return profilePhoto; }
     public double getCreditScore() { return creditScore; }
     public double getAvgRating() { return avgRating; }
+    public int getTotalRatings() { return totalRatings; }
     public int getTotalBorrows() { return totalBorrows; }
     public int getTotalLends() { return totalLends; }
+    public String getFcmToken() { return fcmToken; }
 
     // Setters
     public void setUserID(String userID) { this.userID = userID; }
@@ -59,6 +67,8 @@ public class User {
     public void setProfilePhoto(String profilePhoto) { this.profilePhoto = profilePhoto; }
     public void setCreditScore(double creditScore) { this.creditScore = creditScore; }
     public void setAvgRating(double avgRating) { this.avgRating = avgRating; }
+    public void setTotalRatings(int totalRatings) { this.totalRatings = totalRatings; }
     public void setTotalBorrows(int totalBorrows) { this.totalBorrows = totalBorrows; }
     public void setTotalLends(int totalLends) { this.totalLends = totalLends; }
+    public void setFcmToken(String fcmToken) { this.fcmToken = fcmToken; }
 }

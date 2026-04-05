@@ -31,6 +31,14 @@
     <color name="primary_glow">@color/accent_primary</color>
     <color name="secondary_glow">@color/accent_secondary</color>
 
+    <!-- Legacy Mappings and Compatibility -->
+    <color name="nfs_bg">@color/bg_main</color>
+    <color name="nfs_card_bg">@color/bg_card</color>
+    <color name="nfs_blue_accent">@color/accent_primary</color>
+    <color name="nfs_purple_glow">@color/accent_secondary</color>
+    <color name="nfs_text_primary">@color/text_primary</color>
+    <color name="nfs_text_secondary">@color/text_secondary</color>
+
     <!-- Compatibility aliases -->
     <color name="textPrimary">@color/text_primary</color>
     <color name="textSecondary">@color/text_secondary</color>
