@@ -22,6 +22,7 @@ import com.campusshare.utils.SessionManager;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class InboxActivity extends AppCompatActivity
@@ -171,6 +172,22 @@ public class InboxActivity extends AppCompatActivity
                 ratingIntent.putExtra("request", request);
                 startActivity(ratingIntent);
             }
+            @Override
+            public void onFailure(String error) {
+                Toast.makeText(InboxActivity.this, "Failed: " + error, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    @Override
+    public void onExtensionRequest(BorrowRequest request, Date newEndDate) {
+        requestRepository.requestExtension(request, newEndDate, new BorrowRequestRepository.SimpleCallback() {
+            @Override
+            public void onSuccess() {
+                Toast.makeText(InboxActivity.this, "Extension request sent!", Toast.LENGTH_SHORT).show();
+                loadSentRequests();
+            }
+
             @Override
             public void onFailure(String error) {
                 Toast.makeText(InboxActivity.this, "Failed: " + error, Toast.LENGTH_SHORT).show();

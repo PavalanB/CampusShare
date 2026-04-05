@@ -1,7 +1,6 @@
 package com.campusshare.activities;
 
 import android.app.DatePickerDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -146,19 +145,32 @@ public class ResourceDetailActivity extends AppCompatActivity {
 
     private void setupDatePickers() {
         Calendar cal = Calendar.getInstance();
-        btnStartDate.setOnClickListener(v -> new DatePickerDialog(this, (view, year, month, dayOfMonth) -> {
-            Calendar selected = Calendar.getInstance();
-            selected.set(year, month, dayOfMonth, 0, 0, 0);
-            startDate = selected.getTime();
-            btnStartDate.setText(sdf.format(startDate));
-        }, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH)).show());
+        btnStartDate.setOnClickListener(v -> {
+            Calendar current = Calendar.getInstance();
+            if (startDate != null) current.setTime(startDate);
 
-        btnEndDate.setOnClickListener(v -> new DatePickerDialog(this, (view, year, month, dayOfMonth) -> {
-            Calendar selected = Calendar.getInstance();
-            selected.set(year, month, dayOfMonth, 23, 59, 59);
-            endDate = selected.getTime();
-            btnEndDate.setText(sdf.format(endDate));
-        }, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH)).show());
+            DatePickerDialog dpd = new DatePickerDialog(this, R.style.Theme_CampusShare_DatePicker, (view, year, month, dayOfMonth) -> {
+                Calendar selected = Calendar.getInstance();
+                selected.set(year, month, dayOfMonth, 0, 0, 0);
+                startDate = selected.getTime();
+                btnStartDate.setText(sdf.format(startDate));
+            }, current.get(Calendar.YEAR), current.get(Calendar.MONTH), current.get(Calendar.DAY_OF_MONTH));
+            dpd.show();
+        });
+
+        btnEndDate.setOnClickListener(v -> {
+            Calendar current = Calendar.getInstance();
+            if (endDate != null) current.setTime(endDate);
+            else if (startDate != null) current.setTime(startDate);
+
+            DatePickerDialog dpd = new DatePickerDialog(this, R.style.Theme_CampusShare_DatePicker, (view, year, month, dayOfMonth) -> {
+                Calendar selected = Calendar.getInstance();
+                selected.set(year, month, dayOfMonth, 23, 59, 59);
+                endDate = selected.getTime();
+                btnEndDate.setText(sdf.format(endDate));
+            }, current.get(Calendar.YEAR), current.get(Calendar.MONTH), current.get(Calendar.DAY_OF_MONTH));
+            dpd.show();
+        });
     }
 
     private void handleBorrowRequest() {
@@ -181,29 +193,15 @@ public class ResourceDetailActivity extends AppCompatActivity {
         btnBorrow.setText("Checking Availability...");
 
         ResourceRepository repo = new ResourceRepository(this);
-        repo.checkAvailability(resource.getResourceID(), startDate, endDate, requestedQuantity, resource.getTotalQuantity(), new ResourceRepository.BorrowRequestListCallback() {
+        repo.checkAvailability(resource.getResourceID(), startDate, endDate, requestedQuantity, resource.getTotalQuantity(), new ResourceRepository.SimpleCallback() {
             @Override
-            public void onSuccess(List<BorrowRequest> requests) {
-                // Simplified overlap logic: calculate sum of quantity in overlapping approved requests
-                int occupied = 0;
-                for (BorrowRequest br : requests) {
-                    if ("APPROVED".equals(br.getStatus()) || "ONGOING".equals(br.getStatus())) {
-                        occupied += br.getQuantity();
-                    }
-                }
-
-                if (occupied + requestedQuantity > resource.getTotalQuantity()) {
-                    Toast.makeText(ResourceDetailActivity.this, "Resource is fully booked for these dates.", Toast.LENGTH_LONG).show();
-                    btnBorrow.setEnabled(true);
-                    btnBorrow.setText(getString(R.string.request_to_borrow));
-                } else {
-                    submitRequest();
-                }
+            public void onSuccess() {
+                submitRequest();
             }
 
             @Override
             public void onFailure(String error) {
-                Toast.makeText(ResourceDetailActivity.this, "Error: " + error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ResourceDetailActivity.this, error, Toast.LENGTH_LONG).show();
                 btnBorrow.setEnabled(true);
                 btnBorrow.setText(getString(R.string.request_to_borrow));
             }
@@ -214,7 +212,6 @@ public class ResourceDetailActivity extends AppCompatActivity {
         User user = SessionManager.getUser(this);
         if (user == null) return;
 
-        // Corrected: Pass all required fields to constructor to avoid nulls in UI
         BorrowRequest req = new BorrowRequest(
                 resource.getResourceID(),
                 resource.getResourceName(),
@@ -232,8 +229,8 @@ public class ResourceDetailActivity extends AppCompatActivity {
         new ResourceRepository(this).addBorrowRequest(req, new ResourceRepository.SimpleCallback() {
             @Override
             public void onSuccess() {
-                NotificationHelper.notifyRequestReceived(req); // Trigger notification logic
-                Toast.makeText(ResourceDetailActivity.this, "Pre-booking request sent!", Toast.LENGTH_LONG).show();
+                NotificationHelper.notifyRequestReceived(req);
+                Toast.makeText(ResourceDetailActivity.this, "Request sent successfully!", Toast.LENGTH_LONG).show();
                 finish();
             }
 

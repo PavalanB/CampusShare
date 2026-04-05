@@ -1,11 +1,13 @@
 package com.campusshare.adapters;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,17 +18,13 @@ import com.campusshare.models.BorrowRequest;
 import com.google.android.material.button.MaterialButton;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 /**
  * RequestAdapter drives the RecyclerView in InboxActivity.
- *
- * isReceivedMode = true  → shows Accept / Reject / Mark Returned buttons (owner view)
- * isReceivedMode = false → shows status badge only (borrower sent view)
- *
- * Priority requests get a gold "PRIORITY" badge at the top of their card.
  */
 public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.RequestViewHolder> {
 
@@ -34,6 +32,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.RequestV
         void onAccept(BorrowRequest request);
         void onReject(BorrowRequest request);
         void onMarkReturned(BorrowRequest request);
+        void onExtensionRequest(BorrowRequest request, Date newEndDate);
     }
 
     private final Context context;
@@ -71,31 +70,26 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.RequestV
 
         // ── Resource photo ────────────────────────────────────────────────────
         h.ivPhoto.setColorFilter(null);
-        if (req.getResourcePhoto() != null && !req.getResourcePhoto().isEmpty()) {
-            Glide.with(context)
-                .load(req.getResourcePhoto())
-                .centerCrop()
-                .placeholder(R.drawable.ic_resource_placeholder)
-                .error(R.drawable.ic_resource_placeholder)
-                .into(h.ivPhoto);
-        } else {
-            h.ivPhoto.setImageResource(R.drawable.ic_resource_placeholder);
-        }
+        String imageUrl = req.getEffectivePhotoUrl();
+        
+        Glide.with(context)
+            .load(imageUrl != null && !imageUrl.isEmpty() ? imageUrl : R.drawable.ic_resource_placeholder)
+            .centerCrop()
+            .placeholder(R.drawable.ic_resource_placeholder)
+            .error(R.drawable.ic_resource_placeholder)
+            .into(h.ivPhoto);
 
         // ── Resource + people info ────────────────────────────────────────────
         h.tvResourceName.setText(req.getResourceName());
 
         if (isReceivedMode) {
-            // Owner view: show who is requesting
-            h.tvPerson.setText("From: " + req.getBorrowerName() + " · " + req.getBorrowerDept());
+            h.tvPerson.setText("From: " + req.getBorrowerName() + " · " + (req.getBorrowerDept() != null ? req.getBorrowerDept() : ""));
         } else {
-            // Borrower view: show who they requested from
             h.tvPerson.setText("To: " + req.getOwnerName());
         }
 
         // ── Date ──────────────────────────────────────────────────────────────
         if (req.getRequestDate() != null) {
-            // BorrowRequest fields are now java.util.Date, no need for .toDate()
             h.tvDate.setText("Requested: " + DATE_FMT.format(req.getRequestDate()));
         }
 
@@ -104,15 +98,18 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.RequestV
 
         // ── Status badge ──────────────────────────────────────────────────────
         h.tvStatus.setText(req.getStatus());
-        switch (req.getStatus()) {
-            case BorrowRequest.STATUS_PENDING:
-                h.tvStatus.setBackgroundResource(R.drawable.badge_pending);  break;
-            case BorrowRequest.STATUS_ACCEPTED:
-                h.tvStatus.setBackgroundResource(R.drawable.badge_available); break;
-            case BorrowRequest.STATUS_REJECTED:
-                h.tvStatus.setBackgroundResource(R.drawable.badge_unavailable); break;
-            case BorrowRequest.STATUS_RETURNED:
-                h.tvStatus.setBackgroundResource(R.drawable.badge_returned); break;
+        if (req.getStatus() != null) {
+            switch (req.getStatus()) {
+                case BorrowRequest.STATUS_PENDING:
+                case BorrowRequest.STATUS_EXTENSION_PENDING:
+                    h.tvStatus.setBackgroundResource(R.drawable.badge_pending);  break;
+                case BorrowRequest.STATUS_ACCEPTED:
+                    h.tvStatus.setBackgroundResource(R.drawable.badge_available); break;
+                case BorrowRequest.STATUS_REJECTED:
+                    h.tvStatus.setBackgroundResource(R.drawable.badge_unavailable); break;
+                case BorrowRequest.STATUS_RETURNED:
+                    h.tvStatus.setBackgroundResource(R.drawable.badge_returned); break;
+            }
         }
 
         // ── Due date (only when accepted) ─────────────────────────────────────
@@ -123,10 +120,11 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.RequestV
             h.tvDueDate.setVisibility(View.GONE);
         }
 
-        // ── Action buttons (owner / received tab only) ────────────────────────
+        // ── Action buttons ───────────────────────────────────────────────────
         h.btnAccept.setVisibility(View.GONE);
         h.btnReject.setVisibility(View.GONE);
         h.btnReturned.setVisibility(View.GONE);
+        h.btnRequestExtension.setVisibility(View.GONE);
         h.llActions.setVisibility(View.GONE);
 
         if (isReceivedMode) {
@@ -141,19 +139,39 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.RequestV
                 h.btnReturned.setVisibility(View.VISIBLE);
                 h.btnReturned.setOnClickListener(v -> listener.onMarkReturned(req));
             }
+        } else {
+            // Borrower view
+            if (req.isAccepted()) {
+                h.llActions.setVisibility(View.VISIBLE);
+                h.btnRequestExtension.setVisibility(View.VISIBLE);
+                h.btnRequestExtension.setOnClickListener(v -> showExtensionDialog(req));
+            }
         }
+    }
+
+    private void showExtensionDialog(BorrowRequest req) {
+        Calendar cal = Calendar.getInstance();
+        if (req.getEndDate() != null) cal.setTime(req.getEndDate());
+        
+        DatePickerDialog dpd = new DatePickerDialog(context, R.style.Theme_CampusShare_DatePicker, (view, year, month, dayOfMonth) -> {
+            Calendar selected = Calendar.getInstance();
+            selected.set(year, month, dayOfMonth, 23, 59, 59);
+            listener.onExtensionRequest(req, selected.getTime());
+        }, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
+        
+        dpd.getDatePicker().setMinDate(req.getEndDate() != null ? req.getEndDate().getTime() : System.currentTimeMillis());
+        dpd.setTitle("Select New Return Date");
+        dpd.show();
     }
 
     @Override
     public int getItemCount() { return requests.size(); }
 
-    // ── ViewHolder ────────────────────────────────────────────────────────────
-
     static class RequestViewHolder extends RecyclerView.ViewHolder {
         ImageView ivPhoto;
         TextView tvResourceName, tvPerson, tvDate, tvDueDate;
         TextView tvStatus, tvPriorityBadge;
-        MaterialButton btnAccept, btnReject, btnReturned;
+        MaterialButton btnAccept, btnReject, btnReturned, btnRequestExtension;
         View llActions;
 
         RequestViewHolder(@NonNull View v) {
@@ -168,6 +186,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.RequestV
             btnAccept      = v.findViewById(R.id.btn_accept);
             btnReject      = v.findViewById(R.id.btn_reject);
             btnReturned    = v.findViewById(R.id.btn_returned);
+            btnRequestExtension = v.findViewById(R.id.btn_request_extension);
             llActions      = v.findViewById(R.id.ll_req_actions);
         }
     }

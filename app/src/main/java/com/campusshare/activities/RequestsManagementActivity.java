@@ -221,7 +221,7 @@ public class RequestsManagementActivity extends AppCompatActivity {
     private void handleReturnWithRating(BorrowRequest request, float rating) {
         showLoading(true);
         Date now = new Date();
-        request.setReturnDate(now);
+        request.setReturnedDate(now);
         
         double creditReward = 10.0;
         String status = "COMPLETED";

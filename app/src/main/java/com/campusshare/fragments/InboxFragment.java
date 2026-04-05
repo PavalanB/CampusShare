@@ -25,6 +25,7 @@ import com.campusshare.utils.SessionManager;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class InboxFragment extends Fragment implements RequestAdapter.OnRequestActionListener {
@@ -171,6 +172,24 @@ public class InboxFragment extends Fragment implements RequestAdapter.OnRequestA
                 ratingIntent.putExtra("request", request);
                 startActivity(ratingIntent);
             }
+            @Override
+            public void onFailure(String error) {
+                if (getContext() != null)
+                    Toast.makeText(getContext(), "Failed: " + error, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    @Override
+    public void onExtensionRequest(BorrowRequest request, Date newEndDate) {
+        requestRepository.requestExtension(request, newEndDate, new BorrowRequestRepository.SimpleCallback() {
+            @Override
+            public void onSuccess() {
+                if (getContext() != null)
+                    Toast.makeText(getContext(), "Extension request sent!", Toast.LENGTH_LONG).show();
+                loadSentRequests();
+            }
+
             @Override
             public void onFailure(String error) {
                 if (getContext() != null)
