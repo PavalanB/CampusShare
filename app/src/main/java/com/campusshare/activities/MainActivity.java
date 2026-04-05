@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.campusshare.R;
+import com.campusshare.fragments.HistoryFragment;
 import com.campusshare.fragments.InboxFragment;
 import com.campusshare.fragments.MyItemsFragment;
 import com.campusshare.fragments.ProfileFragment;
@@ -153,7 +154,6 @@ public class MainActivity extends AppCompatActivity implements ProfileFragment.P
             if (id == R.id.nav_daily_spin) {
                 startActivity(new Intent(this, DailySpinActivity.class));
             } else if (id == R.id.nav_game) {
-                // Launch Bike Game (to be implemented)
                 startActivity(new Intent(this, BikeGameActivity.class));
             } else if (id == R.id.nav_settings) {
                 startActivity(new Intent(this, SettingsActivity.class));
@@ -213,11 +213,6 @@ public class MainActivity extends AppCompatActivity implements ProfileFragment.P
                 tvWelcomeMsg.setText("Find what you need today");
                 fabAdd.hide();
                 return true;
-            } else if (id == R.id.nav_search) {
-                loadFragment(new SearchFragment(), "SEARCH");
-                tvWelcomeMsg.setText("Look for specific resources");
-                fabAdd.hide();
-                return true;
             } else if (id == R.id.nav_my_listings) {
                 loadFragment(new MyItemsFragment(), "MY ITEMS");
                 tvWelcomeMsg.setText("Manage your resources");
@@ -226,6 +221,11 @@ public class MainActivity extends AppCompatActivity implements ProfileFragment.P
             } else if (id == R.id.nav_inbox) {
                 loadFragment(new InboxFragment(), "INBOX");
                 tvWelcomeMsg.setText("Your messages and requests");
+                fabAdd.hide();
+                return true;
+            } else if (id == R.id.nav_history) {
+                loadFragment(new HistoryFragment(), "HISTORY");
+                tvWelcomeMsg.setText("Your transaction history");
                 fabAdd.hide();
                 return true;
             } else if (id == R.id.nav_profile) {
