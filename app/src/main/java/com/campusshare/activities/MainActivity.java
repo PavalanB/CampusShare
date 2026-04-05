@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.campusshare.R;
+import com.campusshare.fragments.HistoryFragment;
 import com.campusshare.fragments.InboxFragment;
 import com.campusshare.fragments.MyItemsFragment;
 import com.campusshare.fragments.ProfileFragment;
@@ -108,7 +109,6 @@ public class MainActivity extends AppCompatActivity implements ProfileFragment.P
     private void startNotificationListener() {
         if (currentUser == null) return;
 
-        // Listen for new notifications assigned to THIS user in real-time
         notificationListener = FirebaseFirestore.getInstance()
                 .collection("notifications")
                 .whereEqualTo("recipientUID", currentUser.getUserID())
@@ -121,10 +121,8 @@ public class MainActivity extends AppCompatActivity implements ProfileFragment.P
                             String title = dc.getDocument().getString("title");
                             String body = dc.getDocument().getString("body");
                             
-                            // Show a Toast or an Alert inside the app
                             if (title != null && body != null) {
                                 showInAppNotification(title, body);
-                                // Mark as delivered so it doesn't pop up again
                                 dc.getDocument().getReference().update("delivered", true);
                             }
                         }
@@ -133,7 +131,6 @@ public class MainActivity extends AppCompatActivity implements ProfileFragment.P
     }
 
     private void showInAppNotification(String title, String body) {
-        // High-visibility toast for real-time updates
         Toast.makeText(this, "🔔 " + title + "\n" + body, Toast.LENGTH_LONG).show();
     }
 
@@ -154,12 +151,12 @@ public class MainActivity extends AppCompatActivity implements ProfileFragment.P
     private void setupSidebar() {
         navigationView.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
-            if (id == R.id.nav_game) {
-                startActivity(new Intent(this, GameActivity.class));
+            if (id == R.id.nav_daily_spin) {
+                startActivity(new Intent(this, DailySpinActivity.class));
+            } else if (id == R.id.nav_game) {
+                startActivity(new Intent(this, BikeGameActivity.class));
             } else if (id == R.id.nav_settings) {
-                // Open Settings
-            } else if (id == R.id.nav_theme) {
-                showThemeSelectionDialog();
+                startActivity(new Intent(this, SettingsActivity.class));
             } else if (id == R.id.nav_about) {
                 startActivity(new Intent(this, AboutActivity.class));
             } else if (id == R.id.nav_logout) {
@@ -201,20 +198,6 @@ public class MainActivity extends AppCompatActivity implements ProfileFragment.P
         }
     }
 
-    private void showThemeSelectionDialog() {
-        String[] themes = {"Light", "Dark"};
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Choose Theme");
-        builder.setItems(themes, (dialog, which) -> {
-            if (which == 0) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            }
-        });
-        builder.show();
-    }
-
     private void redirectToLogin() {
         Intent intent = new Intent(this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -230,11 +213,6 @@ public class MainActivity extends AppCompatActivity implements ProfileFragment.P
                 tvWelcomeMsg.setText("Find what you need today");
                 fabAdd.hide();
                 return true;
-            } else if (id == R.id.nav_search) {
-                loadFragment(new SearchFragment(), "SEARCH");
-                tvWelcomeMsg.setText("Look for specific resources");
-                fabAdd.hide();
-                return true;
             } else if (id == R.id.nav_my_listings) {
                 loadFragment(new MyItemsFragment(), "MY ITEMS");
                 tvWelcomeMsg.setText("Manage your resources");
@@ -243,6 +221,11 @@ public class MainActivity extends AppCompatActivity implements ProfileFragment.P
             } else if (id == R.id.nav_inbox) {
                 loadFragment(new InboxFragment(), "INBOX");
                 tvWelcomeMsg.setText("Your messages and requests");
+                fabAdd.hide();
+                return true;
+            } else if (id == R.id.nav_history) {
+                loadFragment(new HistoryFragment(), "HISTORY");
+                tvWelcomeMsg.setText("Your transaction history");
                 fabAdd.hide();
                 return true;
             } else if (id == R.id.nav_profile) {

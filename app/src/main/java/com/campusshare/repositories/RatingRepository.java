@@ -45,7 +45,8 @@ public class RatingRepository {
         // Field name on the request document
         String ratingField = isOwnerRating ? "borrowerRating" : "ownerRating";
 
-        DocumentReference requestRef = db.collection("requests")
+        // IMPORTANT: The collection name must match what is used in BorrowRequestRepository
+        DocumentReference requestRef = db.collection("borrow_requests")
             .document(request.getRequestID());
         DocumentReference userRef    = db.collection("users")
             .document(ratedUserID);

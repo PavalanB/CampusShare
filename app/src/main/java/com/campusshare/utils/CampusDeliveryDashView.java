@@ -15,8 +15,9 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Campus Delivery Dash - Anna University Edition
- * Featuring landmarks like the Main Building (Red Building) and trees.
+ * Campus Delivery Dash - 5 Lane Edition
+ * Tap left/right side of screen to change lanes!
+ * Collect Gold Coins to earn credits!
  */
 public class CampusDeliveryDashView extends View {
 
@@ -30,16 +31,22 @@ public class CampusDeliveryDashView extends View {
     private float speedMultiplier = 1.0f;
     private float roadOffset = 0;
     
-    private static final float INITIAL_SPEED = 1.0f;
-    private static final float MAX_SPEED = 2.4f;
-    private static final float SPEED_INCREMENT = 0.004f;
+    private static final float INITIAL_SPEED = 12.0f;
+    private static final float MAX_SPEED = 30.0f;
+    private static final float SPEED_INCREMENT = 0.2f;
+
+    // Road & Lanes
+    private float roadWidth;
+    private float roadLeft;
+    private float laneWidth;
+    private int currentLane = 2; // 0 to 4
 
     // Player
     private RectF playerRect = new RectF();
-    private float playerWidth = 90;
-    private float playerHeight = 150;
+    private float playerWidth = 80;
+    private float playerHeight = 130;
     private float playerX, playerY;
-    private float playerTilt = 0;
+    private float playerTargetX;
 
     // Entities
     private List<Entity> entities = new ArrayList<>();
@@ -47,11 +54,18 @@ public class CampusDeliveryDashView extends View {
     private long lastEntitySpawnTime = 0;
     private long lastDecorSpawnTime = 0;
 
-    // Anna University specific visuals
-    private int colorGrass = Color.parseColor("#689F38");
+    // Visuals
+    private int colorGrass = Color.parseColor("#2E7D32");
     private int colorRoad = Color.parseColor("#37474F");
-    private int colorAnnaRed = Color.parseColor("#B71C1C"); // Iconic Red Building color
-    private int colorTree = Color.parseColor("#2E7D32");
+    private int colorAnnaRed = Color.parseColor("#B71C1C");
+    private int colorTree = Color.parseColor("#1B5E20");
+    private int colorGold = Color.parseColor("#FFD700");
+
+    public interface GameCallback {
+        void onScoreUpdate(int score);
+        void onGameOver(int finalScore);
+    }
+    private GameCallback callback;
 
     public CampusDeliveryDashView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -59,57 +73,63 @@ public class CampusDeliveryDashView extends View {
         paint.setAntiAlias(true);
     }
 
+    public void setCallback(GameCallback callback) {
+        this.callback = callback;
+    }
+
     private static class Entity {
         RectF rect;
         boolean isItem;
-        int type; // 0: Box/Book, 1: Laptop/Envelope
-        Entity(float x, float y, float w, float h, boolean isItem, int type) {
+        int lane;
+        Entity(float x, float y, float w, float h, boolean isItem, int lane) {
             this.rect = new RectF(x, y, x + w, y + h);
             this.isItem = isItem;
-            this.type = type;
+            this.lane = lane;
         }
     }
 
     private static class Decor {
         RectF rect;
-        int type; // 0: Tree, 1: Building (Anna Uni Red Building)
-        float side; // Negative for left, Positive for right
-        Decor(float x, float y, float w, float h, int type, float side) {
+        int type;
+        Decor(float x, float y, float w, float h, int type) {
             this.rect = new RectF(x, y, x + w, y + h);
             this.type = type;
-            this.side = side;
         }
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
+        roadWidth = w * 0.85f;
+        roadLeft = (w - roadWidth) / 2f;
+        laneWidth = roadWidth / 5f;
         resetGame();
     }
 
-    private void resetGame() {
-        playerX = getWidth() / 2f - playerWidth / 2f;
-        playerY = getHeight() - playerHeight - 180;
+    public void resetGame() {
+        currentLane = 2;
+        playerTargetX = roadLeft + currentLane * laneWidth + (laneWidth - playerWidth) / 2f;
+        playerX = playerTargetX;
+        playerY = getHeight() - playerHeight - 200;
         playerRect.set(playerX, playerY, playerX + playerWidth, playerY + playerHeight);
         entities.clear();
         decors.clear();
         score = 0;
-        speedMultiplier = INITIAL_SPEED;
+        speedMultiplier = 1.0f;
         roadOffset = 0;
         gameOver = false;
         gameStarted = false;
+        invalidate();
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        float roadWidth = getWidth() * 0.6f;
-        float roadLeft = (getWidth() - roadWidth) / 2f;
 
-        // 1. Grass & Side Areas
+        // 1. Grass
         canvas.drawColor(colorGrass);
 
-        // 2. Draw Decor (Buildings & Trees)
+        // 2. Decor
         for (Decor d : decors) {
             if (d.type == 0) drawTree(canvas, d.rect);
             else drawAnnaBuilding(canvas, d.rect);
@@ -119,59 +139,63 @@ public class CampusDeliveryDashView extends View {
         paint.setColor(colorRoad);
         canvas.drawRect(roadLeft, 0, roadLeft + roadWidth, getHeight(), paint);
         
-        // Road Markers
+        // Lane Markers (4 dashed lines for 5 lanes)
         paint.setColor(Color.WHITE);
-        float lineHeight = 100;
-        float gap = 100;
-        for (float y = -lineHeight + (roadOffset % (lineHeight + gap)); y < getHeight(); y += (lineHeight + gap)) {
-            canvas.drawRect(getWidth() / 2f - 6, y, getWidth() / 2f + 6, y + lineHeight, paint);
-        }
-
-        // 4. Entities
-        for (Entity e : entities) {
-            if (e.isItem) {
-                if (e.type == 0) drawBookItem(canvas, e.rect);
-                else drawLaptopItem(canvas, e.rect);
-            } else {
-                if (e.type == 0) drawPotholeObstacle(canvas, e.rect);
-                else drawBarricadeObstacle(canvas, e.rect);
+        paint.setStrokeWidth(4);
+        float lineHeight = 80;
+        float gap = 60;
+        for (int i = 1; i < 5; i++) {
+            float lx = roadLeft + i * laneWidth;
+            for (float y = -lineHeight + (roadOffset % (lineHeight + gap)); y < getHeight(); y += (lineHeight + gap)) {
+                canvas.drawLine(lx, y, lx, y + lineHeight, paint);
             }
         }
 
-        // 5. Player
-        drawBike(canvas, playerRect, playerTilt);
+        // 4. Entities (Obstacles & Gold Coins)
+        for (Entity e : entities) {
+            if (e.isItem) drawGoldCoin(canvas, e.rect);
+            else drawBarricadeObstacle(canvas, e.rect);
+        }
+
+        // 5. Player (Bike)
+        smoothMovePlayer();
+        drawBike(canvas, playerRect);
 
         // 6. UI
         paint.setColor(Color.WHITE);
-        paint.setTextSize(55);
+        paint.setTextSize(60);
         paint.setFakeBoldText(true);
-        canvas.drawText("Score: " + score, 40, 80, paint);
+        canvas.drawText("Coins: " + score, 50, 100, paint);
 
         if (gameOver) {
-            drawOverlay(canvas, "WASTED", "Anna Uni Traffic is Tough!\nScore: " + score + "\nTap to Respawn");
+            drawOverlay(canvas, "CRASHED!", "Collected " + score + " Coins\nTap to Restart");
         } else if (!gameStarted) {
-            drawOverlay(canvas, "CAMPUS DASH", "Anna University Edition\nSwipe to Deliver items!\n\nTap to Start");
+            drawOverlay(canvas, "BIKE SIMULATION", "Tap Left/Right to Switch Lanes\nCollect Coins, Avoid Barricades!\n\nTap to Start");
         } else {
             update();
             invalidate();
         }
     }
 
+    private void smoothMovePlayer() {
+        playerTargetX = roadLeft + currentLane * laneWidth + (laneWidth - playerWidth) / 2f;
+        float dx = playerTargetX - playerX;
+        if (Math.abs(dx) > 1) {
+            playerX += dx * 0.2f;
+        } else {
+            playerX = playerTargetX;
+        }
+        playerRect.offsetTo(playerX, playerY);
+    }
+
     private void drawAnnaBuilding(Canvas canvas, RectF rect) {
         paint.setColor(colorAnnaRed);
         canvas.drawRect(rect, paint);
-        paint.setColor(Color.parseColor("#880E4F"));
-        Path roof = new Path();
-        roof.moveTo(rect.left - 10, rect.top);
-        roof.lineTo(rect.right + 10, rect.top);
-        roof.lineTo(rect.centerX(), rect.top - 40);
-        roof.close();
-        canvas.drawPath(roof, paint);
         paint.setColor(Color.WHITE);
         float winW = rect.width() / 4;
-        float winH = rect.height() / 5;
+        float winH = rect.height() / 6;
         for (int i=0; i<3; i++) {
-            for (int j=0; j<3; j++) {
+            for (int j=0; j<4; j++) {
                 canvas.drawRect(rect.left + 10 + i*winW, rect.top + 20 + j*winH, 
                                rect.left + 10 + i*winW + 15, rect.top + 20 + j*winH + 20, paint);
             }
@@ -180,89 +204,62 @@ public class CampusDeliveryDashView extends View {
 
     private void drawTree(Canvas canvas, RectF rect) {
         paint.setColor(Color.parseColor("#5D4037"));
-        canvas.drawRect(rect.centerX() - 10, rect.centerY(), rect.centerX() + 10, rect.bottom, paint);
+        canvas.drawRect(rect.centerX() - 8, rect.centerY(), rect.centerX() + 8, rect.bottom, paint);
         paint.setColor(colorTree);
         canvas.drawCircle(rect.centerX(), rect.top + rect.height()/3, rect.width()/2, paint);
     }
 
-    private void drawBookItem(Canvas canvas, RectF rect) {
-        paint.setColor(Color.WHITE);
-        canvas.drawRect(rect, paint);
-        paint.setColor(Color.BLUE);
-        canvas.drawRect(rect.left, rect.top, rect.left + 10, rect.bottom, paint);
-        paint.setTextSize(20);
-        canvas.drawText("ENG", rect.left + 15, rect.centerY(), paint);
-    }
-
-    private void drawLaptopItem(Canvas canvas, RectF rect) {
-        paint.setColor(Color.parseColor("#424242"));
-        canvas.drawRoundRect(rect, 5, 5, paint);
-        paint.setColor(Color.CYAN);
-        canvas.drawRect(rect.left + 10, rect.top + 10, rect.right - 10, rect.centerY(), paint);
-    }
-
-    private void drawPotholeObstacle(Canvas canvas, RectF rect) {
-        paint.setColor(Color.BLACK);
+    private void drawGoldCoin(Canvas canvas, RectF rect) {
+        paint.setColor(colorGold);
         canvas.drawOval(rect, paint);
-        paint.setColor(Color.parseColor("#212121"));
-        canvas.drawOval(rect.left + 5, rect.top + 5, rect.right - 5, rect.bottom - 5, paint);
+        paint.setColor(Color.parseColor("#FFA000")); // Darker gold for inner circle
+        canvas.drawOval(rect.left + 10, rect.top + 10, rect.right - 10, rect.bottom - 10, paint);
+        paint.setColor(Color.WHITE);
+        paint.setTextSize(35);
+        paint.setFakeBoldText(true);
+        canvas.drawText("$", rect.centerX() - 10, rect.centerY() + 12, paint);
     }
 
     private void drawBarricadeObstacle(Canvas canvas, RectF rect) {
         paint.setColor(Color.YELLOW);
-        canvas.drawRect(rect.left, rect.centerY() - 10, rect.right, rect.centerY() + 10, paint);
+        canvas.drawRect(rect.left, rect.centerY() - 15, rect.right, rect.centerY() + 15, paint);
         paint.setColor(Color.BLACK);
-        for (int i=0; i<4; i++) {
-            canvas.drawRect(rect.left + i*20, rect.centerY() - 10, rect.left + i*20 + 10, rect.centerY() + 10, paint);
+        paint.setStrokeWidth(8);
+        for (float x = rect.left; x < rect.right; x += 30) {
+            canvas.drawLine(x, rect.centerY() - 15, x + 15, rect.centerY() + 15, paint);
         }
     }
 
-    private void drawBike(Canvas canvas, RectF rect, float tilt) {
-        canvas.save();
-        canvas.rotate(tilt, rect.centerX(), rect.bottom);
+    private void drawBike(Canvas canvas, RectF rect) {
+        // Body
+        paint.setColor(Color.parseColor("#1E88E5")); // Changed bike color to blue
+        canvas.drawRoundRect(rect.centerX() - 18, rect.top + 10, rect.centerX() + 18, rect.bottom - 10, 15, 15, paint);
         
-        // Bike Body
-        paint.setColor(Color.BLUE);
-        canvas.drawRoundRect(rect.centerX() - 15, rect.top + 20, rect.centerX() + 15, rect.bottom - 20, 10, 10, paint);
-        
-        // Front Wheel
+        // Wheels
         paint.setColor(Color.BLACK);
-        canvas.drawRoundRect(rect.centerX() - 10, rect.top, rect.centerX() + 10, rect.top + 40, 5, 5, paint);
-        
-        // Back Wheel
-        canvas.drawRoundRect(rect.centerX() - 10, rect.bottom - 40, rect.centerX() + 10, rect.bottom, 5, 5, paint);
+        canvas.drawOval(rect.centerX() - 12, rect.top, rect.centerX() + 12, rect.top + 40, paint);
+        canvas.drawOval(rect.centerX() - 12, rect.bottom - 40, rect.centerX() + 12, rect.bottom, paint);
         
         // Handlebars
-        paint.setColor(Color.GRAY);
-        canvas.drawRect(rect.centerX() - 40, rect.top + 35, rect.centerX() + 40, rect.top + 45, paint);
-        paint.setColor(Color.BLACK);
-        canvas.drawCircle(rect.centerX() - 40, rect.top + 40, 8, paint);
-        canvas.drawCircle(rect.centerX() + 40, rect.top + 40, 8, paint);
+        paint.setColor(Color.LTGRAY);
+        canvas.drawRect(rect.centerX() - 45, rect.top + 35, rect.centerX() + 45, rect.top + 45, paint);
         
-        // Seat
-        paint.setColor(Color.BLACK);
-        canvas.drawRoundRect(rect.centerX() - 12, rect.centerY() - 10, rect.centerX() + 12, rect.centerY() + 25, 8, 8, paint);
-        
-        // Rider (Helmet)
-        paint.setColor(Color.DKGRAY);
-        canvas.drawCircle(rect.centerX(), rect.centerY() - 5, 22, paint);
-        paint.setColor(Color.BLACK);
-        canvas.drawArc(rect.centerX() - 22, rect.centerY() - 27, rect.centerX() + 22, rect.centerY() + 17, 200, 140, true, paint);
-
-        canvas.restore();
+        // Rider
+        paint.setColor(Color.WHITE);
+        canvas.drawCircle(rect.centerX(), rect.centerY(), 25, paint);
     }
 
     private void drawOverlay(Canvas canvas, String title, String sub) {
-        paint.setColor(Color.argb(200, 0, 0, 0));
+        paint.setColor(Color.argb(180, 0, 0, 0));
         canvas.drawRect(0, 0, getWidth(), getHeight(), paint);
         paint.setColor(Color.WHITE);
-        paint.setTextSize(100);
+        paint.setTextSize(90);
         paint.setTextAlign(Paint.Align.CENTER);
-        canvas.drawText(title, getWidth() / 2f, getHeight() / 2f - 60, paint);
+        canvas.drawText(title, getWidth() / 2f, getHeight() / 2f - 80, paint);
         
-        paint.setTextSize(45);
+        paint.setTextSize(40);
         String[] lines = sub.split("\n");
-        float y = getHeight() / 2f + 40;
+        float y = getHeight() / 2f + 20;
         for (String line : lines) {
             canvas.drawText(line, getWidth() / 2f, y, paint);
             y += 60;
@@ -271,15 +268,15 @@ public class CampusDeliveryDashView extends View {
     }
 
     private void update() {
-        float moveSpeed = 20 * speedMultiplier;
+        float moveSpeed = INITIAL_SPEED * speedMultiplier;
         roadOffset += moveSpeed;
 
         long now = System.currentTimeMillis();
-        if (now - lastEntitySpawnTime > 1300 / speedMultiplier) {
+        if (now - lastEntitySpawnTime > 1500 / speedMultiplier) {
             spawnEntity();
             lastEntitySpawnTime = now;
         }
-        if (now - lastDecorSpawnTime > 800 / speedMultiplier) {
+        if (now - lastDecorSpawnTime > 1000 / speedMultiplier) {
             spawnDecor();
             lastDecorSpawnTime = now;
         }
@@ -294,38 +291,34 @@ public class CampusDeliveryDashView extends View {
             Entity e = entities.get(i);
             e.rect.offset(0, moveSpeed);
 
-            RectF hitBox = new RectF(e.rect);
-            hitBox.inset(15, 15);
-            if (RectF.intersects(playerRect, hitBox)) {
+            if (RectF.intersects(playerRect, e.rect)) {
                 if (e.isItem) {
-                    score += 10;
-                    if (speedMultiplier < MAX_SPEED) speedMultiplier += SPEED_INCREMENT;
+                    score++;
+                    if (callback != null) callback.onScoreUpdate(score);
+                    speedMultiplier += 0.02f;
                     entities.remove(i);
                 } else {
                     gameOver = true;
+                    if (callback != null) callback.onGameOver(score);
                 }
                 continue;
             }
             if (e.rect.top > getHeight()) entities.remove(i);
         }
-        playerTilt *= 0.85f;
     }
 
     private void spawnEntity() {
-        float roadWidth = getWidth() * 0.6f;
-        float roadLeft = (getWidth() - roadWidth) / 2f;
-        float x = roadLeft + random.nextFloat() * (roadWidth - 80);
-        entities.add(new Entity(x, -100, 80, 80, random.nextFloat() > 0.5f, random.nextInt(2)));
+        int lane = random.nextInt(5);
+        float x = roadLeft + lane * laneWidth + (laneWidth - 70) / 2f;
+        boolean isItem = random.nextFloat() > 0.4f;
+        entities.add(new Entity(x, -150, 70, 70, isItem, lane));
     }
 
     private void spawnDecor() {
-        boolean left = random.nextBoolean();
-        float roadWidth = getWidth() * 0.6f;
-        float x = left ? random.nextFloat() * (getWidth()-roadWidth)/2 - 100 : getWidth() - (getWidth()-roadWidth)/2 + random.nextFloat()*100;
+        boolean isLeft = random.nextBoolean();
+        float x = isLeft ? random.nextFloat() * (roadLeft - 150) : roadLeft + roadWidth + random.nextFloat() * (getWidth() - roadLeft - roadWidth - 150);
         int type = random.nextInt(2);
-        float w = type == 0 ? 80 : 150;
-        float h = type == 0 ? 80 : 200;
-        decors.add(new Decor(x, -250, w, h, type, left ? -1 : 1));
+        decors.add(new Decor(x, -300, 150, type == 0 ? 150 : 250, type));
     }
 
     @Override
@@ -334,23 +327,15 @@ public class CampusDeliveryDashView extends View {
             performClick();
             if (gameOver) resetGame();
             else if (!gameStarted) gameStarted = true;
+            else {
+                if (event.getX() < getWidth() / 2f) {
+                    if (currentLane > 0) currentLane--;
+                } else {
+                    if (currentLane < 4) currentLane++;
+                }
+            }
+            invalidate();
         }
-        if (gameStarted && !gameOver && event.getAction() == MotionEvent.ACTION_MOVE) {
-            float oldX = playerX;
-            playerX = event.getX() - playerWidth / 2;
-            playerY = event.getY() - playerHeight / 2;
-            
-            float roadWidth = getWidth() * 0.6f;
-            float roadLeft = (getWidth() - roadWidth) / 2f;
-            if (playerX < roadLeft) playerX = roadLeft;
-            if (playerX > roadLeft + roadWidth - playerWidth) playerX = roadLeft + roadWidth - playerWidth;
-            if (playerY < 50) playerY = 50;
-            if (playerY > getHeight() - playerHeight - 50) playerY = getHeight() - playerHeight - 50;
-            
-            playerTilt = (playerX - oldX) * 2.5f;
-            playerRect.offsetTo(playerX, playerY);
-        }
-        invalidate();
         return true;
     }
 

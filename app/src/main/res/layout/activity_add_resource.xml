@@ -62,8 +62,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/ic_resource_placeholder"
-                            app:tint="@color/glass_white_20" />
+                            android:src="@drawable/ic_resource_placeholder" />
                     </com.google.android.material.card.MaterialCardView>
 
                     <com.google.android.material.button.MaterialButton

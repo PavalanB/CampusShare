@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\main\AndroidManifest.xml:2:1-83:12
-INJECTED from D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\main\AndroidManifest.xml:2:1-83:12
-INJECTED from D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\main\AndroidManifest.xml:2:1-83:12
-INJECTED from D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\main\AndroidManifest.xml:2:1-83:12
+ADDED from D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\main\AndroidManifest.xml:2:1-86:12
+INJECTED from D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\main\AndroidManifest.xml:2:1-86:12
+INJECTED from D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\main\AndroidManifest.xml:2:1-86:12
+INJECTED from D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\main\AndroidManifest.xml:2:1-86:12
 MERGED from [com.google.android.material:material:1.11.0] C:\Users\PAVALAN\.gradle\caches\transforms-4\c24f9517daff9a6d3be51789256914c2\transformed\material-1.11.0\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] C:\Users\PAVALAN\.gradle\caches\transforms-4\38807b1f6329ef11af6f46aeb54c0581\transformed\constraintlayout-2.1.4\AndroidManifest.xml:2:1-11:12
 MERGED from [androidx.preference:preference:1.2.1] C:\Users\PAVALAN\.gradle\caches\transforms-4\d20617ba6cdd519186be2745c2d552af\transformed\preference-1.2.1\AndroidManifest.xml:17:1-24:12
@@ -198,8 +198,8 @@ MERGED from [org.osmdroid:osmdroid-android:6.1.20] C:\Users\PAVALAN\.gradle\cach
 	android:name
 		ADDED from D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\main\AndroidManifest.xml:20:19-60
 application
-ADDED from D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\main\AndroidManifest.xml:22:5-81:19
-INJECTED from D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\main\AndroidManifest.xml:22:5-81:19
+ADDED from D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\main\AndroidManifest.xml:22:5-84:19
+INJECTED from D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\main\AndroidManifest.xml:22:5-84:19
 MERGED from [com.google.android.material:material:1.11.0] C:\Users\PAVALAN\.gradle\caches\transforms-4\c24f9517daff9a6d3be51789256914c2\transformed\material-1.11.0\AndroidManifest.xml:22:5-20
 MERGED from [com.google.android.material:material:1.11.0] C:\Users\PAVALAN\.gradle\caches\transforms-4\c24f9517daff9a6d3be51789256914c2\transformed\material-1.11.0\AndroidManifest.xml:22:5-20
 MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] C:\Users\PAVALAN\.gradle\caches\transforms-4\38807b1f6329ef11af6f46aeb54c0581\transformed\constraintlayout-2.1.4\AndroidManifest.xml:9:5-20
@@ -390,36 +390,54 @@ ADDED from D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\main\AndroidMani
 		ADDED from D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\main\AndroidManifest.xml:67:69-93
 	android:name
 		ADDED from D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\main\AndroidManifest.xml:67:19-58
-activity#com.campusshare.activities.ReportActivity
+activity#com.campusshare.activities.BikeGameActivity
 ADDED from D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\main\AndroidManifest.xml:68:9-96
 	android:exported
 		ADDED from D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\main\AndroidManifest.xml:68:69-93
 	android:name
-		ADDED from D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\main\AndroidManifest.xml:68:19-60
-activity#com.campusshare.activities.AboutActivity
+		ADDED from D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\main\AndroidManifest.xml:68:19-62
+activity#com.campusshare.activities.DailySpinActivity
 ADDED from D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\main\AndroidManifest.xml:69:9-96
 	android:exported
 		ADDED from D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\main\AndroidManifest.xml:69:69-93
 	android:name
-		ADDED from D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\main\AndroidManifest.xml:69:19-59
+		ADDED from D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\main\AndroidManifest.xml:69:19-63
+activity#com.campusshare.activities.SettingsActivity
+ADDED from D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\main\AndroidManifest.xml:70:9-96
+	android:exported
+		ADDED from D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\main\AndroidManifest.xml:70:69-93
+	android:name
+		ADDED from D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\main\AndroidManifest.xml:70:19-62
+activity#com.campusshare.activities.ReportActivity
+ADDED from D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\main\AndroidManifest.xml:71:9-96
+	android:exported
+		ADDED from D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\main\AndroidManifest.xml:71:69-93
+	android:name
+		ADDED from D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\main\AndroidManifest.xml:71:19-60
+activity#com.campusshare.activities.AboutActivity
+ADDED from D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\main\AndroidManifest.xml:72:9-96
+	android:exported
+		ADDED from D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\main\AndroidManifest.xml:72:69-93
+	android:name
+		ADDED from D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\main\AndroidManifest.xml:72:19-59
 activity#com.campusshare.activities.HistoryActivity
-ADDED from D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\main\AndroidManifest.xml:71:9-89
+ADDED from D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\main\AndroidManifest.xml:74:9-89
 	android:exported
-		ADDED from D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\main\AndroidManifest.xml:71:62-86
+		ADDED from D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\main\AndroidManifest.xml:74:62-86
 	android:name
-		ADDED from D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\main\AndroidManifest.xml:71:19-61
+		ADDED from D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\main\AndroidManifest.xml:74:19-61
 service#com.campusshare.services.FCMService
-ADDED from D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\main\AndroidManifest.xml:73:9-79:19
+ADDED from D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\main\AndroidManifest.xml:76:9-82:19
 	android:exported
-		ADDED from D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\main\AndroidManifest.xml:75:13-37
+		ADDED from D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\main\AndroidManifest.xml:78:13-37
 	android:name
-		ADDED from D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\main\AndroidManifest.xml:74:13-48
+		ADDED from D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\main\AndroidManifest.xml:77:13-48
 intent-filter#action:name:com.google.firebase.MESSAGING_EVENT
-ADDED from D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\main\AndroidManifest.xml:76:13-78:29
+ADDED from D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\main\AndroidManifest.xml:79:13-81:29
 action#com.google.firebase.MESSAGING_EVENT
-ADDED from D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\main\AndroidManifest.xml:77:17-78
+ADDED from D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\main\AndroidManifest.xml:80:17-78
 	android:name
-		ADDED from D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\main\AndroidManifest.xml:77:25-75
+		ADDED from D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\main\AndroidManifest.xml:80:25-75
 uses-sdk
 INJECTED from D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from D:\SEM 2\MAD project\CampusShare\CampusShare\app\src\main\AndroidManifest.xml
