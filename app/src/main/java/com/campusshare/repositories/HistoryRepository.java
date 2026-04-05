@@ -7,19 +7,16 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * HistoryRepository fetches all history data from Firestore.
- *
- * fetchBorrowedHistory()  — all requests where user is the borrower
- * fetchLentHistory()      — all requests where user is the owner
- * fetchCreditLedger()     — all ledger entries for this user
- * fetchHistoryStats()     — counts of borrows, lends, active, completed
  */
 public class HistoryRepository {
 
     private final FirebaseFirestore db;
+    private static final String COLLECTION = "borrow_requests";
 
     public interface HistoryListCallback {
         void onSuccess(List<BorrowRequest> requests);
@@ -43,14 +40,21 @@ public class HistoryRepository {
     // ── Fetch items this user borrowed ────────────────────────────────────────
 
     public void fetchBorrowedHistory(String userID, HistoryListCallback callback) {
-        db.collection("requests")
+        db.collection(COLLECTION)
             .whereEqualTo("borrowerID", userID)
-            .orderBy("requestDate", Query.Direction.DESCENDING)
             .get()
             .addOnSuccessListener(snapshots -> {
                 List<BorrowRequest> list = new ArrayList<>();
-                for (QueryDocumentSnapshot doc : snapshots)
-                    list.add(doc.toObject(BorrowRequest.class));
+                for (QueryDocumentSnapshot doc : snapshots) {
+                    BorrowRequest br = doc.toObject(BorrowRequest.class);
+                    if (br.getRequestID() == null) br.setRequestID(doc.getId());
+                    list.add(br);
+                }
+                // Sort in memory to avoid index requirements
+                Collections.sort(list, (r1, r2) -> {
+                    if (r1.getRequestDate() == null || r2.getRequestDate() == null) return 0;
+                    return r2.getRequestDate().compareTo(r1.getRequestDate());
+                });
                 callback.onSuccess(list);
             })
             .addOnFailureListener(e -> callback.onFailure(e.getMessage()));
@@ -59,14 +63,21 @@ public class HistoryRepository {
     // ── Fetch items this user lent out ────────────────────────────────────────
 
     public void fetchLentHistory(String userID, HistoryListCallback callback) {
-        db.collection("requests")
+        db.collection(COLLECTION)
             .whereEqualTo("ownerID", userID)
-            .orderBy("requestDate", Query.Direction.DESCENDING)
             .get()
             .addOnSuccessListener(snapshots -> {
                 List<BorrowRequest> list = new ArrayList<>();
-                for (QueryDocumentSnapshot doc : snapshots)
-                    list.add(doc.toObject(BorrowRequest.class));
+                for (QueryDocumentSnapshot doc : snapshots) {
+                    BorrowRequest br = doc.toObject(BorrowRequest.class);
+                    if (br.getRequestID() == null) br.setRequestID(doc.getId());
+                    list.add(br);
+                }
+                // Sort in memory to avoid index requirements
+                Collections.sort(list, (r1, r2) -> {
+                    if (r1.getRequestDate() == null || r2.getRequestDate() == null) return 0;
+                    return r2.getRequestDate().compareTo(r1.getRequestDate());
+                });
                 callback.onSuccess(list);
             })
             .addOnFailureListener(e -> callback.onFailure(e.getMessage()));
@@ -74,20 +85,20 @@ public class HistoryRepository {
 
     // ── Fetch credit ledger entries ───────────────────────────────────────────
 
-    /**
-     * Reads from /users/{userID}/ledger subcollection.
-     * Each document is one partner the user has transacted with.
-     */
     public void fetchCreditLedger(String userID, LedgerCallback callback) {
         db.collection("users")
             .document(userID)
             .collection("ledger")
-            .orderBy("lastUpdated", Query.Direction.DESCENDING)
             .get()
             .addOnSuccessListener(snapshots -> {
                 List<LedgerEntry> list = new ArrayList<>();
                 for (QueryDocumentSnapshot doc : snapshots)
                     list.add(doc.toObject(LedgerEntry.class));
+                
+                Collections.sort(list, (l1, l2) -> {
+                    if (l1.getLastUpdated() == null || l2.getLastUpdated() == null) return 0;
+                    return l2.getLastUpdated().compareTo(l1.getLastUpdated());
+                });
                 callback.onSuccess(list);
             })
             .addOnFailureListener(e -> callback.onFailure(e.getMessage()));
@@ -95,13 +106,8 @@ public class HistoryRepository {
 
     // ── Fetch stats ───────────────────────────────────────────────────────────
 
-    /**
-     * Fetches borrowed + lent history and computes counts in memory.
-     * Two Firestore reads total — avoids needing aggregate queries.
-     */
     public void fetchHistoryStats(String userID, StatsCallback callback) {
-        // Fetch borrowed first
-        db.collection("requests")
+        db.collection(COLLECTION)
             .whereEqualTo("borrowerID", userID)
             .get()
             .addOnSuccessListener(borrowedSnaps -> {
@@ -109,8 +115,7 @@ public class HistoryRepository {
                 for (QueryDocumentSnapshot doc : borrowedSnaps)
                     borrowed.add(doc.toObject(BorrowRequest.class));
 
-                // Then fetch lent
-                db.collection("requests")
+                db.collection(COLLECTION)
                     .whereEqualTo("ownerID", userID)
                     .get()
                     .addOnSuccessListener(lentSnaps -> {
@@ -125,8 +130,6 @@ public class HistoryRepository {
             .addOnFailureListener(e -> callback.onFailure(e.getMessage()));
     }
 
-    // ── Stats computation ─────────────────────────────────────────────────────
-
     private HistoryStats computeStats(List<BorrowRequest> borrowed,
                                       List<BorrowRequest> lent) {
         HistoryStats s = new HistoryStats();
@@ -135,17 +138,15 @@ public class HistoryRepository {
 
         for (BorrowRequest r : borrowed) {
             if (BorrowRequest.STATUS_RETURNED.equals(r.getStatus()))  s.returnedCount++;
-            if (BorrowRequest.STATUS_ACCEPTED.equals(r.getStatus()))  s.activeBorrows++;
+            if (BorrowRequest.STATUS_ACCEPTED.equals(r.getStatus()) || BorrowRequest.STATUS_ONGOING.equals(r.getStatus()))  s.activeBorrows++;
             if (BorrowRequest.STATUS_PENDING.equals(r.getStatus()))   s.pendingCount++;
         }
         for (BorrowRequest r : lent) {
             if (BorrowRequest.STATUS_RETURNED.equals(r.getStatus()))  s.completedLends++;
-            if (BorrowRequest.STATUS_ACCEPTED.equals(r.getStatus()))  s.activeLends++;
+            if (BorrowRequest.STATUS_ACCEPTED.equals(r.getStatus()) || BorrowRequest.STATUS_ONGOING.equals(r.getStatus()))  s.activeLends++;
         }
         return s;
     }
-
-    // ── Stats model ───────────────────────────────────────────────────────────
 
     public static class HistoryStats {
         public int totalBorrowed  = 0;
