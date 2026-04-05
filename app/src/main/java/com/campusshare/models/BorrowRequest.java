@@ -17,13 +17,13 @@ public class BorrowRequest implements Serializable {
     public static final String STATUS_RETURNED = "COMPLETED";
     public static final String STATUS_CANCELLED = "CANCELLED";
     public static final String STATUS_OVERDUE = "OVERDUE";
+    public static final String STATUS_EXTENSION_PENDING = "EXTENSION_PENDING";
 
     private String requestID;
     private String resourceID;
     private String resourceName;
     
-    @PropertyName("resourcePhoto")
-    private String resourcePhoto;
+    private String resourcePhoto; // Canonical field for the photo URL
     
     private String borrowerID;
     private String borrowerName;
@@ -42,10 +42,11 @@ public class BorrowRequest implements Serializable {
     private float borrowerRating;
     private float ownerRating;
     private boolean creditApplied;
+    private String parentRequestID; // To link extension to original request
 
     public BorrowRequest() {}
 
-    // Constructor used by BorrowRequestActivity
+    // Constructor used by BorrowRequestActivity (9 arguments)
     public BorrowRequest(String resourceID, String resourceName, String resourcePhoto,
                          String borrowerID, String borrowerName, String borrowerDept,
                          String ownerID, String ownerName, boolean priority) {
@@ -60,17 +61,18 @@ public class BorrowRequest implements Serializable {
         this.priority = priority;
         this.status = STATUS_PENDING;
         this.requestDate = new Date();
+        this.startDate = new Date(); // Default to now
+        this.endDate = new Date(System.currentTimeMillis() + 7L * 24 * 60 * 60 * 1000); // Default to 1 week
         this.quantity = 1;
         this.borrowerRating = 0f;
         this.ownerRating = 0f;
         this.creditApplied = false;
     }
 
-    // Fully-featured constructor for new requests
-    public BorrowRequest(String resourceID, String resourceName, String resourcePhoto, 
+    // Constructor used by ResourceDetailActivity (11 arguments)
+    public BorrowRequest(String resourceID, String resourceName, String resourcePhoto,
                          String borrowerID, String borrowerName, String borrowerDept,
-                         String ownerID, String ownerName,
-                         Date startDate, Date endDate, int quantity) {
+                         String ownerID, String ownerName, Date startDate, Date endDate, int quantity) {
         this.resourceID = resourceID;
         this.resourceName = resourceName;
         this.resourcePhoto = resourcePhoto;
@@ -84,7 +86,6 @@ public class BorrowRequest implements Serializable {
         this.quantity = quantity;
         this.status = STATUS_PENDING;
         this.requestDate = new Date();
-        this.priority = false;
         this.borrowerRating = 0f;
         this.ownerRating = 0f;
         this.creditApplied = false;
@@ -108,21 +109,31 @@ public class BorrowRequest implements Serializable {
     @PropertyName("resourcePhoto")
     public String getResourcePhoto() { return resourcePhoto; }
     @PropertyName("resourcePhoto")
-    public void setResourcePhoto(String resourcePhoto) { this.resourcePhoto = resourcePhoto; }
+    public void setResourcePhoto(String resourcePhoto) { 
+        if (resourcePhoto != null && !resourcePhoto.isEmpty()) this.resourcePhoto = resourcePhoto; 
+    }
 
-    // Alias for photoUrl to handle potential database field name mismatches
+    // Support for multiple field names in Firestore (photoUrl, imageUrl)
     @PropertyName("photoUrl")
     public String getPhotoUrl() { return resourcePhoto; }
     @PropertyName("photoUrl")
     public void setPhotoUrl(String photoUrl) { 
-        if (this.resourcePhoto == null || this.resourcePhoto.isEmpty()) {
-            this.resourcePhoto = photoUrl; 
-        }
+        if (photoUrl != null && !photoUrl.isEmpty()) this.resourcePhoto = photoUrl; 
+    }
+
+    @PropertyName("imageUrl")
+    public String getImageUrl() { return resourcePhoto; }
+    @PropertyName("imageUrl")
+    public void setImageUrl(String imageUrl) { 
+        if (imageUrl != null && !imageUrl.isEmpty()) this.resourcePhoto = imageUrl; 
     }
 
     @Exclude
     public String getEffectivePhotoUrl() {
-        return (resourcePhoto != null && !resourcePhoto.isEmpty()) ? resourcePhoto : "";
+        if (resourcePhoto != null && !resourcePhoto.trim().isEmpty() && !resourcePhoto.equalsIgnoreCase("null")) {
+            return resourcePhoto;
+        }
+        return "";
     }
 
     @PropertyName("borrowerID")
@@ -210,29 +221,30 @@ public class BorrowRequest implements Serializable {
     @PropertyName("creditApplied")
     public void setCreditApplied(boolean creditApplied) { this.creditApplied = creditApplied; }
 
-    @Exclude
-    public Date getCreatedAt() { return requestDate; }
-    @Exclude
-    public void setCreatedAt(Date d) { this.requestDate = d; }
-    @Exclude
-    public Date getReturnDate() { return returnedDate; }
-    @Exclude
-    public void setReturnDate(Date d) { this.returnedDate = d; }
+    @PropertyName("parentRequestID")
+    public String getParentRequestID() { return parentRequestID; }
+    @PropertyName("parentRequestID")
+    public void setParentRequestID(String parentRequestID) { this.parentRequestID = parentRequestID; }
 
     @Exclude
-    public Timestamp getFirebaseRequestDate() {
-        return requestDate != null ? new Timestamp(requestDate) : null;
-    }
-
-    @Exclude
-    public Timestamp getFirebaseDueDate() {
-        return dueDate != null ? new Timestamp(dueDate) : null;
-    }
-
-    @Exclude
-    public boolean isPending() { return STATUS_PENDING.equals(status); }
+    public boolean isPending() { return STATUS_PENDING.equals(status) || STATUS_EXTENSION_PENDING.equals(status); }
     @Exclude
     public boolean isAccepted() { return STATUS_ACCEPTED.equals(status); }
     @Exclude
     public boolean isReturned() { return STATUS_RETURNED.equals(status); }
+
+    @Exclude
+    public Date getEffectiveStartDate() {
+        if (startDate != null) return startDate;
+        if (requestDate != null) return requestDate;
+        return new Date();
+    }
+
+    @Exclude
+    public Date getEffectiveEndDate() {
+        if (endDate != null) return endDate;
+        if (dueDate != null) return dueDate;
+        // Default to 7 days after start
+        return new Date(getEffectiveStartDate().getTime() + 7L * 24 * 60 * 60 * 1000);
+    }
 }

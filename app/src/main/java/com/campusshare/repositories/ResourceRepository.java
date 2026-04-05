@@ -10,10 +10,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * ResourceRepository handles all Firestore reads/writes for resources
@@ -230,21 +232,67 @@ public class ResourceRepository {
             .addOnFailureListener(e -> callback.onFailure(e.getMessage()));
     }
 
+    /**
+     * Checks if a resource is available for a given date range and quantity.
+     * Returns an error message if there's a conflict.
+     */
+    public void checkAvailability(String resourceID, Date start, Date end, int requestedQty, int totalAvailable, SimpleCallback callback) {
+        db.collection(REQUESTS_COLLECTION)
+            .whereEqualTo("resourceID", resourceID)
+            .whereIn("status", List.of(BorrowRequest.STATUS_ACCEPTED, BorrowRequest.STATUS_ONGOING, BorrowRequest.STATUS_EXTENSION_PENDING))
+            .get()
+            .addOnSuccessListener(snapshots -> {
+                int occupied = 0;
+                Date firstConflictStart = null;
+                Date lastConflictEnd = null;
+
+                for (QueryDocumentSnapshot doc : snapshots) {
+                    BorrowRequest br = doc.toObject(BorrowRequest.class);
+                    // Use effective dates for robust check
+                    Date brStart = br.getEffectiveStartDate();
+                    Date brEnd = br.getEffectiveEndDate();
+
+                    // Overlap check: (start < brEnd) and (end > brStart)
+                    if (start.before(brEnd) && end.after(brStart)) {
+                        occupied += Math.max(1, br.getQuantity());
+                        if (firstConflictStart == null || brStart.before(firstConflictStart)) firstConflictStart = brStart;
+                        if (lastConflictEnd == null || brEnd.after(lastConflictEnd)) lastConflictEnd = brEnd;
+                    }
+                }
+
+                if (occupied + requestedQty > totalAvailable) {
+                    SimpleDateFormat fmt = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
+                    String msg = "Resource is already borrowed by another user";
+                    if (firstConflictStart != null && lastConflictEnd != null) {
+                        msg += " from " + fmt.format(firstConflictStart) + " to " + fmt.format(lastConflictEnd) + ".";
+                        msg += " It will be available after " + fmt.format(lastConflictEnd) + ".";
+                    } else {
+                        msg += ".";
+                    }
+                    callback.onFailure(msg);
+                } else {
+                    callback.onSuccess();
+                }
+            })
+            .addOnFailureListener(e -> callback.onFailure("Availability check failed: " + e.getMessage()));
+    }
+
+    // Keep the old method signature for compatibility if needed, but internally use the new one
     public void checkAvailability(String resourceID, Date start, Date end, int requestedQty, int totalAvailable, BorrowRequestListCallback callback) {
+        // This is now deprecated in favor of the SimpleCallback version which handles the message
         db.collection(REQUESTS_COLLECTION)
             .whereEqualTo("resourceID", resourceID)
             .whereIn("status", List.of("APPROVED", "ONGOING", "PENDING"))
             .get()
             .addOnSuccessListener(snapshots -> {
-                List<BorrowRequest> activeRequests = new ArrayList<>();
+                List<BorrowRequest> list = new ArrayList<>();
                 for (QueryDocumentSnapshot doc : snapshots) {
                     BorrowRequest br = doc.toObject(BorrowRequest.class);
-                    // Check for overlap: (start1 <= end2) and (end1 >= start2)
-                    if (start.before(br.getEndDate()) && end.after(br.getStartDate())) {
-                        activeRequests.add(br);
+                    if (start.before(br.getEffectiveEndDate()) && end.after(br.getEffectiveStartDate())) {
+                        list.add(br);
                     }
                 }
-                callback.onSuccess(activeRequests);
+                callback.onSuccess(list);
             })
             .addOnFailureListener(e -> callback.onFailure(e.getMessage()));
     }

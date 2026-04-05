@@ -26,6 +26,15 @@
         <item name="materialButtonStyle">@style/Widget.CampusShare.GlowButton</item>
         <item name="textInputStyle">@style/Widget.CampusShare.GlassInput</item>
         <item name="bottomNavigationStyle">@style/Widget.CampusShare.NormalBottomNav</item>
+
+        <!-- DatePickerDialog Theme -->
+        <item name="android:datePickerDialogTheme">@style/Theme.CampusShare.DatePicker</item>
+    </style>
+
+    <!-- Custom style for DatePickerDialog to ensure visibility and interaction -->
+    <style name="Theme.CampusShare.DatePicker" parent="@android:style/Theme.Material.Light.Dialog">
+        <item name="android:colorAccent">@color/accent_primary</item>
+        <item name="android:windowBackground">@android:color/white</item>
     </style>
 
     <style name="Widget.CampusShare.GlassCard" parent="Widget.MaterialComponents.CardView">

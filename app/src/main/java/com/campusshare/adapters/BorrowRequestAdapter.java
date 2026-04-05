@@ -59,12 +59,12 @@ public class BorrowRequestAdapter extends RecyclerView.Adapter<BorrowRequestAdap
 
         if (isReceived) {
             holder.tvPerson.setText("From: " + request.getBorrowerName() + " · " + request.getBorrowerDept());
-            if ("PENDING".equals(request.getStatus())) {
+            if (BorrowRequest.STATUS_PENDING.equals(request.getStatus())) {
                 holder.layoutActions.setVisibility(View.VISIBLE);
                 holder.btnApprove.setVisibility(View.VISIBLE);
                 holder.btnReject.setVisibility(View.VISIBLE);
                 holder.btnReturn.setVisibility(View.GONE);
-            } else if ("APPROVED".equals(request.getStatus()) || "ONGOING".equals(request.getStatus())) {
+            } else if (BorrowRequest.STATUS_ACCEPTED.equals(request.getStatus()) || BorrowRequest.STATUS_ONGOING.equals(request.getStatus())) {
                 holder.layoutActions.setVisibility(View.VISIBLE);
                 holder.btnApprove.setVisibility(View.GONE);
                 holder.btnReject.setVisibility(View.GONE);
@@ -87,20 +87,16 @@ public class BorrowRequestAdapter extends RecyclerView.Adapter<BorrowRequestAdap
 
         holder.tvQuantity.setText("Qty: " + request.getQuantity());
 
-        // Load image - ensure no color tint is interfering
+        // Fix for image loading
         holder.ivPhoto.setColorFilter(null);
         String imageUrl = request.getEffectivePhotoUrl();
         
-        if (imageUrl != null && !imageUrl.isEmpty()) {
-            Glide.with(context)
-                    .load(imageUrl)
-                    .placeholder(R.drawable.ic_resource_placeholder)
-                    .error(R.drawable.ic_resource_placeholder)
-                    .centerCrop()
-                    .into(holder.ivPhoto);
-        } else {
-            holder.ivPhoto.setImageResource(R.drawable.ic_resource_placeholder);
-        }
+        Glide.with(context)
+                .load(imageUrl != null && !imageUrl.isEmpty() ? imageUrl : R.drawable.ic_resource_placeholder)
+                .placeholder(R.drawable.ic_resource_placeholder)
+                .error(R.drawable.ic_resource_placeholder)
+                .centerCrop()
+                .into(holder.ivPhoto);
 
         holder.btnApprove.setOnClickListener(v -> listener.onApprove(request));
         holder.btnReject.setOnClickListener(v -> listener.onReject(request));
@@ -110,16 +106,19 @@ public class BorrowRequestAdapter extends RecyclerView.Adapter<BorrowRequestAdap
     private void setStatusColor(TextView tv, String status) {
         tv.setTextColor(Color.WHITE);
         if (status == null) {
-            tv.setBackgroundColor(Color.GRAY);        return;
+            tv.setBackgroundColor(Color.GRAY);
+            return;
         }
-        // Case-insensitive check or matching your specific DB values
         switch (status.toUpperCase()) {
-            case "PENDING": tv.setBackgroundResource(R.drawable.badge_pending); break;
-            case "APPROVED":
-            case "ONGOING": tv.setBackgroundResource(R.drawable.badge_available); break;
-            case "REJECTED": tv.setBackgroundResource(R.drawable.badge_rejected); break;
-            case "COMPLETED":
-            case "RETURNED": tv.setBackgroundResource(R.drawable.badge_completed); break;
+            case BorrowRequest.STATUS_PENDING: 
+                tv.setBackgroundResource(R.drawable.badge_pending); break;
+            case BorrowRequest.STATUS_ACCEPTED:
+            case BorrowRequest.STATUS_ONGOING: 
+                tv.setBackgroundResource(R.drawable.badge_available); break;
+            case BorrowRequest.STATUS_REJECTED: 
+                tv.setBackgroundResource(R.drawable.badge_rejected); break;
+            case BorrowRequest.STATUS_RETURNED: 
+                tv.setBackgroundResource(R.drawable.badge_completed); break;
             default: tv.setBackgroundColor(Color.GRAY); break;
         }
     }
