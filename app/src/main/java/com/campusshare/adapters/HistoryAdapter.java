@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -24,26 +25,28 @@ import java.util.Locale;
  *
  * isBorrowerView = true  → "Borrowed from X" — shows credit −1 in red
  * isBorrowerView = false → "Lent to X"       — shows credit +1 in green
- *
- * Each card shows:
- *   photo · resource name · other person · status badge
- *   request date · return date · due date
- *   credit impact line · star rating if rated
  */
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder> {
 
     private final Context context;
     private final List<BorrowRequest> requests;
     private final boolean isBorrowerView;
+    private final OnHistoryActionListener listener;
 
     private static final SimpleDateFormat DATE_FMT =
         new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
 
+    public interface OnHistoryActionListener {
+        void onRateAction(BorrowRequest request, boolean isBorrower);
+        void onItemClick(BorrowRequest request);
+    }
+
     public HistoryAdapter(Context context, List<BorrowRequest> requests,
-                          boolean isBorrowerView) {
+                          boolean isBorrowerView, OnHistoryActionListener listener) {
         this.context        = context;
         this.requests       = requests;
         this.isBorrowerView = isBorrowerView;
+        this.listener       = listener;
     }
 
     @NonNull
@@ -58,16 +61,15 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
     public void onBindViewHolder(@NonNull HistoryViewHolder h, int position) {
         BorrowRequest r = requests.get(position);
 
+        h.itemView.setOnClickListener(v -> listener.onItemClick(r));
+
         // ── Photo ─────────────────────────────────────────────────────────────
-        if (r.getResourcePhoto() != null && !r.getResourcePhoto().isEmpty()) {
-            Glide.with(context)
-                .load(r.getResourcePhoto())
-                .centerCrop()
-                .placeholder(R.drawable.ic_resource_placeholder)
-                .into(h.ivPhoto);
-        } else {
-            h.ivPhoto.setImageResource(R.drawable.ic_resource_placeholder);
-        }
+        String photoUrl = r.getEffectivePhotoUrl();
+        Glide.with(context)
+            .load(photoUrl != null && !photoUrl.isEmpty() ? photoUrl : R.drawable.ic_resource_placeholder)
+            .centerCrop()
+            .placeholder(R.drawable.ic_resource_placeholder)
+            .into(h.ivPhoto);
 
         // ── Resource name ─────────────────────────────────────────────────────
         h.tvResourceName.setText(r.getResourceName());
@@ -76,52 +78,52 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
         if (isBorrowerView) {
             h.tvOtherPerson.setText("From: " + r.getOwnerName());
         } else {
-            h.tvOtherPerson.setText("To: " + r.getBorrowerName()
-                + " · " + r.getBorrowerDept());
+            h.tvOtherPerson.setText("To: " + r.getBorrowerName());
         }
 
         // ── Status badge ──────────────────────────────────────────────────────
         h.tvStatus.setText(r.getStatus());
-        switch (r.getStatus()) {
-            case BorrowRequest.STATUS_PENDING:
-                h.tvStatus.setBackgroundResource(R.drawable.badge_pending);    break;
-            case BorrowRequest.STATUS_ACCEPTED:
-                h.tvStatus.setBackgroundResource(R.drawable.badge_available);  break;
-            case BorrowRequest.STATUS_REJECTED:
-                h.tvStatus.setBackgroundResource(R.drawable.badge_unavailable);break;
-            case BorrowRequest.STATUS_RETURNED:
-                h.tvStatus.setBackgroundResource(R.drawable.badge_returned);   break;
+        if (r.getStatus() != null) {
+            switch (r.getStatus().toUpperCase()) {
+                case "PENDING":
+                    h.tvStatus.setBackgroundResource(R.drawable.badge_pending); break;
+                case "APPROVED":
+                case "ACCEPTED":
+                case "ONGOING":
+                    h.tvStatus.setBackgroundResource(R.drawable.badge_available); break;
+                case "REJECTED":
+                case "CANCELLED":
+                    h.tvStatus.setBackgroundResource(R.drawable.badge_rejected); break;
+                case "COMPLETED":
+                case "RETURNED":
+                case "OVERDUE_RETURNED":
+                    h.tvStatus.setBackgroundResource(R.drawable.badge_completed); break;
+            }
         }
 
-        // ── Request date ──────────────────────────────────────────────────────
+        // ── Dates ─────────────────────────────────────────────────────────────
         if (r.getRequestDate() != null) {
-            h.tvRequestDate.setText("Requested: "
-                + DATE_FMT.format(r.getRequestDate()));
+            h.tvRequestDate.setText("Requested: " + DATE_FMT.format(r.getRequestDate()));
             h.tvRequestDate.setVisibility(View.VISIBLE);
         } else {
             h.tvRequestDate.setVisibility(View.GONE);
         }
 
-        // ── Returned date ─────────────────────────────────────────────────────
-        if (r.isReturned() && r.getReturnedDate() != null) {
-            h.tvReturnedDate.setText("Returned: "
-                + DATE_FMT.format(r.getReturnedDate()));
+        if (r.getReturnedDate() != null) {
+            h.tvReturnedDate.setText("Returned: " + DATE_FMT.format(r.getReturnedDate()));
             h.tvReturnedDate.setVisibility(View.VISIBLE);
+            h.tvDueDate.setVisibility(View.GONE);
+        } else if (r.getEndDate() != null) {
+            h.tvDueDate.setText("Due: " + DATE_FMT.format(r.getEndDate()));
+            h.tvDueDate.setVisibility(View.VISIBLE);
+            h.tvReturnedDate.setVisibility(View.GONE);
         } else {
             h.tvReturnedDate.setVisibility(View.GONE);
-        }
-
-        // ── Due date (active borrows only) ────────────────────────────────────
-        if (r.isAccepted() && r.getDueDate() != null) {
-            h.tvDueDate.setText("Due: "
-                + DATE_FMT.format(r.getDueDate()));
-            h.tvDueDate.setVisibility(View.VISIBLE);
-        } else {
             h.tvDueDate.setVisibility(View.GONE);
         }
 
-        // ── Credit impact (only for completed returns) ────────────────────────
-        if (r.isReturned() && r.isCreditApplied()) {
+        // ── Credit impact ─────────────────────────────────────────────────────
+        if (r.getReturnedDate() != null) {
             h.tvCreditImpact.setVisibility(View.VISIBLE);
             if (isBorrowerView) {
                 h.tvCreditImpact.setText("Credit: −1  (you borrowed)");
@@ -134,38 +136,35 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
             h.tvCreditImpact.setVisibility(View.GONE);
         }
 
-        // ── Priority badge ────────────────────────────────────────────────────
-        h.tvPriority.setVisibility(r.isPriority() ? View.VISIBLE : View.GONE);
-
-        // ── Star rating (only for completed transactions) ─────────────────────
-        if (r.isReturned()) {
-            float rating = isBorrowerView ? r.getOwnerRating() : r.getBorrowerRating();
-            if (rating > 0) {
-                h.layoutRating.setVisibility(View.VISIBLE);
-                h.ratingBar.setRating(rating);
-                h.tvRatingLabel.setText(isBorrowerView
-                    ? "Your rating for " + r.getOwnerName()
-                    : "Your rating for " + r.getBorrowerName());
-            } else {
-                h.layoutRating.setVisibility(View.GONE);
-            }
+        // ── Rating Logic ──────────────────────────────────────────────────────
+        float existingRating = isBorrowerView ? r.getResourceRating() : r.getBorrowerRating();
+        
+        if (existingRating > 0) {
+            h.layoutRating.setVisibility(View.VISIBLE);
+            h.ratingBar.setRating(existingRating);
+            h.tvRatingLabel.setText(isBorrowerView ? "Your rating for product" : "Your rating for borrower");
+            h.btnRate.setVisibility(View.GONE);
+        } else if (r.getReturnedDate() != null) {
+            h.layoutRating.setVisibility(View.GONE);
+            h.btnRate.setVisibility(View.VISIBLE);
+            h.btnRate.setOnClickListener(v -> listener.onRateAction(r, isBorrowerView));
         } else {
             h.layoutRating.setVisibility(View.GONE);
+            h.btnRate.setVisibility(View.GONE);
         }
     }
 
     @Override
     public int getItemCount() { return requests.size(); }
 
-    // ── ViewHolder ────────────────────────────────────────────────────────────
-
     static class HistoryViewHolder extends RecyclerView.ViewHolder {
         ImageView ivPhoto;
         TextView tvResourceName, tvOtherPerson, tvStatus;
         TextView tvRequestDate, tvReturnedDate, tvDueDate;
-        TextView tvCreditImpact, tvPriority, tvRatingLabel;
+        TextView tvCreditImpact, tvRatingLabel;
         View layoutRating;
         RatingBar ratingBar;
+        Button btnRate;
 
         HistoryViewHolder(@NonNull View v) {
             super(v);
@@ -177,10 +176,10 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
             tvReturnedDate = v.findViewById(R.id.tv_history_returned_date);
             tvDueDate      = v.findViewById(R.id.tv_history_due_date);
             tvCreditImpact = v.findViewById(R.id.tv_history_credit_impact);
-            tvPriority     = v.findViewById(R.id.tv_history_priority);
             tvRatingLabel  = v.findViewById(R.id.tv_history_rating_label);
             layoutRating   = v.findViewById(R.id.layout_history_rating);
             ratingBar      = v.findViewById(R.id.rating_bar_history);
+            btnRate        = v.findViewById(R.id.btn_history_rate);
         }
     }
 }

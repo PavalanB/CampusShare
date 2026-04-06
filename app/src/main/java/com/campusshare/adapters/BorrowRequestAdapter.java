@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -17,6 +18,7 @@ import com.campusshare.R;
 import com.campusshare.models.BorrowRequest;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -27,6 +29,7 @@ public class BorrowRequestAdapter extends RecyclerView.Adapter<BorrowRequestAdap
     private final boolean isReceived; // true if I am the owner, false if I am the borrower
     private final OnRequestActionListener listener;
     private final SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
+    private final SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd MMM yyyy, hh:mm a", Locale.getDefault());
 
     public interface OnRequestActionListener {
         void onApprove(BorrowRequest request);
@@ -101,6 +104,99 @@ public class BorrowRequestAdapter extends RecyclerView.Adapter<BorrowRequestAdap
         holder.btnApprove.setOnClickListener(v -> listener.onApprove(request));
         holder.btnReject.setOnClickListener(v -> listener.onReject(request));
         holder.btnReturn.setOnClickListener(v -> listener.onReturn(request));
+
+        holder.itemView.setOnClickListener(v -> showRequestDetailsDialog(request));
+    }
+
+    private void showRequestDetailsDialog(BorrowRequest request) {
+        View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_request_details, null);
+        AlertDialog dialog = new AlertDialog.Builder(context, R.style.Theme_CampusShare_DatePicker)
+                .setView(dialogView)
+                .create();
+
+        ImageView ivPhoto = dialogView.findViewById(R.id.iv_detail_photo);
+        TextView tvName = dialogView.findViewById(R.id.tv_detail_resource_name);
+        TextView tvStatus = dialogView.findViewById(R.id.tv_detail_status);
+        TextView tvQuantity = dialogView.findViewById(R.id.tv_detail_quantity);
+        TextView tvPersonLabel = dialogView.findViewById(R.id.tv_detail_person_label);
+        TextView tvPersonName = dialogView.findViewById(R.id.tv_detail_person_name);
+        TextView tvReqTime = dialogView.findViewById(R.id.tv_detail_request_time);
+        TextView tvDuration = dialogView.findViewById(R.id.tv_detail_duration);
+        TextView tvApproveTime = dialogView.findViewById(R.id.tv_detail_approve_time);
+        TextView tvRemainingTime = dialogView.findViewById(R.id.tv_detail_remaining_time);
+        TextView tvReturnTime = dialogView.findViewById(R.id.tv_detail_return_time);
+        
+        View rowApproved = dialogView.findViewById(R.id.row_approved);
+        View rowRemaining = dialogView.findViewById(R.id.row_remaining);
+        View rowReturned = dialogView.findViewById(R.id.row_returned);
+        Button btnClose = dialogView.findViewById(R.id.btn_close);
+
+        tvName.setText(request.getResourceName());
+        tvStatus.setText(request.getStatus());
+        tvQuantity.setText(String.valueOf(request.getQuantity()));
+
+        if (isReceived) {
+            tvPersonLabel.setText("Borrower:");
+            tvPersonName.setText(request.getBorrowerName() + " (" + request.getBorrowerDept() + ")");
+        } else {
+            tvPersonLabel.setText("Owner:");
+            tvPersonName.setText(request.getOwnerName());
+        }
+
+        String imageUrl = request.getEffectivePhotoUrl();
+        Glide.with(context)
+                .load(imageUrl != null && !imageUrl.isEmpty() ? imageUrl : R.drawable.ic_resource_placeholder)
+                .centerCrop()
+                .into(ivPhoto);
+
+        if (request.getRequestDate() != null) {
+            tvReqTime.setText(dateTimeFormat.format(request.getRequestDate()));
+        }
+
+        if (request.getStartDate() != null && request.getEndDate() != null) {
+            tvDuration.setText(sdf.format(request.getStartDate()) + " to " + sdf.format(request.getEndDate()));
+        }
+
+        // Handle Approved Date
+        if (request.getAcceptedDate() != null) {
+            rowApproved.setVisibility(View.VISIBLE);
+            tvApproveTime.setText(dateTimeFormat.format(request.getAcceptedDate()));
+        } else if (BorrowRequest.STATUS_ACCEPTED.equals(request.getStatus()) || BorrowRequest.STATUS_ONGOING.equals(request.getStatus()) || BorrowRequest.STATUS_RETURNED.equals(request.getStatus())) {
+            // If status is accepted but date is null, show something
+            rowApproved.setVisibility(View.VISIBLE);
+            tvApproveTime.setText("Date not recorded");
+        }
+
+        // Handle Remaining Time / Overdue
+        if (BorrowRequest.STATUS_ACCEPTED.equals(request.getStatus()) || BorrowRequest.STATUS_ONGOING.equals(request.getStatus())) {
+            if (request.getEndDate() != null) {
+                rowRemaining.setVisibility(View.VISIBLE);
+                long diff = request.getEndDate().getTime() - System.currentTimeMillis();
+                if (diff > 0) {
+                    long days = diff / (24 * 60 * 60 * 1000);
+                    long hours = (diff / (60 * 60 * 1000)) % 24;
+                    tvRemainingTime.setText(days + "d " + hours + "h left");
+                    tvRemainingTime.setTextColor(context.getResources().getColor(R.color.accent_primary));
+                } else {
+                    tvRemainingTime.setText("Overdue");
+                    tvRemainingTime.setTextColor(Color.RED);
+                }
+            }
+        }
+
+        // Handle Returned Date
+        if (request.getReturnedDate() != null) {
+            rowReturned.setVisibility(View.VISIBLE);
+            tvReturnTime.setText(dateTimeFormat.format(request.getReturnedDate()));
+            rowRemaining.setVisibility(View.GONE); // Hide remaining if already returned
+        } else if (BorrowRequest.STATUS_RETURNED.equals(request.getStatus()) || "OVERDUE_RETURNED".equals(request.getStatus())) {
+            rowReturned.setVisibility(View.VISIBLE);
+            tvReturnTime.setText("Date not recorded");
+            rowRemaining.setVisibility(View.GONE);
+        }
+
+        btnClose.setOnClickListener(v -> dialog.dismiss());
+        dialog.show();
     }
 
     private void setStatusColor(TextView tv, String status) {
@@ -118,6 +214,7 @@ public class BorrowRequestAdapter extends RecyclerView.Adapter<BorrowRequestAdap
             case BorrowRequest.STATUS_REJECTED: 
                 tv.setBackgroundResource(R.drawable.badge_rejected); break;
             case BorrowRequest.STATUS_RETURNED: 
+            case "OVERDUE_RETURNED":
                 tv.setBackgroundResource(R.drawable.badge_completed); break;
             default: tv.setBackgroundColor(Color.GRAY); break;
         }

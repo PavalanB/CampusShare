@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,10 +25,16 @@ public class BorrowAdapter extends RecyclerView.Adapter<BorrowAdapter.BorrowView
     private final Context context;
     private final List<BorrowRequest> requests;
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
+    private final OnBorrowActionListener listener;
 
-    public BorrowAdapter(Context context, List<BorrowRequest> requests) {
+    public interface OnBorrowActionListener {
+        void onRateProduct(BorrowRequest request);
+    }
+
+    public BorrowAdapter(Context context, List<BorrowRequest> requests, OnBorrowActionListener listener) {
         this.context = context;
         this.requests = requests;
+        this.listener = listener;
     }
 
     @NonNull
@@ -43,7 +50,6 @@ public class BorrowAdapter extends RecyclerView.Adapter<BorrowAdapter.BorrowView
 
         holder.tvResourceName.setText(request.getResourceName());
         holder.tvOwner.setText("Owner: " + request.getOwnerName());
-        // Fixed: Use the Date object directly, no need for .toDate()
         holder.tvDate.setText("Requested: " + (request.getRequestDate() != null ? dateFormat.format(request.getRequestDate()) : "N/A"));
         holder.tvStatus.setText(request.getStatus());
 
@@ -51,15 +57,21 @@ public class BorrowAdapter extends RecyclerView.Adapter<BorrowAdapter.BorrowView
         if (request.getStatus() != null) {
             switch (request.getStatus()) {
                 case "PENDING":
-                    holder.tvStatus.setBackgroundResource(R.drawable.badge_available); // Blue/Purple
+                    holder.tvStatus.setBackgroundResource(R.drawable.badge_pending);
                     break;
                 case "APPROVED":
                 case "ACCEPTED":
+                case "ONGOING":
                     holder.tvStatus.setBackgroundResource(R.drawable.badge_available);
                     break;
                 case "REJECTED":
+                case "CANCELLED":
+                    holder.tvStatus.setBackgroundResource(R.drawable.badge_rejected);
+                    break;
+                case "COMPLETED":
                 case "RETURNED":
-                    holder.tvStatus.setBackgroundResource(R.drawable.badge_unavailable); // Red/Grey
+                case "OVERDUE_RETURNED":
+                    holder.tvStatus.setBackgroundResource(R.drawable.badge_completed);
                     break;
             }
         }
@@ -68,6 +80,15 @@ public class BorrowAdapter extends RecyclerView.Adapter<BorrowAdapter.BorrowView
             Glide.with(context).load(request.getResourcePhoto()).centerCrop().into(holder.ivPhoto);
         } else {
             holder.ivPhoto.setImageResource(R.drawable.ic_resource_placeholder);
+        }
+
+        // Show Rate button if returned and not yet rated
+        if (("COMPLETED".equals(request.getStatus()) || "RETURNED".equals(request.getStatus()) || "OVERDUE_RETURNED".equals(request.getStatus()))
+                && request.getResourceRating() == 0) {
+            holder.btnRate.setVisibility(View.VISIBLE);
+            holder.btnRate.setOnClickListener(v -> listener.onRateProduct(request));
+        } else {
+            holder.btnRate.setVisibility(View.GONE);
         }
     }
 
@@ -79,6 +100,7 @@ public class BorrowAdapter extends RecyclerView.Adapter<BorrowAdapter.BorrowView
     static class BorrowViewHolder extends RecyclerView.ViewHolder {
         ImageView ivPhoto;
         TextView tvResourceName, tvOwner, tvDate, tvStatus;
+        Button btnRate;
 
         public BorrowViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -87,6 +109,7 @@ public class BorrowAdapter extends RecyclerView.Adapter<BorrowAdapter.BorrowView
             tvOwner = itemView.findViewById(R.id.tv_request_owner);
             tvDate = itemView.findViewById(R.id.tv_request_date);
             tvStatus = itemView.findViewById(R.id.tv_request_status);
+            btnRate = itemView.findViewById(R.id.btn_rate);
         }
     }
 }

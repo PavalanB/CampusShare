@@ -14,8 +14,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * ResourceRepository handles all Firestore reads/writes for resources
@@ -98,7 +100,6 @@ public class ResourceRepository {
 
     public void fetchAvailableResources(String currentUserID, ResourceListCallback callback) {
         db.collection(COLLECTION)
-            .whereEqualTo("available", true)
             .orderBy("createdAt", Query.Direction.DESCENDING)
             .get()
             .addOnSuccessListener(snapshots -> {
@@ -106,15 +107,12 @@ public class ResourceRepository {
                 for (QueryDocumentSnapshot doc : snapshots) {
                     Resource r = doc.toObject(Resource.class);
                     if (r != null && r.getOwnerID() != null) {
+                        // Don't show my own resources in browse
                         if (!r.getOwnerID().equals(currentUserID)) {
                             list.add(r);
                         }
                     }
                 }
-                Collections.sort(list, (r1, r2) -> {
-                    if (r1.getCreatedAt() == null || r2.getCreatedAt() == null) return 0;
-                    return r2.getCreatedAt().compareTo(r1.getCreatedAt());
-                });
                 callback.onSuccess(list);
             })
             .addOnFailureListener(e -> callback.onFailure("Firestore Error: " + e.getMessage()));
@@ -131,10 +129,6 @@ public class ResourceRepository {
                     Resource r = doc.toObject(Resource.class);
                     if (r != null) list.add(r);
                 }
-                Collections.sort(list, (r1, r2) -> {
-                    if (r1.getCreatedAt() == null || r2.getCreatedAt() == null) return 0;
-                    return r2.getCreatedAt().compareTo(r1.getCreatedAt());
-                });
                 callback.onSuccess(list);
             })
             .addOnFailureListener(e -> callback.onFailure("Firestore Error: " + e.getMessage()));
@@ -142,7 +136,6 @@ public class ResourceRepository {
 
     public void fetchByCategory(String category, String currentUserID, ResourceListCallback callback) {
         db.collection(COLLECTION)
-            .whereEqualTo("available", true)
             .whereEqualTo("category", category)
             .orderBy("createdAt", Query.Direction.DESCENDING)
             .get()
@@ -156,10 +149,6 @@ public class ResourceRepository {
                         }
                     }
                 }
-                Collections.sort(list, (r1, r2) -> {
-                    if (r1.getCreatedAt() == null || r2.getCreatedAt() == null) return 0;
-                    return r2.getCreatedAt().compareTo(r1.getCreatedAt());
-                });
                 callback.onSuccess(list);
             })
             .addOnFailureListener(e -> callback.onFailure("Firestore Error: " + e.getMessage()));
@@ -277,30 +266,9 @@ public class ResourceRepository {
             .addOnFailureListener(e -> callback.onFailure("Availability check failed: " + e.getMessage()));
     }
 
-    // Keep the old method signature for compatibility if needed, but internally use the new one
-    public void checkAvailability(String resourceID, Date start, Date end, int requestedQty, int totalAvailable, BorrowRequestListCallback callback) {
-        // This is now deprecated in favor of the SimpleCallback version which handles the message
-        db.collection(REQUESTS_COLLECTION)
-            .whereEqualTo("resourceID", resourceID)
-            .whereIn("status", List.of("APPROVED", "ONGOING", "PENDING"))
-            .get()
-            .addOnSuccessListener(snapshots -> {
-                List<BorrowRequest> list = new ArrayList<>();
-                for (QueryDocumentSnapshot doc : snapshots) {
-                    BorrowRequest br = doc.toObject(BorrowRequest.class);
-                    if (start.before(br.getEffectiveEndDate()) && end.after(br.getEffectiveStartDate())) {
-                        list.add(br);
-                    }
-                }
-                callback.onSuccess(list);
-            })
-            .addOnFailureListener(e -> callback.onFailure(e.getMessage()));
-    }
-
     public void fetchMyBorrowRequests(String userID, BorrowRequestListCallback callback) {
         db.collection(REQUESTS_COLLECTION)
             .whereEqualTo("borrowerID", userID)
-            .orderBy("createdAt", Query.Direction.DESCENDING)
             .get()
             .addOnSuccessListener(snapshots -> {
                 List<BorrowRequest> list = new ArrayList<>();
@@ -315,7 +283,6 @@ public class ResourceRepository {
     public void fetchReceivedBorrowRequests(String userID, BorrowRequestListCallback callback) {
         db.collection(REQUESTS_COLLECTION)
             .whereEqualTo("ownerID", userID)
-            .orderBy("createdAt", Query.Direction.DESCENDING)
             .get()
             .addOnSuccessListener(snapshots -> {
                 List<BorrowRequest> list = new ArrayList<>();
@@ -328,9 +295,18 @@ public class ResourceRepository {
     }
 
     public void updateBorrowRequestStatus(String requestID, String newStatus, SimpleCallback callback) {
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("status", newStatus);
+        
+        if (BorrowRequest.STATUS_ACCEPTED.equals(newStatus)) {
+            updates.put("acceptedDate", new Date());
+        } else if (BorrowRequest.STATUS_RETURNED.equals(newStatus) || "COMPLETED".equals(newStatus) || "OVERDUE_RETURNED".equals(newStatus)) {
+            updates.put("returnedDate", new Date());
+        }
+
         db.collection(REQUESTS_COLLECTION)
             .document(requestID)
-            .update("status", newStatus)
+            .update(updates)
             .addOnSuccessListener(unused -> callback.onSuccess())
             .addOnFailureListener(e -> callback.onFailure(e.getMessage()));
     }

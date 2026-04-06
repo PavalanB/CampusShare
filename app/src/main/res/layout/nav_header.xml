@@ -16,15 +16,25 @@
         app:cardBackgroundColor="@color/glass_white_10"
         app:strokeColor="@color/primary_glow"
         app:strokeWidth="1dp">
-        <TextView
-            android:id="@+id/nav_initials"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="AB"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:textColor="@color/primary_glow" />
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/nav_initials"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="AB"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="@color/primary_glow" />
+            <ImageView
+                android:id="@+id/nav_profile_photo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:visibility="gone" />
+        </FrameLayout>
     </com.google.android.material.card.MaterialCardView>
 
     <TextView

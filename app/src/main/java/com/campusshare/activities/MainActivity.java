@@ -1,12 +1,18 @@
 package com.campusshare.activities;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -15,6 +21,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.campusshare.R;
 import com.campusshare.fragments.HistoryFragment;
 import com.campusshare.fragments.InboxFragment;
@@ -25,6 +34,7 @@ import com.campusshare.models.User;
 import com.campusshare.repositories.AuthRepository;
 import com.campusshare.utils.NotificationHelper;
 import com.campusshare.utils.SessionManager;
+import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -101,8 +111,7 @@ public class MainActivity extends AppCompatActivity implements ProfileFragment.P
 
         // Set default fragment
         if (getSupportFragmentManager().findFragmentById(R.id.fragment_container) == null) {
-            loadFragment(new SearchFragment(), "BROWSE");
-            fabAdd.hide();
+            bottomNav.setSelectedItemId(R.id.nav_browse);
         }
     }
 
@@ -146,6 +155,7 @@ public class MainActivity extends AppCompatActivity implements ProfileFragment.P
     public void onProfileUpdated(User user) {
         this.currentUser = user;
         updateSidebarUserInfo();
+        updateBottomNavProfileIcon();
     }
 
     private void setupSidebar() {
@@ -179,20 +189,36 @@ public class MainActivity extends AppCompatActivity implements ProfileFragment.P
             TextView navName = headerView.findViewById(R.id.nav_name);
             TextView navEmail = headerView.findViewById(R.id.nav_email);
             TextView navInitials = headerView.findViewById(R.id.nav_initials);
+            ImageView navProfilePhoto = headerView.findViewById(R.id.nav_profile_photo);
 
             if (currentUser != null) {
                 if (navName != null) navName.setText(currentUser.getName());
                 if (navEmail != null) navEmail.setText(currentUser.getEmail());
-                if (navInitials != null && currentUser.getName() != null && !currentUser.getName().isEmpty()) {
-                    String name = currentUser.getName();
-                    String[] parts = name.split(" ");
-                    String initials;
-                    if (parts.length >= 2 && !parts[0].isEmpty() && !parts[1].isEmpty()) {
-                        initials = String.valueOf(parts[0].charAt(0)) + parts[1].charAt(0);
-                    } else {
-                        initials = String.valueOf(name.charAt(0));
+                
+                String photoUrl = currentUser.getProfilePhoto();
+                if (photoUrl != null && !photoUrl.isEmpty() && navProfilePhoto != null) {
+                    navProfilePhoto.setVisibility(View.VISIBLE);
+                    if (navInitials != null) navInitials.setVisibility(View.GONE);
+                    Glide.with(this)
+                        .load(photoUrl)
+                        .circleCrop()
+                        .into(navProfilePhoto);
+                } else {
+                    if (navProfilePhoto != null) navProfilePhoto.setVisibility(View.GONE);
+                    if (navInitials != null) {
+                        navInitials.setVisibility(View.VISIBLE);
+                        String name = currentUser.getName();
+                        if (name != null && !name.isEmpty()) {
+                            String[] parts = name.split(" ");
+                            String initials;
+                            if (parts.length >= 2 && !parts[0].isEmpty() && !parts[1].isEmpty()) {
+                                initials = String.valueOf(parts[0].charAt(0)) + parts[1].charAt(0);
+                            } else {
+                                initials = String.valueOf(name.charAt(0));
+                            }
+                            navInitials.setText(initials.toUpperCase());
+                        }
                     }
-                    navInitials.setText(initials.toUpperCase());
                 }
             }
         }
@@ -236,6 +262,41 @@ public class MainActivity extends AppCompatActivity implements ProfileFragment.P
             }
             return false;
         });
+        
+        updateBottomNavProfileIcon();
+    }
+
+    private void updateBottomNavProfileIcon() {
+        if (bottomNav == null || currentUser == null) return;
+        
+        MenuItem profileItem = bottomNav.getMenu().findItem(R.id.nav_profile);
+        if (profileItem == null) return;
+
+        String photoUrl = currentUser.getProfilePhoto();
+        if (photoUrl != null && !photoUrl.isEmpty()) {
+            Glide.with(this)
+                .asBitmap()
+                .load(photoUrl)
+                .circleCrop()
+                .into(new CustomTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                        Drawable drawable = new BitmapDrawable(getResources(), resource);
+                        profileItem.setIcon(drawable);
+                        
+                        // Disable tinting for the profile photo to show it in original colors
+                        bottomNav.post(() -> {
+                            View view = bottomNav.findViewById(R.id.nav_profile);
+                            if (view instanceof BottomNavigationItemView) {
+                                ((BottomNavigationItemView) view).setIconTintList(null);
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onLoadCleared(@Nullable Drawable placeholder) {}
+                });
+        }
     }
 
     private void loadFragment(Fragment fragment, String title) {

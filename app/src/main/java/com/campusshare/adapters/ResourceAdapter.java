@@ -1,6 +1,7 @@
 package com.campusshare.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -58,25 +60,25 @@ public class ResourceAdapter extends RecyclerView.Adapter<ResourceAdapter.Resour
         holder.tvCondition.setText("Condition: " + resource.getCondition());
         holder.tvCategory.setText(resource.getCategory());
 
-        // Availability badge
-        if (resource.isAvailable()) {
+        // Availability badge logic
+        if (resource.getAvailableQuantity() > 0 && resource.isAvailable()) {
             holder.tvAvailability.setText("Available");
-            holder.tvAvailability.setBackgroundResource(R.drawable.bg_available_badge);
+            holder.tvAvailability.setBackgroundResource(R.drawable.bg_availability_badge_pill);
+            holder.tvAvailability.getBackground().setTint(ContextCompat.getColor(context, R.color.success_green));
         } else {
             holder.tvAvailability.setText("Unavailable");
-            holder.tvAvailability.setBackgroundResource(R.drawable.badge_unavailable);
+            holder.tvAvailability.setBackgroundResource(R.drawable.bg_availability_badge_pill);
+            holder.tvAvailability.getBackground().setTint(ContextCompat.getColor(context, R.color.error_red));
         }
 
         // Load photo with Glide; show placeholder if no photo
-        if (resource.getPhotoUrl() != null && !resource.getPhotoUrl().isEmpty()) {
-            Glide.with(context)
-                .load(resource.getPhotoUrl())
+        String photoUrl = resource.getPhotoUrl();
+        Glide.with(context)
+                .load(photoUrl != null && !photoUrl.isEmpty() ? photoUrl : R.drawable.ic_resource_placeholder)
                 .centerCrop()
                 .placeholder(R.drawable.ic_resource_placeholder)
+                .error(R.drawable.ic_resource_placeholder)
                 .into(holder.ivPhoto);
-        } else {
-            holder.ivPhoto.setImageResource(R.drawable.ic_resource_placeholder);
-        }
 
         // Owner-only actions (My Listings screen)
         if (isOwnerView) {

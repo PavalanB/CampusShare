@@ -41,6 +41,7 @@ public class BorrowRequest implements Serializable {
     private Date dueDate;
     private float borrowerRating;
     private float ownerRating;
+    private float resourceRating; // Rating given by borrower to the product
     private boolean creditApplied;
     private String parentRequestID; // To link extension to original request
 
@@ -66,6 +67,7 @@ public class BorrowRequest implements Serializable {
         this.quantity = 1;
         this.borrowerRating = 0f;
         this.ownerRating = 0f;
+        this.resourceRating = 0f;
         this.creditApplied = false;
     }
 
@@ -88,6 +90,7 @@ public class BorrowRequest implements Serializable {
         this.requestDate = new Date();
         this.borrowerRating = 0f;
         this.ownerRating = 0f;
+        this.resourceRating = 0f;
         this.creditApplied = false;
     }
 
@@ -215,6 +218,11 @@ public class BorrowRequest implements Serializable {
     public float getOwnerRating() { return ownerRating; }
     @PropertyName("ownerRating")
     public void setOwnerRating(float ownerRating) { this.ownerRating = ownerRating; }
+
+    @PropertyName("resourceRating")
+    public float getResourceRating() { return resourceRating; }
+    @PropertyName("resourceRating")
+    public void setResourceRating(float resourceRating) { this.resourceRating = resourceRating; }
 
     @PropertyName("creditApplied")
     public boolean isCreditApplied() { return creditApplied; }
